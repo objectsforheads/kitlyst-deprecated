@@ -1,0 +1,16 @@
+<template name="mainLayout">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12">
+        <h1>Lysty mcLystface</h1>
+      </div>
+      <div class="col-sm-12">
+        {{> mainContent}}
+      </div>
+    </div>
+  </div>
+</template>
+
+<template name="mainContent">
+  {{> Template.dynamic template=main}}
+</template>

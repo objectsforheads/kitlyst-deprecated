@@ -1,0 +1,68 @@
+@import url('https://fonts.googleapis.com/css?family=Abel|Lato|Unica+One');
+
+
+html, body {
+  font-family: 'Abel', sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+  font-family: 'Unica One', sans-serif;
+}
+
+.site-title {
+  //background: #016CB1;
+  background: url('http://i63.tinypic.com/16j1n2g.jpg') no-repeat center bottom / cover;
+  position: relative;
+
+  &::after {
+    content: '';
+    z-index: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transition: background 150ms;
+  }
+
+  a {
+    font-family: 'Unica One', sans-serif;
+    color: #FBFCFE;
+    text-decoration: none;
+    z-index: 1;
+    position: relative;
+    display: block;
+  }
+
+  &:hover {
+    &::after {
+      background: #016CB1;
+      opacity: 0.55;
+    }
+
+    a {
+      text-decoration: none;
+    }
+  }
+}
+
+a,
+.btn-link {
+  font-family: 'Lato', sans-serif;
+  padding: 0;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+.btn {
+  font-size: 1rem;
+}
+
+pre {
+    white-space: pre-wrap;       /* Since CSS 2.1 */
+    white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+    white-space: -pre-wrap;      /* Opera 4-6 */
+    white-space: -o-pre-wrap;    /* Opera 7 */
+    word-wrap: break-word;       /* Internet Explorer 5.5+ */
+}
