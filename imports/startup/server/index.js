@@ -7,3 +7,8 @@ BrowserPolicy.content.allowOriginForAll("www.google-analytics.com");
 
 // Allow CDNs
 BrowserPolicy.content.allowOriginForAll('cdnjs.cloudflare.com');
+BrowserPolicy.content.allowOriginForAll('maxcdn.bootstrapcdn.com');
+BrowserPolicy.content.allowOriginForAll('cdn.jsdelivr.net');
+
+// Lazy load images
+BrowserPolicy.content.allowOriginForAll('manaspring.ru');

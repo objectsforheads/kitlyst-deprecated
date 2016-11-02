@@ -1,4 +1,8 @@
-@import url('https://fonts.googleapis.com/css?family=Abel|Lato|Unica+One');
+@import url('https://fonts.googleapis.com/css?family=Abel|Lato:400,700|Unica+One');
+
+* {
+  position: relative;
+}
 
 
 html, body {
@@ -50,6 +54,7 @@ h1, h2, h3, h4, h5, h6,
 a,
 .btn-link {
   font-family: 'Lato', sans-serif;
+  font-weight: 400;
   padding: 0;
   font-size: inherit;
   line-height: inherit;
@@ -65,4 +70,77 @@ pre {
     white-space: -pre-wrap;      /* Opera 4-6 */
     white-space: -o-pre-wrap;    /* Opera 7 */
     word-wrap: break-word;       /* Internet Explorer 5.5+ */
+}
+
+
+
+
+
+
+
+
+.card {
+  font-family: 'Lato', sans-serif;
+  text-align: center;
+
+  .card-quickref {
+    display: flex;
+    text-align: right;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .card-manaCost .card-icon {
+    color: #16C8E4;
+  }
+  .card-attack .card-icon {
+    color: #F2F55A;
+  }
+  .card-health .card-icon {
+    color: #F7001B;
+  }
+
+  .card-race {
+    text-transform: uppercase;
+    font-size: 0.75em;
+  }
+
+  .info-title {
+    text-transform: uppercase;
+    font-size: 0.75em;
+    text-align: left;
+    display: block;
+  }
+
+
+
+  .card-name {
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+  .card-image {
+    width: 200px;
+    height: 200px;
+  }
+  .card-sprite {
+    image-rendering: optimizeSpeed;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: -o-crisp-edges;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: pixelated;
+    image-rendering: optimize-contrast;
+  -ms-interpolation-mode: nearest-neighborz;
+
+    transform: scale(2) translate(-50%,-50%);
+    position: absolute;
+    top: 75%;
+    left: 75%;
+  }
+}
+
+.deckbuilder-cards {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -1em;
+  overflow: auto;
 }

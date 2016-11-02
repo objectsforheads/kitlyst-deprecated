@@ -1,3 +1,71 @@
 <template name="deckBuild">
-  <h2>Build a Deck</h2>
+  <h1>Build a Deck</h1>
+  {{#if generalSelected}}
+    {{> deckList}}
+    {{> deckStats}}
+    {{> addCards}}
+  {{else}}
+    {{> selectGeneral}}
+  {{/if}}
+</template>
+
+<template name="deckList">
+  <h2>Cards</h2>
+  <ul>
+    {{#each deckCards}}
+      <li>{{name}} x{{count}} <button class="removeCard removeCard-1">remove 1</button> <button class="removeCard removeCard-all">remove all</button></li>
+    {{/each}}
+  </ul>
+</template>
+
+<template name="deckStats">
+  <h2>Stats</h2>
+  <h3>Mana Breakdown</h3>
+  <div class="ct-chart ct-golden-section" id="deckstat-manaCost"></div>
+  <h3>Deck Breakdown</h3>
+  <div class="row">
+    <div class="col-sm-12 col-md-3">
+      <strong>Units:</strong> {{typeUnitCount}}
+    </div>
+    <div class="col-sm-12 col-md-3">
+      <strong>Spells:</strong> {{typeSpellCount}}
+    </div>
+    <div class="col-sm-12 col-md-3">
+      <strong>Artifacts:</strong> {{typeArtifactCount}}
+    </div>
+    <div class="col-sm-12 col-md-3">
+      <strong>Crafting Cost:</strong> {{spiritCost}}
+    </div>
+  </div>
+</template>
+
+<template name="addCards">
+  <h2>Add Cards to Deck</h2>
+  <h3>Faction Cards</h3>
+  <div class="deckbuilder-cards row">
+    {{#each availableFactionCards}}
+      <div class="deckbuilder-card col-sm-6 col-md-4 col-lg-3">
+        {{> card info=this classes="card-selection addCard" maxCount="3"}}
+      </div>
+    {{/each}}
+  </div>
+  <h3>Neutral Cards</h3>
+  <div class="deckbuilder-cards row">
+  {{#each availableNeutralCards}}
+    <div class="deckbuilder-card col-sm-6 col-md-4 col-lg-3">
+      {{> card info=this classes="card-selection addCard" maxCount="3"}}
+    </div>
+  {{/each}}
+  </div>
+</template>
+
+<template name="selectGeneral">
+  <h2>Select your General</h2>
+  {{#each factions}}
+  <h3>{{this}}</h3>
+    {{passFaction}}
+    {{#each factionGenerals faction=getFaction}}
+      {{> card info=this classes="general-choice"}}
+    {{/each}}
+  {{/each}}
 </template>

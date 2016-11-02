@@ -1,0 +1,27 @@
+<template name="card">
+  <div class="card {{classes}}" data-available="{{maxCount}}" data-cardId="{{info.id}}">
+    <div class="card-quickref">
+      <div class="card-image">
+        <div class="card-sprite card-id_{{info.id}} {{idleAnimation}}"></div>
+      </div>
+      <div class="card-meta">
+        <div class="card-manaCost"><i class="ra ra-emerald card-icon"></i>&nbsp;<span class="stat-value">{{info.manaCost}}</span></div>
+        {{#if infoAttack}}
+        <div class="card-attack"><i class="ra ra-sword card-icon"></i>&nbsp;<span class="stat-value">{{info.attack}}</span></div>
+        {{/if}}
+        {{#if info.health}}
+        <div class="card-health"><i class="fa fa-shield card-icon"></i>&nbsp;<span class="stat-value">{{info.health}}</span></div>
+        {{/if}}
+      </div>
+    </div>
+    <div class="card-info">
+      <div class="card-name">
+        {{info.name}}
+      </div>
+      <div class="card-race">{{info.race}}</div>
+      {{#if info.description}}
+      <div class="card-description">{{info.description}}</div>
+      {{/if}}
+    </div>
+  </div>
+</template>
