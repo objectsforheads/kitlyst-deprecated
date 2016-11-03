@@ -64,7 +64,7 @@ Template.deckList.helpers({
 })
 
 Template.deckList.events({
-  'click .removeCard': function(e) {
+  'click .modCardCount': function(e) {
     var deck = JSON.parse(Session.get('deckCards'));
     var cardIndex = deck.findIndex(card => card.id === this.id);
     var card = deck[cardIndex];
@@ -83,19 +83,21 @@ Template.deckList.events({
       editDeckStat('mana', 'subtract', this.manaCost, 1)
       editDeckStat('type', 'subtract', this.type, 1)
       editDeckStat('spirit', 'subtract', this.rarity, 1)
+
+      Session.set('deckCards', JSON.stringify(deck));
     }
 
     // Remove all copies of card
-    else if ($(e.currentTarget).hasClass('removeCard-all')) {
+    if ($(e.currentTarget).hasClass('removeCard-all')) {
       deck.splice(cardIndex, 1)
       editDeckStat('mana', 'subtract', this.manaCost, this.count)
       editDeckStat('type', 'subtract', this.type, this.count)
       editDeckStat('spirit', 'subtract', this.rarity, this.count)
 
       $('[data-cardId="' + card.id + '"]').attr('data-available', 3);
-    }
 
-    Session.set('deckCards', JSON.stringify(deck));
+      Session.set('deckCards', JSON.stringify(deck));
+    }
   }
 })
 
@@ -104,10 +106,10 @@ Template.deckStats.onRendered(function() {
     labels: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, '10+'],
     series: [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
   }, {
-  chartPadding: {top: 40, left: 0, right: 0, bottom: 0},
+  chartPadding: {top: 40, left: 0, right: 5, bottom: 0},
   axisY: {
     showLabel: false,
-    showGrid: false,
+    showGrid: true,
     onlyInteger: true,
     offset: 0
   },
@@ -115,24 +117,28 @@ Template.deckStats.onRendered(function() {
     showGrid:false
   }});
   manaChart.on('draw', function(data) {
-  var barHorizontalCenter, barVerticalCenter, label, value;
-  if (data.type === "bar") {
-    barHorizontalCenter = data.x1 + (data.element.width() * .5) - 5;
-    barVerticalCenter = data.y1 + (data.element.height() * -1) - 10;
-    value = data.element.attr('ct:value');
-    if (value !== '0') {
-      label = new Chartist.Svg('text');
-      label.text(value);
-      label.addClass("ct-barlabel");
-      label.attr({
-        x: barHorizontalCenter,
-        y: barVerticalCenter,
-        'text-anchor': 'middle'
-      });
-      return data.group.append(label);
+    if(data.type === 'grid' && data.index !== 0) {
+      data.element.remove();
     }
-  }
-});
+
+    var barHorizontalCenter, barVerticalCenter, label, value;
+    if (data.type === "bar") {
+      barHorizontalCenter = data.x1 + (data.element.width() * .5) - 5;
+      barVerticalCenter = data.y1 + (data.element.height() * -1) - 10;
+      value = data.element.attr('ct:value');
+      if (value !== '0') {
+        label = new Chartist.Svg('text');
+        label.text(value);
+        label.addClass("ct-barlabel");
+        label.attr({
+          x: barHorizontalCenter,
+          y: barVerticalCenter,
+          'text-anchor': 'middle'
+        });
+        return data.group.append(label);
+      }
+    }
+  });
 })
 Template.deckStats.helpers({
   'typeUnitCount': function() {
@@ -192,7 +198,6 @@ Template.deckStats.helpers({
 
 Template.addCards.helpers({
   'availableFactionCards': function() {
-    console.log(allCards.find({ 'race': {$ne: 'General'}, 'faction': Session.get('deckFaction') }).fetch())
     return allCards.find({ 'race': {$ne: 'General'}, 'faction': Session.get('deckFaction') }).fetch();
   },
   'availableNeutralCards': function() {
@@ -355,3 +360,30 @@ function editDeckStat(stat, modifier, modified, count) {
       break
   }
 }
+
+// Event delegation
+$('body').on('mouseenter', '.deckbuilder-cards .has-tooltip:not(.tooltipstered)', function() {
+  $(this)
+    .tooltipster({
+      contentAsHTML: true,
+      delay: 0,
+      contentCloning: true,
+      side: ['top', 'bottom', 'right', 'left']
+    })
+    .tooltipster('open');
+});
+
+$('body').on('mouseenter', '.decklist-card .has-tooltip:not(.tooltipstered)', function() {
+  $(this)
+    .tooltipster({
+      contentAsHTML: true,
+      delay: 0,
+      contentCloning: true,
+      side: ['left', 'top', 'bottom', 'right']
+    })
+    .tooltipster('open');
+});
+
+$('body').on('click', '.deck-info-toggle', function() {
+  $('.deckbuilder').toggleClass('min-info');
+})
