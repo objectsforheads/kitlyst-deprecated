@@ -15,6 +15,9 @@
         <f class="fa fa-compress"></f>
       </label>
       <div class="deck-info-wrapper fixed-nav-wrapper">
+        <div class="deck-mods">
+          {{> deckMods}}
+        </div>
         <div class="deck-stats">
           {{> deckStats}}
         </div>
@@ -143,6 +146,27 @@
         <button class="modCardCount removeCard-all"><i class="fa fa-ban"></i></button>
       </div>
     </div>
+  </div>
+  {{/each}}
+</template>
+
+<template name="deckMods">
+  <h2>Deck</h2>
+  {{#each deckGeneral}}
+  <div class="decklist-card">
+    {{> card info=this layoutType="layout-list" hasTooltip=true}}
+    <div class="decklist-card-info">
+      <div class="decklist-card-caption">
+        <span class="decklist-card-name">{{name}}</span>
+      </div>
+      <div class="decklist-card-options">
+        <button class="modDeck changeGeneral"><i class="fa fa-exchange"></i></button>
+        <button class="modDeck deleteDeck"><i class="fa fa-trash"></i></button>
+      </div>
+    </div>
+  </div>
+  <div class="tooltip-wrapper">
+    {{> card info=this classes="card-tooltip" layoutType="layout-full" isTooltip=true}}
   </div>
   {{/each}}
 </template>

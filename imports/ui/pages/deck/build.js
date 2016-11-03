@@ -41,7 +41,34 @@ Template.deckBuild.onCreated(function() {
 
 Template.deckBuild.helpers({
   'generalSelected': function() {
-    return Session.get('deckGeneral')
+    return JSON.parse(Session.get('deckGeneral'));
+  }
+})
+
+
+
+
+
+Template.deckMods.helpers({
+  'deckGeneral': function() {
+    return JSON.parse(Session.get('deckGeneral'));
+  }
+})
+
+Template.deckMods.events({
+  'click .changeGeneral': function(e) {
+    Session.set('deckGeneral', null);
+  },
+  'click .deleteDeck': function(e) {
+    Session.set('deckCards', null);
+    Session.set('deckManaBreakdown', null);
+    Session.set('deckTypeBreakdown', null);
+    Session.set('deckSpiritCost', null);
+    Session.set('deckCardCount', 1)
+    manaChart.update({
+      labels: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, '10+'],
+      series: [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
+    })
   }
 })
 
@@ -216,10 +243,23 @@ Template.deckList.events({
 })
 
 Template.deckStats.onRendered(function() {
-  manaChart = new Chartist.Bar('#deckstat-manaCost', {
+  var manaData = {
     labels: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, '10+'],
     series: [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
-  }, {
+  }
+  if (Session.get('deckManaBreakdown')) {
+    var manaBreakdown = JSON.parse(Session.get('deckManaBreakdown'));
+    for (var manaCost in manaBreakdown) {
+      if (Number(manaCost) >= 10) {
+        manaData.series[0][10] = manaData.series[0][10] + manaBreakdown[manaCost];
+      }
+      else {
+        manaData.series[0][manaCost] = manaBreakdown[manaCost];
+      }
+    }
+  }
+  manaChart = new Chartist.Bar('#deckstat-manaCost',
+  manaData, {
   chartPadding: {top: 40, left: 0, right: 5, bottom: 0},
   axisY: {
     showLabel: false,
@@ -375,8 +415,32 @@ Template.selectGeneral.helpers({
 
 Template.card.events({
   'click .general-choice': function() {
+    // Check if a deck is already in progress and if the faction changes
+    var currentFaction = Session.get('deckFaction');
+    var newFaction = this.info.faction;
+    if (currentFaction !== newFaction && currentFaction) {
+      // If the faction is different, clear the current deck
+      if (Session.get('deckCards')) {
+        var currentDeck = JSON.parse(Session.get('deckCards'));
+
+        // Implement a custom forEach loop here to traverse backward
+        // So that splice doesn't cause index skipping
+        for (var i = currentDeck.length - 1; i >= 0; i--) {
+          var check = allCards.findOne({'id': Number(currentDeck[i].id)});
+          if (check.faction !== newFaction && check.faction !== 'Neutral') {
+            // Remember to update the stats
+            editDeckStat('mana', 'subtract', check.manaCost, currentDeck[i].count)
+            editDeckStat('type', 'subtract', check.type, currentDeck[i].count)
+            editDeckStat('spirit', 'subtract', check.rarity, currentDeck[i].count)
+
+            currentDeck.splice(i, 1);
+          }
+        }
+        Session.set('deckCards', JSON.stringify(currentDeck))
+      }
+    }
     Session.set('deckFaction', this.info.faction);
-    return Session.set('deckGeneral', this.info.id);
+    return Session.set('deckGeneral', JSON.stringify([this.info]));
   },
   'click .addCard': function(e) {
     var deck = Session.get('deckCards');

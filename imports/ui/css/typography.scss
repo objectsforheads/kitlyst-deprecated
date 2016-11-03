@@ -507,7 +507,8 @@ body {
   }
 
   .decklist-card-options {
-    .modCardCount {
+    .modCardCount,
+    .modDeck {
       background: transparent;
       border: 0;
       opacity: 0.5;
