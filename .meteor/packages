@@ -30,10 +30,11 @@ accounts-ui
 audit-argument-checks
 browser-policy
 kadira:flow-router
-twbs:bootstrap
+# twbs:bootstrap
 themeteorchef:jquery-validation
 themeteorchef:bert
 fourseven:scss
 kadira:blaze-layout
 session
 mfpierre:chartist-js
+comerc:tooltipster
