@@ -432,6 +432,12 @@ body {
     left: 35px;
     transform: translate(-50%, -50%);
   }
+
+  &[data-type="Unit"] .card-sprite {
+    top: initial;
+    bottom: 0;
+    transform: translateX(-50%);
+  }
 }
 
 .card.is-tooltip {
@@ -761,6 +767,20 @@ $deckbuilderFiltersWidth: 17rem;
   left: 100%;
 }
 
+.deckbuilder-search-wrapper {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid $duelystGrey;
+
+  .deckbuilder-search {
+    color: $duelystGrey;
+    flex: 1;
+    padding-right: 1rem;
+    background: transparent;
+    border: 0;
+  }
+}
+
 .deckbuilder-filter_options {
 
   .filter_type {
@@ -772,6 +792,12 @@ $deckbuilderFiltersWidth: 17rem;
       display: inline-block;
     }
   }
+}
+
+[data-showArtifacts="false"] [data-type="Artifact"],
+[data-showSpells="false"] [data-type="Spell"],
+[data-showUnits="false"] [data-type="Unit"] {
+  display: none;
 }
 
 .range-filter-label {
@@ -843,11 +869,7 @@ $deckbuilderFiltersWidth: 17rem;
   }
 }
 
-[data-showArtifacts="false"] [data-type="Artifact"],
-[data-showSpells="false"] [data-type="Spell"],
-[data-showUnits="false"] [data-type="Unit"] {
-  display: none;
-}
+
 
 
 

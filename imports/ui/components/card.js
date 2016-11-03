@@ -26,6 +26,12 @@ Template.card.helpers({
       return 'group_idle';
     }
   },
+  'slugifiedName': function() {
+    return this.info.name.trim().replace(/['"]+/, "").toLowerCase().replace(/[^a-zA-Z0-9]+/,"-").replace("/--/", "-");
+  },
+  'slugifiedRace': function() {
+    return this.info.race.trim().replace(/['"]+/, "").toLowerCase().replace(/[^a-zA-Z0-9]+/,"-").replace("/--/", "-");
+  },
   'infoAttack': function() {
     if (this.info.attack !== undefined) {
       return this.info.attack.toString();

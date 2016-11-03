@@ -620,3 +620,33 @@ $('body').on('click', '#range-filter_health', function(e) {
     Session.set('deckbuilderFilters', current);
   }
 })
+
+$('body').on('keyup change', '.deckbuilder-search', function(e) {
+  var searches = $(e.currentTarget).val().trim();
+  $('.deckbuilder-search-styles').html('');
+  if (searches) {
+    // Do work
+    searches = searches.split(',');
+    searches.forEach(function(search) {
+      search = search.trim();
+      if (search) {
+        if (search.indexOf('id:') !== -1) {
+          var id = slugify(search.split('id:')[1]);
+          $('.deckbuilder-search-styles').append('.deckbuilder-card:not([data-cardid*="' + id + '"]) { display: none; }')
+        }
+        else if (search.indexOf('race:') !== -1) {
+          var race = slugify(search.split('race:')[1]);
+          $('.deckbuilder-search-styles').append('.deckbuilder-card:not([data-race*="' + race + '"]) { display: none; }')
+        }
+        else {
+          var name = slugify(search);
+          $('.deckbuilder-search-styles').append('.deckbuilder-card:not([data-cardName*="' + name + '"]) { display: none; }')
+        }
+      }
+    })
+  }
+
+  function slugify(str) {
+    return str.trim().toLowerCase().replace(/['"]+/, "").replace(/[^a-zA-Z0-9]+/,"-").replace("/--/", "-");
+  }
+})

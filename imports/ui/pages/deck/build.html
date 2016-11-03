@@ -1,4 +1,5 @@
 <template name="deckBuild">
+  <style class="deckbuilder-search-styles"></style>
   {{#if generalSelected}}
   <div class="deckbuilder-container">
     <h1>Build a Deck</h1>
@@ -57,6 +58,11 @@
       <i class="fa fa-sliders"></i>
     </label>
     <div class="deckbuilder-filters-wrapper fixed-nav-wrapper">
+      <h2>Search</h2>
+      <div class="deckbuilder-search-wrapper">
+        <input type="text" class="deckbuilder-search">
+        <i class="fa fa-search"></i>
+      </div>
       <h2>Filters</h2>
       <h3>Type</h3>
       <div class="deckbuilder-filter_options">
