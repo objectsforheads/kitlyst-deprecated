@@ -78,7 +78,7 @@ Template.deckList.events({
     if ($(e.currentTarget).hasClass('removeCard-1')) {
       if (card.count > 0) {
         card.count = card.count - 1;
-        $('[data-cardId="' + card.id + '"]').attr('data-available', card.count);
+        $('[data-cardId="' + card.id + '"]').attr('data-available', 3 - card.count);
       }
       if (card.count === 0) {
         deck.splice(cardIndex, 1);
