@@ -69,6 +69,11 @@ Template.deckList.events({
     var cardIndex = deck.findIndex(card => card.id === this.id);
     var card = deck[cardIndex];
 
+    // Add a copy of the card if possible
+    if ($(e.currentTarget).hasClass('addCard-1')) {
+      $('.addCard[data-cardId="' + card.id + '"]').click();
+    }
+
     // Remove 1 card
     if ($(e.currentTarget).hasClass('removeCard-1')) {
       if (card.count > 0) {
