@@ -2,7 +2,7 @@
   {{#if generalSelected}}
   <div class="deckbuilder-container">
     <h1>Build a Deck</h1>
-    <div class="deckbuilder" data-layout="layout-min">
+    <div class="deckbuilder" data-layout="layout-min" data-showArtifacts="true" data-showSpells="true" data-showUnits="true">
       <div class="add-cards">
         {{> addCards}}
       </div>
@@ -22,20 +22,8 @@
         </div>
       </div>
     </div>
-    <div class="deckbuilder-settings fixed-nav">
-      <label for="deckbuilder-settings-toggle" class="toggle">
-        <input type="checkbox" id="deckbuilder-settings-toggle" class="deckbuilder-settings-toggle toggle-checkbox"/>
-        <i class="fa fa-cog"></i>
-      </label>
-      <div class="deckbuilder-settings-wrapper fixed-nav-wrapper">
-        <h2>Settings</h2>
-        <h3>View</h3>
-        <ul>
-          <li><a href="#" class="set-deckbuilder-view" data-view="layout-full">Card View</a></li>
-          <li><a href="#" class="active set-deckbuilder-view" data-view="layout-min">Minimum View</a></li>
-        </ul>
-      </div>
-    </div>
+    {{> navDeckbuilderSettings}}
+    {{> navDeckbuilderFilters}}
   </div>
   {{else}}
     <h1>Build a Deck</h1>
@@ -43,6 +31,95 @@
       {{> selectGeneral}}
     </div>
   {{/if}}
+</template>
+
+<template name="navDeckbuilderSettings">
+  <div class="deckbuilder-settings fixed-nav">
+    <label for="deckbuilder-settings-toggle" class="toggle">
+      <input type="checkbox" id="deckbuilder-settings-toggle" class="deckbuilder-settings-toggle toggle-checkbox"/>
+      <i class="fa fa-cog"></i>
+    </label>
+    <div class="deckbuilder-settings-wrapper fixed-nav-wrapper">
+      <h2>Settings</h2>
+      <h3>View</h3>
+      <ul>
+        <li><a href="#" class="set-deckbuilder-view" data-view="layout-full">Card View</a></li>
+        <li><a href="#" class="active set-deckbuilder-view" data-view="layout-min">Minimum View</a></li>
+      </ul>
+    </div>
+  </div>
+</template>
+
+<template name="navDeckbuilderFilters">
+  <div class="deckbuilder-filters fixed-nav">
+    <label for="deckbuilder-filters-toggle" class="toggle">
+      <input type="checkbox" id="deckbuilder-filters-toggle" class="deckbuilder-filters-toggle toggle-checkbox"/>
+      <i class="fa fa-sliders"></i>
+    </label>
+    <div class="deckbuilder-filters-wrapper fixed-nav-wrapper">
+      <h2>Filters</h2>
+      <h3>Type</h3>
+      <div class="deckbuilder-filter_options">
+        <label for="type-filter_artifact" class="filter_type check-enabled">
+          <input type="checkbox" id="type-filter_artifact" value="Artifact" checked>
+          <i class="fa fa-eye is-enabled"></i>
+          <i class="fa fa-eye-slash is-disabled"></i>
+          <div class="filter-label">Artifact</div>
+        </label>
+        <label for="type-filter_spell" class="filter_type check-enabled">
+          <input type="checkbox" id="type-filter_spell" value="Spell" checked>
+          <i class="fa fa-eye is-enabled"></i>
+          <i class="fa fa-eye-slash is-disabled"></i>
+          <div class="filter-label">Spell</div>
+        </label>
+        <label for="type-filter_unit" class="filter_type check-enabled">
+          <input type="checkbox" id="type-filter_unit" value="Unit" checked>
+          <i class="fa fa-eye is-enabled"></i>
+          <i class="fa fa-eye-slash is-disabled"></i>
+          <div class="filter-label">Unit</div>
+        </label>
+      </div>
+      <div class="range-filter-label">
+        <h3>Mana Cost</h3>
+        <div class="check-enabled">
+          <label for="range-filter_manaCost" class="filter_type check-enabled">
+            <input type="checkbox" id="range-filter_manaCost" value="Artifact">
+            <i class="fa fa-eye is-enabled"></i>
+            <i class="fa fa-eye-slash is-disabled"></i>
+          </label>
+        </div>
+      </div>
+      <div class="deckbuilder-filter_range">
+        <div class="filter_manaCost" id="filter_manaCost" disabled></div>
+      </div>
+      <div class="range-filter-label">
+        <h3>Attack</h3>
+        <div class="check-enabled">
+          <label for="range-filter_attack" class="filter_type check-enabled">
+            <input type="checkbox" id="range-filter_attack" value="Artifact">
+            <i class="fa fa-eye is-enabled"></i>
+            <i class="fa fa-eye-slash is-disabled"></i>
+          </label>
+        </div>
+      </div>
+      <div class="deckbuilder-filter_range">
+        <div class="filter_attack" id="filter_attack" disabled></div>
+      </div>
+      <div class="range-filter-label">
+        <h3>Health</h3>
+        <div class="check-enabled">
+          <label for="range-filter_health" class="filter_type check-enabled">
+            <input type="checkbox" id="range-filter_health" value="Artifact">
+            <i class="fa fa-eye is-enabled"></i>
+            <i class="fa fa-eye-slash is-disabled"></i>
+          </label>
+        </div>
+      </div>
+      <div class="deckbuilder-filter_range">
+        <div class="filter_health" id="filter_health" disabled></div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <template name="deckList">

@@ -442,10 +442,6 @@ body {
   display: none;
 }
 
-.tooltipster-content {
-  padding: 0 !important;
-}
-
 
 
 
@@ -533,7 +529,7 @@ body {
   top: 0;
   height: 100%;
   transition: all 150ms;
-  z-index: 100;
+  z-index: 1;
 
   &::before {
     content: '';
@@ -665,6 +661,7 @@ $deckInfoWidthCollapsed: 122px;
 
   .deck-info {
     right: calc(#{$deckInfoWidthCollapsed} - #{$deckInfoWidth});
+    z-index: 10;
 
     .deck-info-wrapper {
       padding: 0 0.5rem;
@@ -724,6 +721,7 @@ $deckbuilderSettingsWidth: 17rem;
 
   .deckbuilder-settings {
     left: 0;
+    z-index: 10;
   }
 }
 
@@ -731,6 +729,125 @@ $deckbuilderSettingsWidth: 17rem;
   left: 100%;
 }
 
+
+
+
+
+$deckbuilderFiltersWidth: 17rem;
+
+.deckbuilder-filters {
+  left: -$deckbuilderFiltersWidth;
+  width: $deckbuilderFiltersWidth;
+
+  &::before {
+    left: 100%;
+  }
+  &::after {
+    right: -20px;
+  }
+}
+
+.filters-open {
+  margin-left: $deckbuilderSettingsWidth;
+
+  .deckbuilder-filters {
+    left: 0;
+    z-index: 10;
+  }
+}
+
+[for="deckbuilder-filters-toggle"] {
+  top: 4.5rem;
+  left: 100%;
+}
+
+.deckbuilder-filter_options {
+
+  .filter_type {
+    display: inline-block;
+    margin-right: 1rem;
+    cursor: pointer;
+
+    .filter-label {
+      display: inline-block;
+    }
+  }
+}
+
+.range-filter-label {
+  display: flex;
+  align-items: center;
+
+  h3 {
+    flex: 1;
+  }
+}
+
+.check-enabled {
+  margin-top: 1.5rem;
+  transition: opacity 150ms;
+  cursor: pointer;
+
+  input[type="checkbox"] {
+    display: none;
+
+
+    // if unchecked, filter is disabled
+    // fade the option
+    & ~ * {
+      opacity: 0.5;
+      transition: all 150ms;
+    }
+    // show the closed eye, revealing the open eye on hover
+    & ~ .is-disabled {
+      display: initial;
+    }
+    & ~ .is-enabled {
+      display: none;
+    }
+    &:hover {
+      & ~ * {
+        opacity: 1;
+      }
+      & ~ .is-disabled {
+        display: none;
+      }
+      & ~ .is-enabled {
+        display: initial;
+      }
+    }
+
+    // if checked, filter is enabled
+    // show the open eye, revealing the closed eye on hover
+    &:checked  {
+      & ~ * {
+        opacity: 1;
+      }
+      & ~ .is-disabled {
+        display: none;
+      }
+      & ~ .is-enabled {
+        display: initial;
+      }
+    }
+    &:checked:hover {
+      & ~ .is-disabled {
+        display: initial;
+      }
+      & ~ .is-enabled {
+        display: none;
+      }
+    }
+
+
+  }
+}
+
+[data-showArtifacts="false"] [data-type="Artifact"],
+[data-showSpells="false"] [data-type="Spell"],
+[data-showUnits="false"] [data-type="Unit"] {
+  display: none;
+}
 
 
 
@@ -766,4 +883,61 @@ $deckbuilderSettingsWidth: 17rem;
   .ct-label {
     color: $duelystGrey;
   }
+}
+
+
+
+
+
+
+// Tooltipster styling
+.tooltipster-content {
+  padding: 0 !important;
+}
+
+
+
+
+
+
+
+
+
+
+// noUISlider
+.noUi-horizontal {
+  height: 0.5rem;
+}
+.noUi-connect {
+  background: $manaColor;
+}
+.noUi-horizontal .noUi-handle {
+  border-radius: 50%;
+  width: 1rem;
+  height: 1rem;
+  top: -.25rem;
+  left: -.5rem;
+
+  &::before, &::after {
+    display: none;
+  }
+}
+
+.noUi-pips-horizontal {
+  height: 10px;
+}
+.noUi-value-horizontal {
+  padding-top: 10px;
+}
+.noUi-marker-horizontal.noUi-marker-normal {
+  height: 3px;
+}
+.noUi-marker-horizontal.noUi-marker-large {
+  height: 6px;
+}
+
+// Make room for the pips
+.deckbuilder-filter_range {
+  margin-top: 1rem;
+  padding: 0 10px 40px 10px; // Magic number based on plugin
 }

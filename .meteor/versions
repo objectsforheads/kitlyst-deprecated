@@ -22,7 +22,9 @@ caching-compiler@1.1.7_1
 caching-html-compiler@1.0.7
 callback-hook@1.0.9
 check@1.2.3
+coffeescript@1.0.17
 comerc:tooltipster@3.3.0
+cosmos:browserify@0.8.4
 ddp@1.2.5
 ddp-client@1.2.9
 ddp-common@1.2.6
@@ -53,6 +55,7 @@ less@2.6.5
 livedata@1.0.18
 localstorage@1.0.11
 logging@1.1.15_1
+markoshust:nouislider@8.2.1
 meteor@1.2.17_1
 meteor-base@1.0.4
 mfpierre:chartist-js@1.6.3

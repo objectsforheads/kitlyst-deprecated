@@ -39,11 +39,114 @@ Template.deckBuild.onCreated(function() {
   })
 })
 
-
 Template.deckBuild.helpers({
   'generalSelected': function() {
     return Session.get('deckGeneral')
   }
+})
+
+
+
+
+
+
+
+
+
+
+Template.navDeckbuilderFilters.onRendered(function() {
+  var filter_manaCost = document.getElementById('filter_manaCost');
+  noUiSlider.create(filter_manaCost, {
+    start: [0, 25],
+    margin: 1,
+    step: 1,
+    connect: true,
+    range: {
+      'min': 0,
+      'max': 25
+    },
+    pips: {
+      mode: 'positions',
+      values: [0, 25, 50, 75, 100],
+      density: 3.84615384615// 100/(23-2) % per section
+    },
+    format: {
+      to: function ( value ) {
+      return value;
+      },
+      from: function ( value ) {
+      return value;
+      }
+    }
+  });
+  filter_manaCost.noUiSlider.on('change', function() {
+    var range = filter_manaCost.noUiSlider.get();
+    var current = Session.get('deckbuilderFilters');
+    current.manaCost = {'$gte': range[0], '$lte': range[1]};
+    Session.set('deckbuilderFilters', current);
+  })
+
+  var filter_attack = document.getElementById('filter_attack');
+  noUiSlider.create(filter_attack, {
+    start: [0, 12],
+    margin: 1,
+    step: 1,
+    connect: true,
+    range: {
+      'min': 0,
+      'max': 12
+    },
+    pips: {
+      mode: 'positions',
+      values: [0, 25, 50, 75, 100],
+      density: 10 // 100/(12-2) % per section
+    },
+    format: {
+      to: function ( value ) {
+      return value;
+      },
+      from: function ( value ) {
+      return value;
+      }
+    }
+  });
+  filter_attack.noUiSlider.on('change', function() {
+    var range = filter_attack.noUiSlider.get();
+    var current = Session.get('deckbuilderFilters');
+    current.attack = {'$gte': range[0], '$lte': range[1]};
+    Session.set('deckbuilderFilters', current);
+  })
+
+  var filter_health = document.getElementById('filter_health');
+  noUiSlider.create(filter_health, {
+    start: [0, 15],
+    margin: 1,
+    step: 1,
+    connect: true,
+    range: {
+      'min': 0,
+      'max': 15
+    },
+    pips: {
+      mode: 'positions',
+      values: [0,20,40,60,80,100],
+      density: 7.69230769231 // 100/(15-2) % per section
+    },
+    format: {
+      to: function ( value ) {
+      return value;
+      },
+      from: function ( value ) {
+      return value;
+      }
+    }
+  });
+  filter_health.noUiSlider.on('change', function() {
+    var range = filter_health.noUiSlider.get();
+    var current = Session.get('deckbuilderFilters');
+    current.health = {'$gte': range[0], '$lte': range[1]};
+    Session.set('deckbuilderFilters', current);
+  })
 })
 
 
@@ -218,12 +321,32 @@ Template.deckStats.helpers({
 
 
 
+Template.addCards.onCreated(function() {
+  // This variable holds the card filter
+  Session.set('deckbuilderFilters', {});
+})
+
 Template.addCards.helpers({
   'availableFactionCards': function() {
-    return allCards.find({ 'race': {$ne: 'General'}, 'faction': Session.get('deckFaction') }).fetch();
+    var cardFilter = Session.get('deckbuilderFilters');
+    var addFilter = {
+      'race': {$ne: 'General'},
+      'faction': Session.get('deckFaction')
+    }
+    for (var filter in addFilter) {
+      cardFilter[filter] = addFilter[filter];
+    }
+    return allCards.find(cardFilter).fetch();
   },
   'availableNeutralCards': function() {
-    return allCards.find({ 'faction': 'Neutral' }).fetch();
+    var cardFilter = Session.get('deckbuilderFilters');
+    var addFilter = {
+      'faction': 'Neutral'
+    }
+    for (var filter in addFilter) {
+      cardFilter[filter] = addFilter[filter];
+    }
+    return allCards.find(cardFilter).fetch();
   }
 })
 
@@ -423,6 +546,19 @@ $('body').on('click', '.deck-info-toggle', function() {
 $('body').on('click', '.deckbuilder-settings-toggle', function() {
   $('.deckbuilder-container').toggleClass('settings-open')
 })
+$('body').on('click', '.deckbuilder-filters-toggle', function() {
+  $('.deckbuilder-container').toggleClass('filters-open')
+})
+
+$('body').on('click' ,'#type-filter_artifact', function(e) {
+  $('.deckbuilder').attr('data-showArtifacts', $(e.currentTarget).prop('checked'))
+})
+$('body').on('click' ,'#type-filter_spell', function(e) {
+  $('.deckbuilder').attr('data-showSpells', $(e.currentTarget).prop('checked'))
+})
+$('body').on('click' ,'#type-filter_unit', function(e) {
+  $('.deckbuilder').attr('data-showUnits', $(e.currentTarget).prop('checked'))
+})
 
 $('body').on('click', '.set-deckbuilder-view:not(".active")', function(e) {
   e.preventDefault();
@@ -434,4 +570,53 @@ $('body').on('click', '.set-deckbuilder-view:not(".active")', function(e) {
   }
   $('.deckbuilder').attr('data-layout', $(e.currentTarget).attr('data-view'));
 
+})
+
+$('body').on('click', '#range-filter_attack', function(e) {
+  if ($(e.currentTarget).prop('checked')) {
+    filter_attack.removeAttribute('disabled');
+    var range = filter_attack.noUiSlider.get();
+    var current = Session.get('deckbuilderFilters');
+    current.attack = {'$gte': range[0], '$lte': range[1]};
+    Session.set('deckbuilderFilters', current);
+  }
+  else {
+    filter_attack.setAttribute('disabled', true);
+    var current = Session.get('deckbuilderFilters');
+    delete current.attack;
+    Session.set('deckbuilderFilters', current);
+  }
+})
+
+$('body').on('click', '#range-filter_manaCost', function(e) {
+  if ($(e.currentTarget).prop('checked')) {
+    filter_manaCost.removeAttribute('disabled');
+    var range = filter_manaCost.noUiSlider.get();
+    var current = Session.get('deckbuilderFilters');
+    current.manaCost = {'$gte': range[0], '$lte': range[1]};
+    Session.set('deckbuilderFilters', current);
+  }
+  else {
+    filter_manaCost.setAttribute('disabled', true);
+    var current = Session.get('deckbuilderFilters');
+    delete current.manaCost;
+    Session.set('deckbuilderFilters', current);
+  }
+})
+
+
+$('body').on('click', '#range-filter_health', function(e) {
+  if ($(e.currentTarget).prop('checked')) {
+    filter_health.removeAttribute('disabled');
+    var range = filter_health.noUiSlider.get();
+    var current = Session.get('deckbuilderFilters');
+    current.health = {'$gte': range[0], '$lte': range[1]};
+    Session.set('deckbuilderFilters', current);
+  }
+  else {
+    filter_health.setAttribute('disabled', true);
+    var current = Session.get('deckbuilderFilters');
+    delete current.health;
+    Session.set('deckbuilderFilters', current);
+  }
 })
