@@ -72,8 +72,13 @@
       <strong>Artifacts</strong>
     </div>
   </div>
-  <div class="crafting-cost">
-    <strong>Crafting Cost:</strong> <span class="crafting-cost-value">{{spiritCost}}</span>
+  <div class="deck-meta">
+    <div class="deck-card-count">
+      <span class="deck-card-count-value {{#if overDeckCardCount}}warn_too-many-cards{{/if}}">{{deckCardCount}}</span>/<strong>40</strong>
+    </div>
+    <div class="crafting-cost">
+      <strong>Crafting Cost:</strong> <span class="crafting-cost-value">{{spiritCost}}</span>
+    </div>
   </div>
 </template>
 

@@ -19,6 +19,7 @@ Template.deckBuild.onCreated(function() {
   Session.set('deckManaBreakdown', null);
   Session.set('deckTypeBreakdown', null);
   Session.set('deckSpiritCost', null);
+  Session.set('deckCardCount', 1)
 
   // Pull cards from API
   allCards = new Mongo.Collection(null);
@@ -89,6 +90,8 @@ Template.deckList.events({
       editDeckStat('type', 'subtract', this.type, 1)
       editDeckStat('spirit', 'subtract', this.rarity, 1)
 
+      Session.set('deckCardCount', Session.get('deckCardCount') - 1)
+
       Session.set('deckCards', JSON.stringify(deck));
     }
 
@@ -98,6 +101,8 @@ Template.deckList.events({
       editDeckStat('mana', 'subtract', this.manaCost, this.count)
       editDeckStat('type', 'subtract', this.type, this.count)
       editDeckStat('spirit', 'subtract', this.rarity, this.count)
+
+      Session.set('deckCardCount', Session.get('deckCardCount') - this.count)
 
       $('[data-cardId="' + card.id + '"]').attr('data-available', 3);
 
@@ -171,6 +176,17 @@ Template.deckStats.helpers({
     }
     else {
       return '0';
+    }
+  },
+  'deckCardCount': function() {
+    return Session.get('deckCardCount');
+  },
+  'overDeckCardCount': function() {
+    if (Session.get('deckCardCount') > 40) {
+      return true;
+    }
+    else {
+      return false;
     }
   },
   'spiritCost': function() {
@@ -275,6 +291,8 @@ Template.card.events({
       editDeckStat('mana', 'add', this.info.manaCost, 1)
       editDeckStat('type', 'add', this.info.type, 1)
       editDeckStat('spirit', 'add', this.info.rarity, 1)
+
+      Session.set('deckCardCount', Session.get('deckCardCount') + 1)
 
       var count = Number($(e.currentTarget).attr('data-available'))
       $(e.currentTarget).attr('data-available', count - 1)

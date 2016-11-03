@@ -191,6 +191,7 @@ body {
 }
 
 
+.layout-min .card,
 .card.layout-min {
   width: 140px;
   height: 140px;
@@ -266,6 +267,7 @@ body {
   }
 }
 
+.layout-full .card,
 .card.layout-full {
   width: 226px;
   height: 296px;
@@ -381,6 +383,7 @@ body {
   }
 }
 
+.layout-list .card,
 .card.layout-list {
   height: 70px;
   width: 70px;
@@ -466,6 +469,22 @@ body {
     font-size: 1.5rem;
     color: #fff;
   }
+  .deck-meta {
+    display: flex;
+    align-items: end;
+  }
+  .deck-card-count {
+    white-space: nowrap;
+    flex: 1;
+  }
+  .deck-card-count-value {
+    font-size: 1.5rem;
+    color: #fff;
+
+    &.warn_too-many-cards {
+      color: #ee5426;
+    }
+  }
 }
 .decklist-card {
   display: flex;
@@ -507,7 +526,7 @@ body {
 
 
 
-$deckInfoWidth: 15rem;
+$deckInfoWidth: 17rem;
 $deckInfoWidthCollapsed: 122px;
 
 .deckbuilder {
