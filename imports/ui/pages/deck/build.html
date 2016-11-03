@@ -1,27 +1,44 @@
 <template name="deckBuild">
-  <h1>Build a Deck</h1>
   {{#if generalSelected}}
-    <div class="deckbuilder">
+  <div class="deckbuilder-container">
+    <h1>Build a Deck</h1>
+    <div class="deckbuilder" data-layout="layout-min">
       <div class="add-cards">
         {{> addCards}}
       </div>
-      <div class="deck-info">
-        <label for="deck-info-toggle" class="toggle">
-          <input type="checkbox" id="deck-info-toggle" class="deck-info-toggle toggle-checkbox"/>
-          <i class="fa fa-expand"></i>
-          <f class="fa fa-compress"></f>
-        </label>
-        <div class="deck-info-wrapper">
-          <div class="deck-stats">
-            {{> deckStats}}
-          </div>
-          <div class="deck-list">
-            {{> deckList}}
-          </div>
+    </div>
+    <div class="deck-info fixed-nav">
+      <label for="deck-info-toggle" class="toggle">
+        <input type="checkbox" id="deck-info-toggle" class="deck-info-toggle toggle-checkbox"/>
+        <i class="fa fa-expand"></i>
+        <f class="fa fa-compress"></f>
+      </label>
+      <div class="deck-info-wrapper fixed-nav-wrapper">
+        <div class="deck-stats">
+          {{> deckStats}}
+        </div>
+        <div class="deck-list">
+          {{> deckList}}
         </div>
       </div>
     </div>
+    <div class="deckbuilder-settings fixed-nav">
+      <label for="deckbuilder-settings-toggle" class="toggle">
+        <input type="checkbox" id="deckbuilder-settings-toggle" class="deckbuilder-settings-toggle toggle-checkbox"/>
+        <i class="fa fa-cog"></i>
+      </label>
+      <div class="deckbuilder-settings-wrapper fixed-nav-wrapper">
+        <h2>Settings</h2>
+        <h3>View</h3>
+        <ul>
+          <li><a href="#" class="set-deckbuilder-view" data-view="layout-full">Card View</a></li>
+          <li><a href="#" class="active set-deckbuilder-view" data-view="layout-min">Minimum View</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
   {{else}}
+    <h1>Build a Deck</h1>
     <div class="select-general">
       {{> selectGeneral}}
     </div>
@@ -87,21 +104,21 @@
   <h3>Faction Cards</h3>
   <div class="deckbuilder-cards">
     {{#each availableFactionCards}}
-      {{> card info=this classes="addCard deckbuilder-card" maxCount="3" layoutType="layout-min" hasTooltip=true}}
+      {{> card info=this classes="addCard deckbuilder-card" maxCount="3" hasTooltip=true}}
     {{/each}}
   </div>
   <h3>Neutral Cards</h3>
   <div class="deckbuilder-cards">
   {{#each availableNeutralCards}}
-  {{> card info=this classes="addCard deckbuilder-card" maxCount="3" layoutType="layout-min" hasTooltip=true}}
+  {{> card info=this classes="addCard deckbuilder-card" maxCount="3" hasTooltip=true}}
   {{/each}}
   </div>
   <div class="tooltip-wrapper">
     {{#each availableFactionCards}}
-      {{> card info=this classes="deckbuilder-card" maxCount="3" layoutType="layout-full" isTooltip=true}}
+      {{> card info=this classes="card-tooltip" layoutType="layout-full" isTooltip=true}}
     {{/each}}
     {{#each availableNeutralCards}}
-      {{> card info=this classes="deckbuilder-card" maxCount="3" layoutType="layout-full" isTooltip=true}}
+      {{> card info=this classes="card-tooltip" layoutType="layout-full" isTooltip=true}}
     {{/each}}
   </div>
 </template>

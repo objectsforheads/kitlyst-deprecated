@@ -39,6 +39,7 @@ Template.deckBuild.onCreated(function() {
   })
 })
 
+
 Template.deckBuild.helpers({
   'generalSelected': function() {
     return Session.get('deckGeneral')
@@ -385,7 +386,9 @@ function editDeckStat(stat, modifier, modified, count) {
 }
 
 // Event delegation
-$('body').on('mouseenter', '.deckbuilder-cards .has-tooltip:not(.tooltipstered)', function() {
+
+// Create tooltip for min view cards
+$('body').on('mouseenter', '[data-layout="layout-min"] .has-tooltip:not(.tooltipstered)', function() {
   $(this)
     .tooltipster({
       contentAsHTML: true,
@@ -396,6 +399,8 @@ $('body').on('mouseenter', '.deckbuilder-cards .has-tooltip:not(.tooltipstered)'
     .tooltipster('open');
 });
 
+
+// Create tooltip for list view cards
 $('body').on('mouseenter', '.decklist-card .has-tooltip:not(.tooltipstered)', function() {
   $(this)
     .tooltipster({
@@ -407,6 +412,26 @@ $('body').on('mouseenter', '.decklist-card .has-tooltip:not(.tooltipstered)', fu
     .tooltipster('open');
 });
 
+// Disable tooltips for full view cards
+$('body').on('mouseenter', '[data-layout="layout-full"] .tooltipstered', function() {
+  $(this).tooltipster('destroy')
+})
+
 $('body').on('click', '.deck-info-toggle', function() {
-  $('.deckbuilder').toggleClass('min-info');
+  $('.deckbuilder-container').toggleClass('min-info');
+})
+$('body').on('click', '.deckbuilder-settings-toggle', function() {
+  $('.deckbuilder-container').toggleClass('settings-open')
+})
+
+$('body').on('click', '.set-deckbuilder-view:not(".active")', function(e) {
+  e.preventDefault();
+  $('.set-deckbuilder-view').removeClass('active');
+  $(e.currentTarget).addClass('active');
+
+  if ($(e.currentTarget).attr('data-view') === 'layout-full') {
+    $('.deckbuilder .tooltipstered').tooltipster('destroy');
+  }
+  $('.deckbuilder').attr('data-layout', $(e.currentTarget).attr('data-view'));
+
 })
