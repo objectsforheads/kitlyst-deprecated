@@ -664,12 +664,21 @@ $deckInfoWidthCollapsed: 142px;
   margin-right: $deckInfoWidth;
   transition: all 150ms;
   padding: 0 4rem;
+
+  &.hide-add-cards .add-cards-wrapper {
+    display: none;
+  }
+  &.hide-add-cards ~ .deck-info {
+    .decklist-card-options {
+      display: none;
+    }
+  }
 }
 
 .min-info {
   margin-right: $deckInfoWidthCollapsed; // Approximate width of card icons
 
-  .deck-info {
+  & ~ .deck-info {
     right: 0;
     width: $deckInfoWidthCollapsed;
     z-index: 10;
@@ -755,7 +764,7 @@ $deckbuilderSettingsWidth: 17rem;
 .settings-open {
   margin-left: $deckbuilderSettingsWidth;
 
-  .deckbuilder-settings {
+  & ~ .deckbuilder-settings {
     left: 0;
     z-index: 10;
   }
@@ -786,7 +795,7 @@ $deckbuilderFiltersWidth: 17rem;
 .filters-open {
   margin-left: $deckbuilderSettingsWidth;
 
-  .deckbuilder-filters {
+  & ~ .deckbuilder-filters {
     left: 0;
     z-index: 10;
   }
@@ -896,6 +905,45 @@ $deckbuilderFiltersWidth: 17rem;
     }
 
 
+  }
+}
+
+
+
+
+
+
+
+
+
+.builder-state-toggles {
+
+  position: absolute;
+  top: 6rem;
+  right: 100%;
+
+  font-size: 1.5rem;
+
+
+  .fa {
+    padding: 0.5rem;
+    transition: all 150ms;
+    cursor: pointer;
+    opacity: 0.5;
+  }
+
+  input {
+    display: none;
+  }
+
+  input:checked ~ .fa {
+    color: #fff;
+    cursor: default;
+    opacity: 1;
+  }
+
+  label:hover .fa {
+    color: #fff;
   }
 }
 

@@ -1,39 +1,57 @@
 <template name="deckBuild">
   <style class="deckbuilder-search-styles"></style>
   {{#if generalSelected}}
-  <div class="deckbuilder-container">
-    <h1>Build a Deck</h1>
-    <div class="deckbuilder" data-layout="layout-min" data-showArtifacts="true" data-showSpells="true" data-showUnits="true">
-      <div class="add-cards">
-        {{> addCards}}
-      </div>
-    </div>
-    <div class="deck-info fixed-nav">
-      <label for="deck-info-toggle" class="toggle">
-        <input type="checkbox" id="deck-info-toggle" class="deck-info-toggle toggle-checkbox"/>
-        <i class="fa fa-expand"></i>
-        <f class="fa fa-compress"></f>
-      </label>
-      <div class="deck-info-wrapper fixed-nav-wrapper">
-        <div class="deck-stats">
-          <h3>Deck</h3>
-          {{> deckStats}}
-        </div>
-        <div class="deck-mods">
-          {{> deckMods}}
-        </div>
-        {{> deckList}}
-      </div>
-    </div>
-    {{> navDeckbuilderSettings}}
-    {{> navDeckbuilderFilters}}
+  <div class="deckbuilder-container {{#if statsEnabled}}hide-add-cards{{/if}}">
+    {{> addCards}}
+    {{#if statsEnabled}}
+      {{> drawStats}}
+    {{/if}}
   </div>
+  {{> navDeckInfo}}
+  {{> navDeckbuilderSettings}}
+  {{> navDeckbuilderFilters}}
   {{else}}
     <h1>Build a Deck</h1>
     <div class="select-general">
       {{> selectGeneral}}
     </div>
   {{/if}}
+</template>
+
+<template name="builderStateToggle">
+  {{#if statsAvailable}}
+  <div class="builder-state-toggles">
+    <label for="builder-state_cards" class="builder-state-toggle">
+      <input type="radio" name="builder-state" value="false" checked id="builder-state_cards">
+      <i class="fa fa-book"></i>
+    </label>
+    <label for="builder-state_stats" class="builder-state-toggle">
+      <input type="radio" name="builder-state" value="true" id="builder-state_stats">
+      <i class="fa fa-bar-chart"></i>
+    </label>
+  </div>
+  {{/if}}
+</template>
+
+<template name="navDeckInfo">
+  <div class="deck-info fixed-nav">
+    {{> builderStateToggle}}
+    <label for="deck-info-toggle" class="toggle">
+      <input type="checkbox" id="deck-info-toggle" class="deck-info-toggle toggle-checkbox"/>
+      <i class="fa fa-expand"></i>
+      <f class="fa fa-compress"></f>
+    </label>
+    <div class="deck-info-wrapper fixed-nav-wrapper">
+      <div class="deck-stats">
+        <h3>Deck</h3>
+        {{> deckStats}}
+      </div>
+      <div class="deck-mods">
+        {{> deckMods}}
+      </div>
+      {{> deckList}}
+    </div>
+  </div>
 </template>
 
 <template name="navDeckbuilderSettings">
@@ -205,27 +223,38 @@
   </div>
 </template>
 
+<template name="drawStats">
+  <h1>Stats</h1>
+</template>
+
 <template name="addCards">
-  <h2>Add Cards to Deck</h2>
-  <h3>Faction Cards</h3>
-  <div class="deckbuilder-cards">
-    {{#each availableFactionCards}}
-      {{> card info=this classes="addCard deckbuilder-card" maxCount="3" hasTooltip=true}}
-    {{/each}}
-  </div>
-  <h3>Neutral Cards</h3>
-  <div class="deckbuilder-cards">
-  {{#each availableNeutralCards}}
-  {{> card info=this classes="addCard deckbuilder-card" maxCount="3" hasTooltip=true}}
-  {{/each}}
-  </div>
-  <div class="tooltip-wrapper">
-    {{#each availableFactionCards}}
-      {{> card info=this classes="card-tooltip" layoutType="layout-full" isTooltip=true}}
-    {{/each}}
-    {{#each availableNeutralCards}}
-      {{> card info=this classes="card-tooltip" layoutType="layout-full" isTooltip=true}}
-    {{/each}}
+  <div class="add-cards-wrapper">
+    <h1>Build a Deck</h1>
+    <div class="deckbuilder" data-layout="layout-min" data-showArtifacts="true" data-showSpells="true" data-showUnits="true">
+      <div class="add-cards">
+        <h2>Add Cards</h2>
+        <h3>Faction Cards</h3>
+        <div class="deckbuilder-cards">
+          {{#each availableFactionCards}}
+            {{> card info=this classes="addCard deckbuilder-card" maxCount="3" hasTooltip=true}}
+          {{/each}}
+        </div>
+        <h3>Neutral Cards</h3>
+        <div class="deckbuilder-cards">
+        {{#each availableNeutralCards}}
+        {{> card info=this classes="addCard deckbuilder-card" maxCount="3" hasTooltip=true}}
+        {{/each}}
+        </div>
+        <div class="tooltip-wrapper">
+          {{#each availableFactionCards}}
+            {{> card info=this classes="card-tooltip" layoutType="layout-full" isTooltip=true}}
+          {{/each}}
+          {{#each availableNeutralCards}}
+            {{> card info=this classes="card-tooltip" layoutType="layout-full" isTooltip=true}}
+          {{/each}}
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 

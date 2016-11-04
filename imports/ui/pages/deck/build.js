@@ -10,6 +10,8 @@ import '../../css/faction/neutral.css';
 
 Template.deckBuild.onCreated(function() {
   // Set up variables
+  //  Check what frame is active - stats or add
+  Session.set('statsEnabled', false);
   //  These variables are the basis of the deck
   Session.set('deckFaction', null);
   Session.set('deckGeneral', null);
@@ -42,6 +44,9 @@ Template.deckBuild.onCreated(function() {
 Template.deckBuild.helpers({
   'generalSelected': function() {
     return JSON.parse(Session.get('deckGeneral'));
+  },
+  'statsEnabled': function() {
+    return Session.get('statsEnabled');
   }
 })
 
@@ -572,6 +577,21 @@ function editDeckStat(stat, modifier, modified, count) {
   }
 }
 
+
+
+
+
+Template.builderStateToggle.helpers({
+  'statsAvailable': function() {
+    if (Session.get('deckCardCount') === 40) {
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
+})
+
 // Event delegation
 
 // Create tooltip for min view cards
@@ -713,4 +733,14 @@ $('body').on('keyup change', '.deckbuilder-search', function(e) {
   function slugify(str) {
     return str.trim().toLowerCase().replace(/['"]+/, "").replace(/[^a-zA-Z0-9]+/,"-").replace("/--/", "-");
   }
+})
+
+$('body').on('click', '[name="builder-state"]:checked', function(e) {
+  if (JSON.parse($(e.currentTarget).val()) === true) {
+    $('.deckbuilder-container').addClass('min-info');
+  }
+  else {
+    $('.deckbuilder-container').removeClass('min-info');
+  }
+  Session.set('statsEnabled', JSON.parse($(e.currentTarget).val()));
 })
