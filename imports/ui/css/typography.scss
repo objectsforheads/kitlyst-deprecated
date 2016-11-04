@@ -453,6 +453,9 @@ body {
 
 
 
+.deck-general {
+  margin-top: 0.5rem;
+}
 
 .deck-stats {
   .type-counts {
@@ -463,7 +466,7 @@ body {
     text-align: left;
   }
   .type-count-value {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     color: #fff;
     display: block;
   }
@@ -471,7 +474,7 @@ body {
     text-align: right;
   }
   .crafting-cost-value {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     color: #fff;
   }
   .deck-meta {
@@ -483,7 +486,7 @@ body {
     flex: 1;
   }
   .deck-card-count-value {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     color: #fff;
 
     &.warn_too-many-cards {
@@ -643,7 +646,7 @@ body {
 }
 
 $deckInfoWidth: 17rem;
-$deckInfoWidthCollapsed: 122px;
+$deckInfoWidthCollapsed: 142px;
 
 .deck-info {
   right: 0;
@@ -667,7 +670,8 @@ $deckInfoWidthCollapsed: 122px;
   margin-right: $deckInfoWidthCollapsed; // Approximate width of card icons
 
   .deck-info {
-    right: calc(#{$deckInfoWidthCollapsed} - #{$deckInfoWidth});
+    right: 0;
+    width: $deckInfoWidthCollapsed;
     z-index: 10;
 
     .deck-info-wrapper {
@@ -683,10 +687,35 @@ $deckInfoWidthCollapsed: 122px;
       h2 {
         font-size: 1rem;
       }
-      .decklist-card-name,
-      .decklist-card-options {
-        display: none;
+
+      .deck-list-wrapper {
+        width: #{$deckInfoWidthCollapsed} - 20px;
       }
+    }
+
+    .deck-general,
+    .decklist-card-name,
+    .decklist-card-options {
+      display: none;
+    }
+  }
+}
+
+.deck-info-wrapper {
+  display: flex;
+  flex-direction: column;
+
+  .deck-list {
+    flex: 1;
+
+    .deck-list-wrapper {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow-x: hidden;
+      overflow-y: auto;
     }
   }
 }

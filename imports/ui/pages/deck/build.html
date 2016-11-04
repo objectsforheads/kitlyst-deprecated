@@ -15,15 +15,14 @@
         <f class="fa fa-compress"></f>
       </label>
       <div class="deck-info-wrapper fixed-nav-wrapper">
+        <div class="deck-stats">
+          <h3>Deck</h3>
+          {{> deckStats}}
+        </div>
         <div class="deck-mods">
           {{> deckMods}}
         </div>
-        <div class="deck-stats">
-          {{> deckStats}}
-        </div>
-        <div class="deck-list">
-          {{> deckList}}
-        </div>
+        {{> deckList}}
       </div>
     </div>
     {{> navDeckbuilderSettings}}
@@ -132,28 +131,31 @@
 </template>
 
 <template name="deckList">
-  <h2>Cards</h2>
-  {{#each deckCards}}
-  <div class="decklist-card">
-    {{> card info=this layoutType="layout-list" hasTooltip=true}}
-    <div class="decklist-card-info">
-      <div class="decklist-card-caption">
-        <span class="decklist-card-name">{{name}}</span><span class="decklist-card-count"> x{{count}}</span>
+  <h3>Cards</h3>
+  <div class="deck-list">
+    <div class="deck-list-wrapper">
+      {{#each deckCards}}
+      <div class="decklist-card">
+        {{> card info=this layoutType="layout-list" hasTooltip=true}}
+        <div class="decklist-card-info">
+          <div class="decklist-card-caption">
+            <span class="decklist-card-name">{{name}}</span><span class="decklist-card-count"> x{{count}}</span>
+          </div>
+          <div class="decklist-card-options">
+            <button class="modCardCount removeCard-1"><i class="fa fa-minus-circle"></i></button>
+            <button class="modCardCount addCard-1"><i class="fa fa-plus-circle"></i></button>
+            <button class="modCardCount removeCard-all"><i class="fa fa-ban"></i></button>
+          </div>
+        </div>
       </div>
-      <div class="decklist-card-options">
-        <button class="modCardCount removeCard-1"><i class="fa fa-minus-circle"></i></button>
-        <button class="modCardCount addCard-1"><i class="fa fa-plus-circle"></i></button>
-        <button class="modCardCount removeCard-all"><i class="fa fa-ban"></i></button>
-      </div>
+      {{/each}}
     </div>
   </div>
-  {{/each}}
 </template>
 
 <template name="deckMods">
-  <h2>Deck</h2>
   {{#each deckGeneral}}
-  <div class="decklist-card">
+  <div class="decklist-card deck-general">
     {{> card info=this layoutType="layout-list" hasTooltip=true}}
     <div class="decklist-card-info">
       <div class="decklist-card-caption">
@@ -172,10 +174,7 @@
 </template>
 
 <template name="deckStats">
-  <h2>Stats</h2>
-  <h3>Mana Breakdown</h3>
-  <div class="ct-chart ct-golden-section deckstat-manaCost" id="deckstat-manaCost"></div>
-  <h3>Deck Breakdown</h3>
+  <div class="ct-chart ct-double-octave deckstat-manaCost" id="deckstat-manaCost"></div>
   <div class="type-counts">
     <div class="type-count">
       <span class="type-count-value">
