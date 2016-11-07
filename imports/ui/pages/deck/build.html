@@ -11,8 +11,8 @@
   {{> navDeckbuilderSettings}}
   {{> navDeckbuilderFilters}}
   {{else}}
-    <h1>Build a Deck</h1>
-    <div class="select-general">
+    <div class="select-general-wrapper">
+      <h1>Build a Deck</h1>
       {{> selectGeneral}}
     </div>
   {{/if}}
@@ -39,7 +39,7 @@
     <label for="deck-info-toggle" class="toggle">
       <input type="checkbox" id="deck-info-toggle" class="deck-info-toggle toggle-checkbox"/>
       <i class="fa fa-expand"></i>
-      <f class="fa fa-compress"></f>
+      <i class="fa fa-compress"></i>
     </label>
     <div class="deck-info-wrapper fixed-nav-wrapper">
       <div class="deck-stats">
@@ -252,13 +252,17 @@
 </template>
 
 <template name="selectGeneral">
-  <h2>Select your General</h2>
-  <div class="generals animated">
-    {{#each factions}}
-    {{passFaction}}
-      {{#each factionGenerals faction=getFaction}}
-        {{> card info=this classes="general-choice" layoutType="layout-full"}}
+  <div class="select-general">
+    <h2>Select your General</h2>
+    <div class="generals animated">
+      {{#each factions}}
+      {{passFaction}}
+        {{#each factionGenerals faction=getFaction}}
+        <div class="general-choice-wrapper">
+          {{> card info=this classes="general-choice" layoutType="layout-full"}}
+        </div>
+        {{/each}}
       {{/each}}
-    {{/each}}
+    </div>
   </div>
 </template>

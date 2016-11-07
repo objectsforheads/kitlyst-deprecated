@@ -197,7 +197,7 @@ body {
 .card.layout-min {
   width: 140px;
   height: 140px;
-  margin: 50px 25px 0 0;
+  margin-top: 50px;
   display: inline-block;
   transition: opacity 150ms;
   opacity: 1;
@@ -275,8 +275,7 @@ body {
   height: 296px;
   display: inline-block;
   vertical-align: top;
-  margin: 20px;
-  margin-bottom: 0;
+  margin: 50px 25px 0 0;
 
   .card-manaCost {
     top: 0;
@@ -446,6 +445,31 @@ body {
 
 .tooltip-wrapper {
   display: none;
+}
+
+
+
+
+
+$generalsWidth: 1506px;
+.select-general-wrapper {
+  max-width: $generalsWidth + 25px;
+  padding-left: 25px;
+  margin: auto;
+
+  .generals {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: $generalsWidth; // width of 6 cards
+  }
+
+  .general-choice-wrapper {
+    flex-grow: 1;
+
+    .card-manaCost {
+      display: none;
+    }
+  }
 }
 
 
@@ -681,11 +705,14 @@ $deckInfoWidthCollapsed: 142px;
   transition: all 150ms;
   padding: 0 4rem;
 
-  &.hide-add-cards .add-cards-wrapper {
-    display: none;
-  }
-  &.hide-add-cards ~ .deck-info {
-    .decklist-card-options {
+  &.hide-add-cards {
+    // hide the add cards state view
+    .add-cards-wrapper,
+    // hide the ability to modify the deck
+    & ~ .deck-info .decklist-card-options,
+    // hide the add cards settings navs
+    & ~ .deckbuilder-settings,
+    & ~ .deckbuilder-filters {
       display: none;
     }
   }
@@ -725,6 +752,24 @@ $deckInfoWidthCollapsed: 142px;
     }
   }
 }
+
+
+
+
+
+.deckbuilder-cards {
+  display: flex;
+  flex-wrap: wrap;
+
+  .addCard {
+    flex-grow: 1;
+    max-width: 150px;
+  }
+}
+
+
+
+
 
 .deck-info-wrapper {
   display: flex;
@@ -935,7 +980,7 @@ $deckbuilderFiltersWidth: 17rem;
 .builder-state-toggles {
 
   position: absolute;
-  top: 6rem;
+  top: 8rem;
   right: 100%;
 
   font-size: 1.5rem;
