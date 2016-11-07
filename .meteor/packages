@@ -36,6 +36,7 @@ themeteorchef:bert
 fourseven:scss
 kadira:blaze-layout
 session
-mfpierre:chartist-js
+# mfpierre:chartist-js
 comerc:tooltipster
 markoshust:nouislider
+jandres:js-combinatorics

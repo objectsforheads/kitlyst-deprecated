@@ -949,6 +949,173 @@ $deckbuilderFiltersWidth: 17rem;
 
 
 
+.draw-stat-value {
+  font-size: 1.25rem;
+  color: #fff;
+}
+
+.startDraw-chart-wrapper {
+  display: flex;
+  flex-direction: row;
+  margin-top: 0.75rem;
+}
+.startDraw-labels-flex {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  min-width: 220px;
+  width: 33.33%;
+
+  .startDraw-labels {
+    text-align: right;
+  }
+
+  .card {
+    display: inline-block;
+  }
+}
+.startDraw-chart {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.t1Play-stats-wrapper {
+  display: flex;
+
+  & > div {
+    flex: 1;
+  }
+
+  .t1-stat-value {
+    font-size: 4.5rem;
+    color: #fff;
+    margin-top: 1rem;
+    display: inline-block;
+  }
+
+  .card {
+    display: inline-block;
+  }
+
+  .t1Play-deck-cards {
+    margin-top: 1.5rem;
+  }
+
+  .t1Play-play {
+    display: flex;
+    flex-direction: column;
+
+    .t1Play-play-cards {
+      flex: 1;
+      margin-top: 1.5rem;
+    }
+  }
+}
+
+.turn1Hand-hand {
+  display: inline-block;
+
+  .card {
+      display: inline-block;
+  }
+}
+
+.cardDraw-chart-wrapper {
+  margin-top: 1.5rem;
+
+  .card {
+    display: inline-block;
+  }
+
+  .ct-barlabel {
+    opacity: 0;
+    transition: opacity 150ms;
+  }
+  .ct-bar:hover + .ct-barlabel {
+    opacity: 1;
+  }
+}
+
+.winCondition-condition {
+  display: flex;
+
+  & > div {
+    flex: 1;
+    padding-right: 1rem;
+  }
+
+  .winCondition-play {
+    display: flex;
+    flex-direction: column;
+
+    .winCondition-play-cards {
+      flex: 1;
+    }
+  }
+
+  .card {
+    display: inline-block;
+  }
+}
+
+.winCondition-stats {
+  .card {
+    display: inline-block;
+  }
+
+  .ct-barlabel {
+    opacity: 0;
+    transition: opacity 150ms;
+  }
+  .ct-bar:hover + .ct-barlabel {
+    opacity: 1;
+  }
+}
+
+.winCondition-hand-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+
+  h4 {
+    width: 100%;
+  }
+
+  .winCondition-hand {
+    width: 25%;
+    opacity: 0.5;
+    cursor: pointer;
+    transition: opacity 150ms;
+
+    &.selected {
+      opacity: 1;
+      cursor: default;
+    }
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
+
+.winCondition-turn-condition {
+  .hand-count {
+    vertical-align: bottom;
+  }
+
+  .turn-count {
+    width: 2rem;
+    text-align: center;
+    background: transparent;
+    border: 0;
+    color: #fff;
+    font-size: 1.25em;
+    border-bottom: 1px solid #fff;
+  }
+}
+
+
+
 
 
 
@@ -966,13 +1133,12 @@ $deckbuilderFiltersWidth: 17rem;
 
 
 // Chartist styling
+.ct-grid.ct-grid {
+  stroke-dasharray: none;
+  stroke: $duelystGrey;
+}
 
-.deckstat-manaCost {
-  .ct-grid {
-    stroke-dasharray: none;
-    stroke: $duelystGrey;
-  }
-
+.ct-chart-bar.ct-chart-bar {
   .ct-bar {
     stroke: $manaColor;
   }
@@ -983,6 +1149,73 @@ $deckbuilderFiltersWidth: 17rem;
   .ct-label {
     color: $duelystGrey;
   }
+}
+
+.ct-series-b.ct-series-b .ct-bar {
+  stroke: #0167DE;
+}
+
+.ct-series-c.ct-series-c .ct-bar {
+  stroke: #5CD8F6;
+}
+
+.ct-series-d.ct-series-d .ct-bar {
+  stroke: #275170;
+}
+
+.ct-series-e.ct-series-e .ct-bar {
+  stroke: #5DD4D9;
+}
+
+$ct-series-colors: $manaColor, #0167DE, #5CD8F6, #275170, #5DD4D9;
+
+.ct-legend {
+  position: relative;
+  z-index: 10;
+  margin: 0;
+  margin-left: 10px;
+
+  li {
+    position: relative;
+    padding-left: 23px;
+    margin-bottom: 3px;
+    list-style: none;
+    line-height: 1;
+    display: inline-block;
+    padding-right: 23px;
+    cursor: pointer;
+  }
+
+  li:before {
+    width: 12px;
+    height: 12px;
+    position: absolute;
+    left: 0;
+    content: '';
+    border: 3px solid transparent;
+    border-radius: 2px;
+  }
+
+  li.inactive:before {
+    background: transparent;
+  }
+
+  &.ct-legend-inside {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+
+  @for $i from 0 to length($ct-series-colors) {
+    .ct-series-#{$i}:before {
+      background-color: nth($ct-series-colors, $i + 1);
+      border-color: nth($ct-series-colors, $i + 1);
+    }
+  }
+}
+
+.hidden {
+  display: none !important;
 }
 
 

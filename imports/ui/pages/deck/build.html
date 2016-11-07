@@ -223,8 +223,191 @@
   </div>
 </template>
 
+<template name="displayTwoDropDistribution">
+  <div id="drawstat-twoDropDist" class="ct-chart ct-double-octave drawstat-twoDropDist">
+  </div>
+</template>
+
+<template name="displayStartDrawDistribution">
+  <div class="startDraw-chart-wrapper">
+    <div class="startDraw-labels-flex">
+      <div class="startDraw-labels">
+        {{#each labels}}
+          {{> card info=this hasTooltip=true layoutType="layout-list"}}
+        {{/each}}
+      </div>
+    </div>
+    <div class="startDraw-chart">
+      <div id="drawstat-startDrawDist_{{cardCount}}" class="ct-chart ct-double-octave drawstat-startDrawDist_{{cardCount}}">
+      </div>
+    </div>
+  </div>
+</template>
+
+<template name="turn1PlayChance">
+  <div class="t1Play-stats-wrapper">
+    <div class="t1Play-deck">
+      <h4>Your Deck</h4>
+      <div class="t1Play-deck-cards" id="t1Play-deck-cards">
+        {{#each deck}}
+          {{> card info=this hasTooltip=false layoutType="layout-list"}}
+        {{/each}}
+      </div>
+    </div>
+    <div class="t1Play-play">
+      <h4>Your Hand</h4>
+      <div class="t1Play-play-cards" id="t1Play-play-cards">
+        {{#each play}}
+          {{> card info=this hasTooltip=false layoutType="layout-list"}}
+        {{/each}}
+      </div>
+    </div>
+    <div class="t1Play-stats">
+      <h4>Draw Chance</h4>
+      {{#if play}}
+        {{t1PlayChance}}
+      {{else}}
+      <p>Calculate your turn 1 draw chance by dragging and dropping cards from your deck into your hand</p>
+      {{/if}}
+    </div>
+  </div>
+</template>
+
+<template name="turn1Hands">
+  <p>Currently showing <span class="draw-stat-value">{{count}}</span> sample hands.</p>
+  <div class="turn1Hand-hands">
+    {{#each hands}}
+      <div class="turn1Hand-hand">
+        <h4>Game {{this}}</h4>
+        {{#each hand}}
+        {{> card info=this hasTooltip=false layoutType="layout-list"}}
+        {{/each}}
+      </div>
+    {{/each}}
+  </div>
+</template>
+
+<template name="cardDrawDistribution">
+  <div class="cardDraw-chart-wrapper">
+    <div class="cardDraw-labels-flex">
+      <div class="cardDraw-labels">
+        {{#each labels}}
+          {{> card info=this hasTooltip=true layoutType="layout-list"}}
+        {{/each}}
+      </div>
+    </div>
+    <div class="cardDraw-chart">
+      <div id="drawstat-cardDrawDist_{{cardCount}}" class="ct-chart ct-double-octave drawstat-cardDrawDist_{{cardCount}}">
+      </div>
+    </div>
+  </div>
+</template>
+
+<template name="winConditionDistribution">
+  <div class="winCondition-stats-wrapper">
+    <div class="winCondition-condition">
+      <div class="winCondition-deck">
+        <h4>Your Deck</h4>
+        <div class="winCondition-deck-cards" id="winCondition-deck-cards">
+          {{#each deck}}
+            {{> card info=this hasTooltip=false layoutType="layout-list"}}
+          {{/each}}
+        </div>
+      </div>
+      <div class="winCondition-play">
+        <h4>Your Hand</h4>
+        <div class="winCondition-play-cards" id="winCondition-play-cards">
+          {{#each play}}
+            {{> card info=this hasTooltip=false layoutType="layout-list"}}
+          {{/each}}
+        </div>
+      </div>
+    </div>
+    <h3>Distributions</h3>
+    <div class="winCondition-stats">
+      {{#each startHands}}
+        {{> winConditionStats}}
+      {{/each}}
+    </div>
+  </div>
+</template>
+
+<template name="winConditionStats">
+  <div class="winCondition-turn-condition"><span class="hand-count">Hand has {{handCount}}/{{playCount}} Cards on turn </span><input type="text" class="turn-count" value="1"/></div>
+  <div class="winCondition-hand-wrapper">
+    {{#each this}}
+      {{> winConditionHand}}
+    {{/each}}
+  </div>
+    <div id="drawstat-winCondition_{{handCount}}" class="ct-chart ct-double-octave drawstat-winCondition_{{handCount}} {{#unless handSelected}}hidden{{/unless}}"></div>
+  {{#unless handSelected}}
+    <ul>
+      <li>Select a hand to calculate the draw distribution</li>
+    </ul>
+  {{/unless}}
+</template>
+
+<template name="winConditionHand">
+  <div class="winCondition-hand">
+    {{#if step}}
+      <p>Possible hand</p>
+      <div class="winCondition-hand-cards">
+        {{#each step}}
+          {{> card info=this hasTooltip=false layoutType="layout-list"}}
+        {{/each}}
+      </div>
+    {{else}}
+      <p>Have not drawn any win condition cards</p>
+    {{/if}}
+    {{#if incomplete}}
+      <p>Still need to draw</p>
+      <div class="winCondition-missing-cards">
+        {{#each missing}}
+          {{> card info=this hasTooltip=false layoutType="layout-list"}}
+        {{/each}}
+      </div>
+    {{/if}}
+  </div>
+</template>
+
 <template name="drawStats">
   <h1>Stats</h1>
+  <h2>Turn 1</h2>
+  <p>
+    With <span class="draw-stat-value">{{twoDropCount}}</span> 2-drops in your deck, you have a <span class="draw-stat-value">{{twoDropStat}}</span> chance of drawing at least one of them on turn 1 (taking advantage of your mulligan and replacing on open).
+  </p>
+  <h3>2-drop count distribution</h3>
+  <p>The number of 2-drops you're likely to draw on turn 1 (not including your opening replace)</p>
+  {{> displayTwoDropDistribution}}
+  <h3>starting draw distribution</h3>
+  <p>The likelihood of drawing a particular card on turn 1 (with mulligan and opening replace)</p>
+  {{#each startDropData}}
+    {{> displayStartDrawDistribution}}
+  {{/each}}
+  <h3>turn 1 hand chance</h3>
+  <p>The likelihood you'll draw into your ideal turn 1 hand (not including your opening replace)</p>
+  {{> turn1PlayChance}}
+  <h3>sample turn 1 hands</h3>
+  {{> turn1Hands}}
+  <h2>Card Draw</h2>
+  <h3>card draw distribution</h3>
+  <p>The likelihood of drawing a certain card by a certain turn (including your mulligan and replacing whenever possible)</p>
+  {{#each startDropData}}
+    {{> cardDrawDistribution}}
+  {{/each}}
+  <h3>win condition draw distribution</h3>
+  <p>The likelihood of drawing your win condition cards by a certain turn (including your mulligan and replacing whenever possible)</p>
+  <p>Win conditions are slightly more complicated. To read this data, first navigate to the chart that shows your starting hand and select that hand to show your chance of drawing/replacing into another card you need for your win condition. For instance:</p>
+  <ul>
+    <li>Of a win condition containing 3 cards, you draw only 1 of them in your starting hand.</li>
+    <li>Selecting the appropriate hand under the chart, <code>Hand has 1/3 Cards</code>, will generate a graph showing the likelihood of drawing another card in your win condition.</li>
+  </ul>
+  <p>You can modify this chart to show you distributions later on in the game (ie. when you've drawn more cards) by changing the <code>turn</code> setting. For instance:</p>
+  <ul>
+    <li>Of a win condition containing 2 cards, you draw none of them in your starting hand. The chart, <code>Hand has 0/3 Cards</code>, shows the likelihood of drawing another card in your win condition.</li>
+    <li>On turn 4, you draw one of them. The chart, <code>Hand has 1/3 Cards</code>, with a <code>turn</code> setting of <code>5</code> (you drew into this scenario on turn 4) will show you the likelihood of drawing the final card.</li>
+  </ul>
+  {{> winConditionDistribution}}
 </template>
 
 <template name="addCards">
