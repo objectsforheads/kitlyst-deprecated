@@ -1,6 +1,12 @@
 import './card.html';
 
 Template.card.helpers({
+  'isList': function() {
+    if (this.layoutType === 'layout-list') {
+      return true;
+    }
+    return false;
+  },
   'hasTooltip': function() {
     if (this.hasTooltip === true) {
       return '#tooltip-' + this.info.id;
@@ -44,9 +50,10 @@ Template.card.helpers({
     if (Session.get('deckCards')) {
       var deck = JSON.parse(Session.get('deckCards'));
       var cardIndex = deck.findIndex(card => card.id === this.info.id);
-      var card = deck[cardIndex];
-
-      return 3 - card.count;
+      if (cardIndex !== -1) {
+        var card = deck[cardIndex];
+        return 3 - card.count;
+      }
     }
     else {
       return 3;

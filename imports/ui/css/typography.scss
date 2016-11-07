@@ -453,8 +453,24 @@ body {
 
 
 
-.deck-general {
-  margin-top: 0.5rem;
+.deck-mods {
+  position: absolute;
+  right: -1rem;
+  top: 0;
+  margin-top: 1.5rem;
+  z-index: 10;
+
+  .decklist-card-info {
+    z-index: 1;
+  }
+
+  .deck-general {
+    align-items: start;
+
+    .card {
+      transform: translateY(-25%);
+    }
+  }
 }
 
 .deck-stats {
