@@ -20,7 +20,6 @@ Template.deckBuild.onCreated(function() {
   Session.set('deckFaction', null);
   Session.set('deckGeneral', null);
   //  This variable holds all the card ids in the deck
-  Session.set('deckCards', '[{"id":208,"count":2},{"id":209,"count":1},{"id":210,"count":3},{"id":212,"count":3},{"id":213,"count":3},{"id":214,"count":3},{"id":215,"count":3},{"id":216,"count":3},{"id":218,"count":3},{"id":219,"count":3},{"id":220,"count":3},{"id":221,"count":3}]');
   Session.set('deckCards', null);
   // These variables hold all the deck stats
   Session.set('deckManaBreakdown', null);
@@ -220,11 +219,9 @@ Template.deckList.events({
     if ($(e.currentTarget).hasClass('removeCard-1')) {
       if (card.count > 0) {
         card.count = card.count - 1;
-        $('[data-cardId="' + card.id + '"]').attr('data-available', 3 - card.count);
       }
       if (card.count === 0) {
         deck.splice(cardIndex, 1);
-        $('[data-cardId="' + card.id + '"]').attr('data-available', 3);
       }
       // Update deck stats
       editDeckStat('mana', 'subtract', this.manaCost, 1)
@@ -244,8 +241,6 @@ Template.deckList.events({
       editDeckStat('spirit', 'subtract', this.rarity, this.count)
 
       Session.set('deckCardCount', Session.get('deckCardCount') - this.count)
-
-      $('[data-cardId="' + card.id + '"]').attr('data-available', 3);
 
       Session.set('deckCards', JSON.stringify(deck));
     }
@@ -491,9 +486,6 @@ Template.card.events({
       editDeckStat('spirit', 'add', this.info.rarity, 1)
 
       Session.set('deckCardCount', Session.get('deckCardCount') + 1)
-
-      var count = Number($(e.currentTarget).attr('data-available'))
-      $(e.currentTarget).attr('data-available', count - 1)
     }
   }
 })

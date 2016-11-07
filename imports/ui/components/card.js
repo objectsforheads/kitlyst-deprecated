@@ -39,5 +39,17 @@ Template.card.helpers({
     else {
       return false;
     }
+  },
+  'available': function() {
+    if (Session.get('deckCards')) {
+      var deck = JSON.parse(Session.get('deckCards'));
+      var cardIndex = deck.findIndex(card => card.id === this.info.id);
+      var card = deck[cardIndex];
+
+      return 3 - card.count;
+    }
+    else {
+      return 3;
+    }
   }
 })

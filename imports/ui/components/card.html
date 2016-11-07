@@ -1,5 +1,5 @@
 <template name="card">
-  <div id="{{isTooltip}}" class="card {{classes}} {{layoutType}} {{#if isTooltip}}is-tooltip{{/if}} {{#if hasTooltip}}has-tooltip{{/if}}" data-tooltip-content="{{hasTooltip}}" data-cardId="{{info.id}}" data-available="{{maxCount}}" data-type="{{info.type}}" data-race="{{slugifiedRace}}" data-cardName="{{slugifiedName}}">
+  <div id="{{isTooltip}}" class="card {{classes}} {{layoutType}} {{#if isTooltip}}is-tooltip{{/if}} {{#if hasTooltip}}has-tooltip{{/if}}" data-tooltip-content="{{hasTooltip}}" data-cardId="{{info.id}}" data-available="{{available}}" data-type="{{info.type}}" data-race="{{slugifiedRace}}" data-cardName="{{slugifiedName}}">
     <div class="card-manaCost">{{info.manaCost}}</div>
     <div class="card-sprite card-id_{{info.id}} {{idleAnimation}}"></div>
     <div class="card-caption">
