@@ -10,10 +10,68 @@
   {{> navDeckInfo}}
   {{> navDeckbuilderSettings}}
   {{> navDeckbuilderFilters}}
+  {{> importDeck}}
   {{else}}
     <div class="select-general-wrapper">
       <h1>Build a Deck</h1>
       {{> selectGeneral}}
+    </div>
+  {{/if}}
+</template>
+
+<template name="importDeck">
+  {{#if importing}}
+    <div class="deck-import-shim">
+      <div class="deck-import-wrapper">
+        <div class="deck-import-form">
+          <div class="deck-import-input-wrapper">
+            <h3>Paste Textlist</h3>
+            <textarea class="deck-import-input"></textarea>
+          </div>
+          <div class="deck-import-output-wrapper">
+            <h3>Breakdown</h3>
+            <div class="deck-import-output">
+              <div class="deck-import-breakdown">
+                {{#if deckImportErrors}}
+                <h4>Errors</h4>
+                <p>Decklyst couldn't read the following. Please correct them in your input or manually add them after.</p>
+                <ul>
+                  {{#each deckImportErrors}}
+                    <li>{{this.name}} x{{this.count}}</li>
+                  {{/each}}
+                </ul>
+                {{/if}}
+                {{#if deckImportWrongFaction}}
+                <h4>Will not Import</h4>
+                <p>Decklyst won't add the following because they don't belong to the same faction as your selected general.</p>
+                <ul>
+                  {{#each deckImportWrongFaction}}
+                    <li>{{this.name}} x{{this.count}}</li>
+                  {{/each}}
+                </ul>
+                {{/if}}
+                {{#if deckImportSuccesses}}
+                <h4>Found</h4>
+                <p>The following cards will be imported:</p>
+                <div class="import-cards-wrapper">
+                  {{#each deckImportSuccesses}}
+                    <div class="import-card">
+                      {{> card info=this layoutType="layout-list" hasTooltip=true}} x{{this.count}}
+                    </div>
+                  {{/each}}
+                </div>
+                {{/if}}
+              </div>
+            </div>
+            <div class="deck-import-start">
+              {{#if deckImportSuccesses}}
+              <button class="cta confirm importDeck"><span class="btn-text">Import Deck</span></button>
+              {{/if}}
+              <button class="cta cancel cancelImport"><span class="btn-text">Cancel</span></button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   {{/if}}
 </template>
@@ -31,6 +89,18 @@
     </label>
   </div>
   {{/if}}
+</template>
+
+<template name="navDeckMeta">
+  <label for="deck-meta-toggle" class="toggle">
+    <input type="checkbox" id="deck-meta-toggle" class="deck-meta-toggle toggle-checkbox"/>
+    <i class="fa fa-info-circle"></i>
+    <div class="deck-meta fixed-nav">
+      <h2>Meta</h2>
+      <h3>Deck Name</h3>
+    </div>
+  </label>
+
 </template>
 
 <template name="navDeckInfo">
@@ -152,21 +222,25 @@
   <h3>Cards</h3>
   <div class="deck-list">
     <div class="deck-list-wrapper">
-      {{#each deckCards}}
-      <div class="decklist-card">
-        {{> card info=this layoutType="layout-list" hasTooltip=true}}
-        <div class="decklist-card-info">
-          <div class="decklist-card-caption">
-            <span class="decklist-card-name">{{name}}</span><span class="decklist-card-count"> x{{count}}</span>
-          </div>
-          <div class="decklist-card-options">
-            <button class="modCardCount removeCard-1"><i class="fa fa-minus-circle"></i></button>
-            <button class="modCardCount addCard-1"><i class="fa fa-plus-circle"></i></button>
-            <button class="modCardCount removeCard-all"><i class="fa fa-ban"></i></button>
+      {{#if deckExists}}
+        {{#each deckCards}}
+        <div class="decklist-card">
+          {{> card info=this layoutType="layout-list" hasTooltip=true}}
+          <div class="decklist-card-info">
+            <div class="decklist-card-caption">
+              <span class="decklist-card-name">{{name}}</span><span class="decklist-card-count"> x{{count}}</span>
+            </div>
+            <div class="decklist-card-options">
+              <button class="modCardCount removeCard-1"><i class="fa fa-minus-circle"></i></button>
+              <button class="modCardCount addCard-1"><i class="fa fa-plus-circle"></i></button>
+              <button class="modCardCount removeCard-all"><i class="fa fa-ban"></i></button>
+            </div>
           </div>
         </div>
-      </div>
-      {{/each}}
+        {{/each}}
+      {{else}}
+        <button class="cta default importDeck"><span class="btn-text">Import Deck</span></button>
+      {{/if}}
     </div>
   </div>
 </template>
@@ -210,7 +284,7 @@
       <strong>Artifacts</strong>
     </div>
   </div>
-  <div class="deck-meta">
+  <div class="deck-breakdown">
     <div class="deck-card-count">
       <span class="deck-card-count-value {{#if overDeckCardCount}}warn_too-many-cards{{/if}}">{{deckCardCount}}</span>/<strong>40</strong>
     </div>

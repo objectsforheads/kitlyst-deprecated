@@ -27,7 +27,10 @@ Template.deckBuild.onCreated(function() {
   Session.set('deckManaBreakdown', null);
   Session.set('deckTypeBreakdown', null);
   Session.set('deckSpiritCost', null);
-  Session.set('deckCardCount', 1)
+  Session.set('deckCardCount', 1);
+
+  // states
+  Session.set('importingDeck', false);
 
   // Pull cards from API
   allCards = new Mongo.Collection(null);
@@ -191,7 +194,138 @@ Template.navDeckbuilderFilters.onRendered(function() {
 
 
 
+Template.importDeck.onCreated(function() {
+  this.deckImportInput = new ReactiveVar(null);
+  this.deckImportOutput = new ReactiveVar();
+})
+
+Template.importDeck.helpers({
+  'importing': function() {
+    return Session.get('importingDeck');
+  },
+  'deckImportSuccesses': function() {
+    if (Template.instance().deckImportOutput.get()) {
+      return Template.instance().deckImportOutput.get().matches;
+    }
+    return false;
+  },
+  'deckImportErrors': function() {
+    if (Template.instance().deckImportOutput.get()) {
+      return Template.instance().deckImportOutput.get().errors;
+    }
+    return false;
+  },
+  'deckImportWrongFaction': function() {
+    if (Template.instance().deckImportOutput.get()) {
+      return Template.instance().deckImportOutput.get().wrongFaction;
+    }
+    return false;
+  }
+})
+
+Template.importDeck.events({
+  'click .importDeck': function() {
+    var cards = Template.instance().deckImportOutput.get().matches;
+    cards = cards.reduce(function(a, b) {
+      a.push({
+        id: b.id,
+        count: b.count
+      })
+
+      // update stats
+      Session.set('deckCardCount', Session.get('deckCardCount') + b.count);
+      editDeckStat('mana', 'add', b.manaCost, b.count);
+      editDeckStat('type', 'add', b.type, b.count);
+      editDeckStat('spirit', 'add', b.rarity, b.count);
+
+      return a;
+    }, [])
+
+    Session.set('deckCards', JSON.stringify(cards));
+    Session.set('importingDeck', false);
+    Template.instance().deckImportOutput.set(null);
+  },
+  'click .cancelImport': function() {
+    Session.set('importingDeck', false);
+    Template.instance().deckImportOutput.set(null);
+  },
+  'change .deck-import-input, keyup .deck-import-input': function(e) {
+    var matches = [];
+    var errors = [];
+    var wrongFaction = [];
+
+    // Once a deck has been imported, split the input on a newline
+    var input = $(e.currentTarget).val().trim();
+    input = input.split('\n');
+
+    // split them into a card name and count
+    input = input.reduce(function(a,b) {
+      if (b.trim().length !== 0) {
+        var stripCount = /^[0-9]x|x[0-9]$/;
+        var count = stripCount.exec(b);
+
+        if (count) {
+          var name = b.replace(count, '').trim();
+          count = Number(count[0].replace('x', ''));
+
+          if (typeof count === "number") {
+            a.push({
+              name: name,
+              count: count
+            })
+          }
+        }
+        else {
+          errors.push({
+            name: b,
+            count: 0
+          })
+        }
+      }
+
+      return a;
+    }, [])
+
+    // for each found input, find a card for it
+    input.forEach(function(card) {
+      var match = allCards.findOne({
+        'name': card.name
+      });
+      if (match) {
+        if (match.race !== 'General') {
+          match.count = card.count || 0;
+
+          if (match.faction !== Session.get('deckFaction') && match.faction !== 'Neutral') {
+            wrongFaction.push(match);
+          }
+          else {
+            matches.push(match);
+          }
+        }
+      }
+      else {
+        errors.push({
+          name: card.name,
+          count: card.count
+        })
+      }
+    })
+
+    Template.instance().deckImportOutput.set({matches: matches, errors: errors, wrongFaction: wrongFaction});
+  }
+})
+
+
+
+
+
 Template.deckList.helpers({
+  'deckExists': function() {
+    if (Session.get('deckCardCount') > 1) {
+      return true;
+    }
+    return false;
+  },
   'deckCards': function() {
     var cards = Session.get('deckCards');
     if (cards) {
@@ -207,6 +341,10 @@ Template.deckList.helpers({
 })
 
 Template.deckList.events({
+  'click .importDeck': function(e) {
+    Session.set('importingDeck', !Session.get('importingDeck'));
+    return Session.get('importingDeck');
+  },
   'click .modCardCount': function(e) {
     var deck = JSON.parse(Session.get('deckCards'));
     var cardIndex = deck.findIndex(card => card.id === this.id);

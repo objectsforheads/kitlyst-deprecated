@@ -85,6 +85,73 @@ pre {
     word-wrap: break-word;       /* Internet Explorer 5.5+ */
 }
 
+.cta {
+  margin: 0.75rem auto 0 auto;
+  border: 0;
+  display: block;
+  width: 174px; //width of button image
+  height: 58px; // height of button image
+  background: transparent;
+  font-family: 'Lato', sans-serif;
+  font-weight: 700;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  color: #fff;
+  cursor: pointer;
+
+  &::before, &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  &::before {
+    background: url('/assets/img/backgrounds/button_secondary.png') no-repeat center center / contain;
+    opacity: 1;
+  }
+
+  &::after {
+    background: url('/assets/img/backgrounds/button_secondary_glow.png') no-repeat center center / contain;
+    opacity: 0.01;
+    z-index: -1;
+  }
+
+  &.confirm::before {
+    background: url('/assets/img/backgrounds/button_confirm.png') no-repeat center center / contain;
+  }
+  &.confirm::after {
+    background: url('/assets/img/backgrounds/button_confirm_glow.png') no-repeat center center / contain;
+  }
+
+  &.cancel::before {
+    background: url('/assets/img/backgrounds/button_cancel.png') no-repeat center center / contain;
+  }
+  &.cancel::after {
+    background: url('/assets/img/backgrounds/button_cancel_glow.png') no-repeat center center / contain;
+  }
+
+  &:hover {
+    &::before {
+      opacity: 0;
+    }
+    &::after {
+      opacity: 1;
+    }
+  }
+
+  .btn-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    line-height: 1;
+    width: 100%;
+  }
+}
+
 
 
 
@@ -478,10 +545,11 @@ $generalsWidth: 1506px;
 
 
 .deck-mods {
-  position: absolute;
-  right: -1rem;
-  top: 0;
   margin-top: 1.5rem;
+  position: absolute;
+  right: 0rem;
+  top: 0;
+  transform: translateX(1rem);
   z-index: 10;
 
   .decklist-card-info {
@@ -517,7 +585,7 @@ $generalsWidth: 1506px;
     font-size: 1.25rem;
     color: #fff;
   }
-  .deck-meta {
+  .deck-breakdown {
     display: flex;
     align-items: end;
   }
@@ -774,6 +842,11 @@ $deckInfoWidthCollapsed: 142px;
 .deck-info-wrapper {
   display: flex;
   flex-direction: column;
+  overflow-x: hidden;
+
+  &.importing {
+    z-index: 100;
+  }
 
   .deck-list {
     flex: 1;
@@ -786,6 +859,116 @@ $deckInfoWidthCollapsed: 142px;
       height: 100%;
       overflow-x: hidden;
       overflow-y: auto;
+    }
+  }
+}
+
+.deck-import-shim {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.75);
+  z-index: 1;
+}
+.deck-import-wrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  height: 90%;
+  max-width: 40rem;
+  max-height: 40rem;
+  overflow: hidden;
+  border: 1px solid #90dff5;
+
+  background: rgba(55,119,138,1);
+  background: -moz-linear-gradient(-45deg, rgba(55,119,138,1) 0%, rgba(56,96,130,0.96) 15%, rgba(47,65,102,0.87) 53%, rgba(87,48,107,0.75) 100%);
+  background: -webkit-gradient(left top, right bottom, color-stop(0%, rgba(55,119,138,1)), color-stop(15%, rgba(56,96,130,0.96)), color-stop(53%, rgba(47,65,102,0.87)), color-stop(100%, rgba(87,48,107,0.75)));
+  background: -webkit-linear-gradient(-45deg, rgba(55,119,138,1) 0%, rgba(56,96,130,0.96) 15%, rgba(47,65,102,0.87) 53%, rgba(87,48,107,0.75) 100%);
+  background: -o-linear-gradient(-45deg, rgba(55,119,138,1) 0%, rgba(56,96,130,0.96) 15%, rgba(47,65,102,0.87) 53%, rgba(87,48,107,0.75) 100%);
+  background: -ms-linear-gradient(-45deg, rgba(55,119,138,1) 0%, rgba(56,96,130,0.96) 15%, rgba(47,65,102,0.87) 53%, rgba(87,48,107,0.75) 100%);
+  background: linear-gradient(135deg, rgba(55,119,138,1) 0%, rgba(56,96,130,0.96) 15%, rgba(47,65,102,0.87) 53%, rgba(87,48,107,0.75) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#37778a', endColorstr='#57306b', GradientType=1 );
+
+  .deck-import-form {
+    display: flex;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    align-items: start;
+    padding: 0 1rem 1.5rem 1rem;
+  }
+
+  .deck-import-input-wrapper {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 0 1rem 0 0;
+  }
+
+  .deck-import-output-wrapper {
+    flex: 1;
+    max-height: 100%;
+    overflow: auto;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+  }
+
+  .deck-import-input {
+    max-height: 100%;
+    background: rgba(255,255,255,0.1);
+    border: 0;
+    padding: 1rem;
+    flex: 1;
+    color: $duelystGrey;
+  }
+
+  .deck-import-output {
+    display: flex;
+    flex-direction: column;
+    max-height: 100%;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  .deck-import-breakdown {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+  }
+
+  .import-cards-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 1.5rem;
+
+    .import-card {
+      display: flex;
+      align-items: center;
+      padding-right: 0.5rem;
+    }
+
+    .card {
+      margin: 0;
+    }
+  }
+
+  .deck-import-start {
+    margin: 0 auto;
+    text-align: center;
+
+    .cta {
+      display: inline-block;
     }
   }
 }
@@ -805,6 +988,11 @@ $deckInfoWidthCollapsed: 142px;
       display: none;
     }
   }
+}
+
+[for="deck-meta-toggle"] {
+  right: 100%;
+  top: 4rem;
 }
 
 
