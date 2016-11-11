@@ -514,6 +514,57 @@ body {
   display: none;
 }
 
+.deckbuilder-input-wrapper {
+  margin-top: 1.5rem;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid $duelystGrey;
+
+  .deckbuilder-input {
+    color: $duelystGrey;
+    flex: 1;
+    padding-right: 1rem;
+    background: transparent;
+    border: 0;
+  }
+
+  &.textarea {
+    border: 1px solid $duelystGrey;
+    min-height: 5rem;
+
+    textarea {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+      padding: 0.5rem;
+      background: transparent;
+      color: $duelystGrey;
+    }
+
+    .deckbuilder-input-aside {
+      position: absolute;
+      bottom: 100%;
+      right: 0;
+    }
+  }
+
+  .deckbuilder-input-aside {
+    cursor: pointer;
+    border: 0;
+    background: transparent;
+    color: $duelystGrey;
+    padding: 0;
+    padding-bottom: 0.125em;
+
+    &:hover {
+      color: #fff;
+    }
+  }
+}
+
 
 
 
@@ -753,6 +804,33 @@ $generalsWidth: 1506px;
   }
 }
 
+
+.deck-meta-wrapper {
+  display: none;
+}
+
+.meta-open {
+  .deck-info-wrapper {
+    display: none;
+  }
+  .deck-meta-wrapper {
+    display: block;
+  }
+}
+
+[for="deck-meta-toggle"] {
+  right: 100%;
+  top: 4rem;
+
+  input:checked ~ i {
+    color: #fff;
+  }
+}
+
+
+
+
+
 $deckInfoWidth: 17rem;
 $deckInfoWidthCollapsed: 142px;
 
@@ -794,6 +872,10 @@ $deckInfoWidthCollapsed: 142px;
     width: $deckInfoWidthCollapsed;
     z-index: 10;
 
+    [for="newDraft"] {
+      display: none;
+    }
+
     .deck-info-wrapper {
       padding: 0 0.5rem;
     }
@@ -815,7 +897,8 @@ $deckInfoWidthCollapsed: 142px;
 
     .deck-general,
     .decklist-card-name,
-    .decklist-card-options {
+    .decklist-card-options,
+    .importDeck {
       display: none;
     }
   }
@@ -885,12 +968,12 @@ $deckInfoWidthCollapsed: 142px;
   border: 1px solid #90dff5;
 
   background: rgba(55,119,138,1);
-  background: -moz-linear-gradient(-45deg, rgba(55,119,138,1) 0%, rgba(56,96,130,0.96) 15%, rgba(47,65,102,0.87) 53%, rgba(87,48,107,0.75) 100%);
+  background: -moz-linear-gradient(-30deg, rgba(55,119,138,1) 0%, rgba(56,96,130,0.96) 15%, rgba(47,65,102,0.87) 53%, rgba(87,48,107,0.75) 100%);
   background: -webkit-gradient(left top, right bottom, color-stop(0%, rgba(55,119,138,1)), color-stop(15%, rgba(56,96,130,0.96)), color-stop(53%, rgba(47,65,102,0.87)), color-stop(100%, rgba(87,48,107,0.75)));
-  background: -webkit-linear-gradient(-45deg, rgba(55,119,138,1) 0%, rgba(56,96,130,0.96) 15%, rgba(47,65,102,0.87) 53%, rgba(87,48,107,0.75) 100%);
-  background: -o-linear-gradient(-45deg, rgba(55,119,138,1) 0%, rgba(56,96,130,0.96) 15%, rgba(47,65,102,0.87) 53%, rgba(87,48,107,0.75) 100%);
-  background: -ms-linear-gradient(-45deg, rgba(55,119,138,1) 0%, rgba(56,96,130,0.96) 15%, rgba(47,65,102,0.87) 53%, rgba(87,48,107,0.75) 100%);
-  background: linear-gradient(135deg, rgba(55,119,138,1) 0%, rgba(56,96,130,0.96) 15%, rgba(47,65,102,0.87) 53%, rgba(87,48,107,0.75) 100%);
+  background: -webkit-linear-gradient(-30deg, rgba(55,119,138,1) 0%, rgba(56,96,130,0.96) 15%, rgba(47,65,102,0.87) 53%, rgba(87,48,107,0.75) 100%);
+  background: -o-linear-gradient(-30deg, rgba(55,119,138,1) 0%, rgba(56,96,130,0.96) 15%, rgba(47,65,102,0.87) 53%, rgba(87,48,107,0.75) 100%);
+  background: -ms-linear-gradient(-30deg, rgba(55,119,138,1) 0%, rgba(56,96,130,0.96) 15%, rgba(47,65,102,0.87) 53%, rgba(87,48,107,0.75) 100%);
+  background: linear-gradient(160deg, rgba(55,119,138,1) 0%, rgba(56,96,130,0.96) 15%, rgba(47,65,102,0.87) 53%, rgba(87,48,107,0.75) 100%);
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#37778a', endColorstr='#57306b', GradientType=1 );
 
   .deck-import-form {
@@ -923,11 +1006,17 @@ $deckInfoWidthCollapsed: 142px;
 
   .deck-import-input {
     max-height: 100%;
-    background: rgba(255,255,255,0.1);
-    border: 0;
+    margin-top: 1.5rem;
+    border: 1px solid rgba(144,223,245,0.5);
+    background: rgba(255,255,255,0.05);
     padding: 1rem;
     flex: 1;
     color: $duelystGrey;
+    transition: border 150ms;
+
+    &:focus {
+      border: 1px solid rgba(144,223,245,1);
+    }
   }
 
   .deck-import-output {
@@ -990,11 +1079,6 @@ $deckInfoWidthCollapsed: 142px;
   }
 }
 
-[for="deck-meta-toggle"] {
-  right: 100%;
-  top: 4rem;
-}
-
 
 $deckbuilderSettingsWidth: 17rem;
 
@@ -1055,33 +1139,6 @@ $deckbuilderFiltersWidth: 17rem;
   left: 100%;
 }
 
-.deckbuilder-search-wrapper {
-  display: flex;
-  align-items: center;
-  border-bottom: 1px solid $duelystGrey;
-
-  .deckbuilder-search {
-    color: $duelystGrey;
-    flex: 1;
-    padding-right: 1rem;
-    background: transparent;
-    border: 0;
-  }
-}
-
-.deckbuilder-filter_options {
-
-  .filter_type {
-    display: inline-block;
-    margin-right: 1rem;
-    cursor: pointer;
-
-    .filter-label {
-      display: inline-block;
-    }
-  }
-}
-
 [data-showArtifacts="false"] [data-type="Artifact"],
 [data-showSpells="false"] [data-type="Spell"],
 [data-showUnits="false"] [data-type="Unit"] {
@@ -1101,8 +1158,15 @@ $deckbuilderFiltersWidth: 17rem;
   margin-top: 1.5rem;
   transition: opacity 150ms;
   cursor: pointer;
+  display: inline-block;
+  margin-right: 1rem;
+  cursor: pointer;
 
-  input[type="checkbox"] {
+  .filter-label {
+    display: inline-block;
+  }
+
+  input {
     display: none;
 
 

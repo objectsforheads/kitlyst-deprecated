@@ -8,13 +8,22 @@ FlowRouter.route( '/', {
   }
 });
 
-FlowRouter.route( '/deck/build', {
-  name: 'deckBuild',
+var deckBuild = FlowRouter.group({
+  prefix: '/deck/build'
+})
+
+deckBuild.route('/', {
   action: function() {
-    BlazeLayout.render( 'mainLayout', { main: 'deckBuild' } );
+    BlazeLayout.render( 'mainLayout', { main: 'deckBuildWrapper' } );
   }
-});
-FlowRouter.route( '/deck/edit', {
+})
+deckBuild.route('/:hash', {
+  action: function(params) {
+    BlazeLayout.render( 'mainLayout', { main: 'deckBuildWrapper' } );
+  }
+})
+
+FlowRouter.route( '/deck/edit/:hash', {
   name: 'deckEdit',
   action: function() {
     BlazeLayout.render( 'mainLayout', { main: 'deckEdit' } );

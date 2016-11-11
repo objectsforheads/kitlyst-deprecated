@@ -14,6 +14,41 @@ import Chartist from 'chartist';
 import '/node_modules/chartist/dist/chartist.min.css';
 require('chartist-plugin-legend');
 
+import Clipboard from 'clipboard';
+
+// Decks = new Mongo.Collection('decks');
+
+Template.deckBuildWrapper.onCreated(function() {
+  var self = this;
+  self.autorun(function() {
+    var hash = FlowRouter.getParam('hash');
+    if (hash) {
+      self.subscribe('Decks', hash);
+    }
+
+    if (Decks.findOne()) {
+      Session.set('deckCards', JSON.stringify(Decks.findOne().deck));
+    }
+
+    if (Decks.findOne() && Decks.findOne().owner === null && Meteor.userId()) {
+      Meteor.call('assignDeckOwner', {hash: FlowRouter.getParam('hash'), owner: Meteor.userId()});
+      sAlert.success("You've successfully claimed this deck, " + Meteor.user().username + "!");
+    }
+  })
+})
+
+Template.deckBuildWrapper.helpers({
+  'hash': function() {
+    return FlowRouter.getParam('hash');
+  },
+  'owned': function() {
+    if (Decks.findOne()) {
+      return true;
+    }
+    return false;
+  }
+})
+
 Template.deckBuild.onCreated(function() {
   // Set up variables
   //  Check what frame is active - stats or add
@@ -24,9 +59,9 @@ Template.deckBuild.onCreated(function() {
   //  This variable holds all the card ids in the deck
   Session.set('deckCards', null);
   // These variables hold all the deck stats
-  Session.set('deckManaBreakdown', null);
-  Session.set('deckTypeBreakdown', null);
-  Session.set('deckSpiritCost', null);
+  Session.set('deckManaBreakdown', 0);
+  Session.set('deckTypeBreakdown', 0);
+  Session.set('deckSpiritCost', 0);
   Session.set('deckCardCount', 1);
 
   // states
@@ -34,21 +69,43 @@ Template.deckBuild.onCreated(function() {
 
   // Pull cards from API
   allCards = new Mongo.Collection(null);
-  var apiUrl = 'http://listlyst.com/api/v1/cards?apikey=' + 'cf156a2e4b5296b5a184e53ab14dd99f';
 
-  HTTP.get(apiUrl, {}, function(err, res)  {
+  Meteor.call('getCardsFromAPI', null, function(err, data) {
     if (err) {
-      // Something's gone wrong!
-      console.log("Something's gone wrong!")
+      return console.log(error);
     }
     else {
-      var arrayCards = res.data;
+      var arrayCards = data;
       arrayCards.forEach(function(card) {
         allCards.insert(card);
       })
+
+      var deck = Decks.findOne();
+      if(deck) {
+        Session.set('deckFaction', deck.faction)
+        Session.set('deckGeneral', JSON.stringify(deck.general))
+
+        var cards = deck.deck;
+        Session.set('deckCards', JSON.stringify(cards));
+
+        cards.forEach(function(card) {
+          // update stats
+          var info = allCards.findOne({id: card.id});
+          Session.set('deckCardCount', Session.get('deckCardCount') + card.count);
+          editDeckStat('mana', 'add', info.manaCost, card.count);
+          editDeckStat('type', 'add', info.type, card.count);
+          editDeckStat('spirit', 'add', info.rarity, card.count);
+        })
+      }
     }
   })
+
+
+
+
+
 })
+
 
 Template.deckBuild.helpers({
   'generalSelected': function() {
@@ -66,6 +123,12 @@ Template.deckBuild.helpers({
 Template.deckMods.helpers({
   'deckGeneral': function() {
     return JSON.parse(Session.get('deckGeneral'));
+  },
+  'deckExists': function() {
+    if (Session.get('deckCardCount') > 1) {
+      return true;
+    }
+    return false;
   }
 })
 
@@ -83,6 +146,41 @@ Template.deckMods.events({
       labels: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, '10+'],
       series: [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
     })
+  },
+  'click .newDraft': function() {
+    var startDraftSave = sAlert.info('Saving your deck...', {timeout: 'none'});
+    let deck = {
+      hash: FlowRouter.getParam('hash'),
+      faction: Session.get('deckFaction'),
+      general: JSON.parse(Session.get('deckGeneral')),
+      deck: JSON.parse(Session.get('deckCards'))
+    }
+    Meteor.call('saveDeckDraft', deck, function(err, data) {
+      sAlert.close(startDraftSave);
+      if (err) {
+        sAlert.error(error.reason);
+      }
+      else {
+        if (typeof data === 'string') {
+          if (FlowRouter.getParam('hash')) {
+            sAlert.success('Deck saved!');
+          } else {
+            sAlert.success('Deck saved! Redirecting to draft...', {
+              onClose: function() {
+                FlowRouter.go('/deck/build/' + data);
+              }
+            })
+          }
+        }
+        else {
+          for (var validation in data) {
+            if (data[validation] === false) {
+              sAlert.error(validation + ' failed to validate');
+            }
+          }
+        }
+      }
+    });
   }
 })
 
@@ -188,6 +286,12 @@ Template.navDeckbuilderFilters.onRendered(function() {
     current.health = {'$gte': range[0], '$lte': range[1]};
     Session.set('deckbuilderFilters', current);
   })
+})
+
+Template.navDeckInfo.helpers({
+  deckSaved: function() {
+    return FlowRouter.getParam('hash');
+  }
 })
 
 
@@ -388,6 +492,14 @@ Template.deckList.events({
 })
 
 Template.deckStats.onRendered(function() {
+  var self = this;
+  self.autorun(function() {
+    if (Session.get('deckManaChartData')) {
+      if (typeof manaChart !== 'undefined') {
+        manaChart.update(Session.get('deckManaChartData'));
+      }
+    }
+  })
   var manaData = {
     labels: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, '10+'],
     series: [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
@@ -666,7 +778,7 @@ function editDeckStat(stat, modifier, modified, count) {
           manaData.series[0][manaCost] = manaBreakdown[manaCost];
         }
       }
-      manaChart.update(manaData);
+      Session.set('deckManaChartData', manaData);
 
       break
     case 'type':
@@ -729,6 +841,63 @@ Template.builderStateToggle.helpers({
   }
 })
 
+
+
+
+
+Template.navDeckMeta.onRendered(function() {
+  var urlCopy = new Clipboard('.clipboardJS-trigger');
+
+  urlCopy.on('success', function() {
+    sAlert.success('Url copied!');
+  })
+  urlCopy.on('error', function() {
+    sAlert.error('Could not copy URL! Ctrl+C to continue.');
+  })
+})
+
+Template.navDeckMeta.helpers({
+  'deckName': function() {
+    return Decks.findOne().name;
+  },
+  'deckDescription': function() {
+    return Decks.findOne().description;
+  },
+  'editUrl': function() {
+    return window.location.host + '/deck/build/' + FlowRouter.getParam('hash');
+  }
+})
+
+Template.navDeckMeta.events({
+  'click .deck-meta-toggle': function() {
+    $('.deck-info').toggleClass('meta-open');
+  },
+  'click .saveDeckName': function() {
+    var startNameSave = sAlert.info('Saving deck name...', {timeout: 'none'});
+    Meteor.call('saveDeckName', {hash: FlowRouter.getParam('hash'), name: $('.deck-draft-name').val()}, function(err, data) {
+      sAlert.close(startNameSave);
+      if (err) {
+        sAlert.error(error.reason);
+      }
+      else {
+        sAlert.success('Deck saved as ' + data + '!');
+      }
+    });
+  },
+  'click .saveDeckDescription': function() {
+    var startDescriptionSave = sAlert.info('Saving deck description...', {timeout: 'none'});
+    Meteor.call('saveDeckDescription', {hash: FlowRouter.getParam('hash'), description: $('.deck-draft-description').val()}, function(err, data) {
+      sAlert.close(startDescriptionSave);
+      if (err) {
+        sAlert.error(error.reason);
+      }
+      else {
+        sAlert.success('Deck description updated!');
+      }
+    });
+  }
+})
+
 // Event delegation
 
 // Create tooltip for min view cards
@@ -763,6 +932,8 @@ $('body').on('mouseenter', '[data-layout="layout-full"].tooltipstered', function
 
 $('body').on('click', '.deck-info-toggle', function() {
   $('.deckbuilder-container').toggleClass('min-info');
+  $('.deck-info').removeClass('meta-open');
+  $('.deck-meta-toggle').prop('checked', false);
 })
 $('body').on('click', '.deckbuilder-settings-toggle', function() {
   $('.deckbuilder-container').toggleClass('settings-open')

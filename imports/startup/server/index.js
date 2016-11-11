@@ -10,5 +10,4 @@ BrowserPolicy.content.allowOriginForAll('cdnjs.cloudflare.com');
 BrowserPolicy.content.allowOriginForAll('maxcdn.bootstrapcdn.com');
 BrowserPolicy.content.allowOriginForAll('cdn.jsdelivr.net');
 
-// Lazy load images
-BrowserPolicy.content.allowOriginForAll('manaspring.ru');
+import '../../api/deck'

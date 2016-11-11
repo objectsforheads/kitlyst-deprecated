@@ -3,4 +3,20 @@
     <h2>Deck</h2>
     <a href="/deck/build">Build a Deck</a> | <a href="/deck/edit">Edit a Deck</a> | <a href="/deck/view">View a Deck</a>
   </nav>
+  {{#if currentUser}}
+  hey what's up friend
+  {{> userLogout}}
+  {{else}}
+  <div class="user-signup-container">
+    <h2>Get Started</h2>
+    <p>Register an account to access Decklyst's additional features. It's free and we promise your email will forever languish in a database somewhere, never to be sold or distributed otherwise to other parties.</p>
+    {{> userSignup}}
+    <p>Already have an account? <button class="btn-link toggleAccountAccess">Log in</button> to continue.</p>
+  </div>
+  <div class="user-login-container hidden">
+    <h2>Login</h2>
+    {{> userLogin}}
+    <p>Don't have an account? <button class="btn-link toggleAccountAccess">Get started</button> by registering an account.</p>
+  </div>
+  {{/if}}
 </template>
