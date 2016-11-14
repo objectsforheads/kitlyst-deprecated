@@ -12,6 +12,10 @@ var deckBuild = FlowRouter.group({
   prefix: '/deck/build'
 })
 
+var deckView = FlowRouter.group({
+  prefix: '/deck/view'
+})
+
 deckBuild.route('/', {
   action: function() {
     BlazeLayout.render( 'mainLayout', { main: 'deckBuildWrapper' } );
@@ -23,15 +27,13 @@ deckBuild.route('/:hash', {
   }
 })
 
-FlowRouter.route( '/deck/edit/:hash', {
-  name: 'deckEdit',
-  action: function() {
-    BlazeLayout.render( 'mainLayout', { main: 'deckEdit' } );
-  }
-});
-FlowRouter.route( '/deck/view', {
-  name: 'deckView',
-  action: function() {
+deckView.route('/:hash', {
+  action: function(params) {
     BlazeLayout.render( 'mainLayout', { main: 'deckView' } );
+  },
+  triggersEnter: function() {
+    // Clear all Session variables
+    Object.keys(Session.keys).forEach(function(key){ Session.set(key, undefined); })
+    Session.keys = {}
   }
-});
+})

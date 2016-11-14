@@ -2,7 +2,7 @@ import './card.html';
 
 Template.card.helpers({
   'isList': function() {
-    if (this.layoutType === 'layout-list') {
+    if (this.layoutType === 'layout-list' || this.layoutType === 'layout-sprite') {
       return true;
     }
     return false;

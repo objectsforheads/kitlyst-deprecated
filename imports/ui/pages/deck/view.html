@@ -1,3 +1,84 @@
 <template name="deckView">
-  <h2>View a Deck</h2>
+  {{#if Template.subscriptionsReady}}
+  {{#if compactLandscape}}
+  <div class="deckview deckview-landscape">
+    <div class="deckview-general-img-wrapper">
+      <div class="deckview-general-img">
+        <img src="{{generalHalfImgUrl}}">
+      </div>
+    </div>
+    <div class="deckview-info">
+      <div class="deckview-title">
+        <h2 class="deckview-name">{{deckName}}</h2>
+        <h3 class="deckview-general">{{deckGeneral}}</h3>
+        <div class="deckview-stats">
+          {{> deckStats ratio="ct-major-third"}}
+        </div>
+      </div>
+    </div>
+    <div class="deckview-cardlists">
+      {{#each deckCardTypes}}
+        <div class="deckview-cardlist">
+          {{#each this.deck}}
+            <div class="deckview-card">
+              {{>card info=this layoutType="layout-list" hasTooltip=false}}
+              <span class="deckview-card-count">{{this.count}}x</span>
+            </div>
+          {{/each}}
+        </div>
+      {{/each}}
+      <div class="deckview-textlists">
+        {{#each deckCardTypes}}
+        {{#if deckHasType}}
+        <div class="deckview-textlist-wrapper">
+          <h3 class="deckview-cardType">{{this.cardType}}</h3>
+          <div class="deckview-textlist">
+            {{#each this.deck}}
+              <span class="deckview-text">{{this.name}} x{{this.count}}</span>
+            {{/each}}
+          </div>
+        </div>
+        {{/if}}
+        {{/each}}
+      </div>
+    </div>
+  </div>
+  {{/if}}
+  <div class="deckview-container">
+    <div class="deckview deckview-portrait">
+      <div class="deckview-general-img">
+        <img src="{{generalImgUrl}}">
+      </div>
+      <div class="deckview-info">
+        <div class="deckview-title">
+          <h2 class="deckview-name">{{deckName}}</h2>
+          <h3 class="deckview-general">{{deckGeneral}}</h3>
+          <div class="deckview-stats">
+            {{> deckStats ratio="ct-major-twelfth"}}
+          </div>
+        </div>
+      </div>
+      <div class="deckview-cardlists">
+        {{#each deckCardTypes}}
+          <div class="deckview-cardlist">
+            {{#each this.deck}}
+              <div class="deckview-card">
+                {{>card info=this layoutType="layout-sprite" hasTooltip=false}}
+                <span class="deckview-card-info">{{this.name}} x{{this.count}}</span>
+              </div>
+            {{/each}}
+          </div>
+        {{/each}}
+      </div>
+    </div>
+    {{#unless compactView}}
+      <div class="deckview-drawStats">
+        <h1>Stats</h1>
+        {{> drawStats}}
+      </div>
+    {{/unless}}
+  </div>
+  {{else}}
+  nope
+  {{/if}}
 </template>

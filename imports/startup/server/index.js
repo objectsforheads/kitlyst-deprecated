@@ -10,4 +10,7 @@ BrowserPolicy.content.allowOriginForAll('cdnjs.cloudflare.com');
 BrowserPolicy.content.allowOriginForAll('maxcdn.bootstrapcdn.com');
 BrowserPolicy.content.allowOriginForAll('cdn.jsdelivr.net');
 
+// Allow imgur images
+BrowserPolicy.content.allowOriginForAll('i.imgur.com');
+
 import '../../api/deck'

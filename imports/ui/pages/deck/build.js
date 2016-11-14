@@ -16,17 +16,22 @@ require('chartist-plugin-legend');
 
 import Clipboard from 'clipboard';
 
-// Decks = new Mongo.Collection('decks');
+
+
+
 
 Template.deckBuildWrapper.onCreated(function() {
   var self = this;
+  self.subscribe('allCards');
   self.autorun(function() {
     var hash = FlowRouter.getParam('hash');
     if (hash) {
-      self.subscribe('Decks', hash);
+      self.subscribe('editDeck', hash);
     }
 
     if (Decks.findOne()) {
+      Session.set('deckGeneral', JSON.stringify(Decks.findOne().general));
+      Session.set('deckFaction', Decks.findOne().faction);
       Session.set('deckCards', JSON.stringify(Decks.findOne().deck));
     }
 
@@ -54,56 +59,34 @@ Template.deckBuild.onCreated(function() {
   //  Check what frame is active - stats or add
   Session.set('statsEnabled', false);
   //  These variables are the basis of the deck
-  Session.set('deckFaction', null);
-  Session.set('deckGeneral', null);
+  if (typeof Session.get('deckFaction') === 'undefined') {
+    Session.set('deckFaction', null);
+  }
+  if (typeof Session.get('deckGeneral') === 'undefined') {
+    Session.set('deckGeneral', null);
+  }
   //  This variable holds all the card ids in the deck
-  Session.set('deckCards', null);
+  if (typeof Session.get('deckCards') === 'undefined') {
+      Session.set('deckCards', null);
+  }
   // These variables hold all the deck stats
   Session.set('deckManaBreakdown', 0);
   Session.set('deckTypeBreakdown', 0);
   Session.set('deckSpiritCost', 0);
   Session.set('deckCardCount', 1);
+  if (Session.get('deckCards') !== null && typeof Session.get('deckCards') !== 'undefined') {
+    var deck = JSON.parse(Session.get('deckCards'));
+    deck.forEach(function(card) {
+      var info = allCards.findOne({id: card.id});
+      Session.set('deckCardCount', Session.get('deckCardCount') + card.count);
+      editDeckStat('mana', 'add', info.manaCost, card.count);
+      editDeckStat('type', 'add', info.type, card.count);
+      editDeckStat('spirit', 'add', info.rarity, card.count);
+    })
+  }
 
   // states
   Session.set('importingDeck', false);
-
-  // Pull cards from API
-  allCards = new Mongo.Collection(null);
-
-  Meteor.call('getCardsFromAPI', null, function(err, data) {
-    if (err) {
-      return console.log(error);
-    }
-    else {
-      var arrayCards = data;
-      arrayCards.forEach(function(card) {
-        allCards.insert(card);
-      })
-
-      var deck = Decks.findOne();
-      if(deck) {
-        Session.set('deckFaction', deck.faction)
-        Session.set('deckGeneral', JSON.stringify(deck.general))
-
-        var cards = deck.deck;
-        Session.set('deckCards', JSON.stringify(cards));
-
-        cards.forEach(function(card) {
-          // update stats
-          var info = allCards.findOne({id: card.id});
-          Session.set('deckCardCount', Session.get('deckCardCount') + card.count);
-          editDeckStat('mana', 'add', info.manaCost, card.count);
-          editDeckStat('type', 'add', info.type, card.count);
-          editDeckStat('spirit', 'add', info.rarity, card.count);
-        })
-      }
-    }
-  })
-
-
-
-
-
 })
 
 
@@ -151,6 +134,8 @@ Template.deckMods.events({
     var startDraftSave = sAlert.info('Saving your deck...', {timeout: 'none'});
     let deck = {
       hash: FlowRouter.getParam('hash'),
+      name: $('.deck-draft-name').val(),
+      description: $('.deck-draft-description').val(),
       faction: Session.get('deckFaction'),
       general: JSON.parse(Session.get('deckGeneral')),
       deck: JSON.parse(Session.get('deckCards'))
@@ -286,12 +271,6 @@ Template.navDeckbuilderFilters.onRendered(function() {
     current.health = {'$gte': range[0], '$lte': range[1]};
     Session.set('deckbuilderFilters', current);
   })
-})
-
-Template.navDeckInfo.helpers({
-  deckSaved: function() {
-    return FlowRouter.getParam('hash');
-  }
 })
 
 
@@ -845,8 +824,12 @@ Template.builderStateToggle.helpers({
 
 
 
+Template.navDeckMeta.onCreated(function() {
+  this.deckName = new ReactiveVar(null);
+})
+
 Template.navDeckMeta.onRendered(function() {
-  var urlCopy = new Clipboard('.clipboardJS-trigger');
+  var urlCopy = new Clipboard('.deck-meta-wrapper .clipboardJS-trigger');
 
   urlCopy.on('success', function() {
     sAlert.success('Url copied!');
@@ -858,19 +841,61 @@ Template.navDeckMeta.onRendered(function() {
 
 Template.navDeckMeta.helpers({
   'deckName': function() {
-    return Decks.findOne().name;
+    if (Decks.findOne()) {
+      return Decks.findOne().name;
+    }
+    else {
+      return "";
+    }
   },
   'deckDescription': function() {
-    return Decks.findOne().description;
+    if (Decks.findOne()) {
+      return Decks.findOne().description;
+    }
+    else {
+      return "";
+    }
   },
   'editUrl': function() {
     return window.location.host + '/deck/build/' + FlowRouter.getParam('hash');
+  },
+  'deckInvalid': function() {
+    if (Session.get('deckCardCount') !== 40 || Template.instance().deckName.get() === null) {
+      return true;
+    }
+    return false;
+  },
+  'deckInvalidReason': function() {
+    if (Session.get('deckCardCount') !== 40) {
+      return Session.get('deckCardCount') + '/40';
+    }
+    else if (Template.instance().deckName.get() === null) {
+      return 'Name deck first';
+    }
+  },
+  'deckCount': function() {
+    return Session.get('deckCardCount');
+  },
+  deckSaved: function() {
+    return FlowRouter.getParam('hash');
   }
 })
 
 Template.navDeckMeta.events({
+  'change .deck-draft-name, keyup .deck-draft-name': function(e) {
+    if ($(e.currentTarget).val().length !== 0) {
+      Template.instance().deckName.set($(e.currentTarget).val());
+    }
+    else {
+      Template.instance().deckName.set(null);
+    }
+  },
   'click .deck-meta-toggle': function() {
-    $('.deck-info').toggleClass('meta-open');
+    $('.deck-info').removeClass('export-open');
+    $('.deck-info').addClass('meta-open');
+  },
+  'click .deck-meta-off': function() {
+    $('.deck-info').removeClass('meta-open');
   },
   'click .saveDeckName': function() {
     var startNameSave = sAlert.info('Saving deck name...', {timeout: 'none'});
@@ -895,6 +920,117 @@ Template.navDeckMeta.events({
         sAlert.success('Deck description updated!');
       }
     });
+  },
+  'click .publishDeck': function() {
+    var startDeckPublish = sAlert.info('Publishing your deck...', {timeout: 'none'});
+    Meteor.call('publishDeck', {
+      hash: FlowRouter.getParam('hash'),
+      name: $('.deck-draft-name').val(),
+      description: $('.deck-draft-description').val(),
+      faction: Session.get('deckFaction'),
+      general: Session.get('deckGeneral'),
+      deck: Session.get('deckCards')
+    }, function(err, data) {
+      sAlert.close(startDeckPublish);
+      if (err) {
+        sAlert.error(error.reason);
+      }
+      else {
+        sAlert.success('Deck published!', {
+          onClose: function() {
+            FlowRouter.go('/deck/view/' + data);
+          }
+        });
+      }
+    })
+
+  }
+})
+
+
+
+
+Template.navDeckExport.onCreated(function() {
+  this.deckExported = new ReactiveVar(false);
+  this.exportingImg = new ReactiveVar(false);
+  this.deckImageUrl = new ReactiveVar(null);
+})
+
+Template.navDeckExport.onRendered(function() {
+  var urlCopy = new Clipboard('.deck-export-wrapper .clipboardJS-trigger');
+
+  urlCopy.on('success', function() {
+    sAlert.success('Url copied!');
+  })
+  urlCopy.on('error', function() {
+    sAlert.error('Could not copy URL! Ctrl+C to continue.');
+  })
+})
+
+Template.navDeckExport.helpers({
+  deckSaved: function() {
+    return FlowRouter.getParam('hash');
+  },
+  viewUrl: function() {
+    return window.location.host + '/deck/view/' + Decks.findOne().view_hash
+  },
+  deckTextlist: function() {
+    if(Session.get('deckCards')) {
+      var deck = JSON.parse(Session.get('deckCards'));
+      var general = JSON.parse(Session.get('deckGeneral'));
+      var txt = general[0].name + " x1";
+      deck.forEach(function(card) {
+        var info = allCards.findOne({id: card.id});
+        txt = txt + "\n" + info.name + " x" + card.count;
+      })
+      return txt;
+    }
+    return false;
+  },
+  'deckExported': function() {
+    return Template.instance().deckExported.get();
+  },
+  'exportingImg': function() {
+    return Template.instance().exportingImg.get();
+  },
+  'deckImageUrl': function() {
+    return Template.instance().deckImageUrl.get();
+  }
+})
+Template.navDeckExport.events({
+  'click .deck-export-toggle': function() {
+    $('.deck-info').removeClass('meta-open');
+    $('.deck-info').addClass('export-open');
+  },
+  'click .deck-export-off': function() {
+    $('.deck-info').removeClass('export-open');
+  },
+  'click .exportDeckImg': function() {
+    var self = Template.instance();
+    var startDeckExport = sAlert.info("Exporting your deck to imgur...", {timeout: 'none'});
+    self.exportingImg.set(true);
+    if (FlowRouter.getParam('hash')) {
+      // deck exists, push the view link to the server
+    }
+    else {
+      // deck hasn't been saved yet, generate a temporary draft for it
+    }
+    Meteor.call('exportDeckImg', null, function(err, res) {
+      self.exportingImg.set(false);
+      sAlert.close(startDeckExport);
+      if (err) {
+        sAlert.error(error.reason);
+      }
+      else {
+        if (res.success === true && res.status === 200) {
+          self.deckExported.set(true);
+          self.deckImageUrl.set(res.data.link);
+          sAlert.success("Deck successfully uploaded to imgur!");
+        } else {
+          sAlert.error("Something went wrong! Please try again.");
+        }
+      }
+    })
   }
 })
 
@@ -932,8 +1068,12 @@ $('body').on('mouseenter', '[data-layout="layout-full"].tooltipstered', function
 
 $('body').on('click', '.deck-info-toggle', function() {
   $('.deckbuilder-container').toggleClass('min-info');
+})
+$('body').on('click', '.deck-info-show', function() {
   $('.deck-info').removeClass('meta-open');
   $('.deck-meta-toggle').prop('checked', false);
+  $('.deck-info').removeClass('export-open');
+  $('.deck-export-toggle').prop('checked', false);
 })
 $('body').on('click', '.deckbuilder-settings-toggle', function() {
   $('.deckbuilder-container').toggleClass('settings-open')

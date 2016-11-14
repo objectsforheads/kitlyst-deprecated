@@ -12,6 +12,11 @@ p {
   margin-top: 0.75rem;
   margin-bottom: 0;
 }
+small {
+  margin-top: 0.75rem;
+  margin-bottom: 0;
+  display: inline-block;
+}
 ul,
 ol {
   margin-top: 1.5rem;

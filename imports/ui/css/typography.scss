@@ -99,6 +99,12 @@ pre {
   color: #fff;
   cursor: pointer;
 
+  &.primary{
+    width: 255px;
+    height: 102px;
+    font-size: 0.75rem;
+  }
+
   &::before, &::after {
     content: '';
     position: absolute;
@@ -126,11 +132,32 @@ pre {
     background: url('/assets/img/backgrounds/button_confirm_glow.png') no-repeat center center / contain;
   }
 
+  &.primary::before {
+    background: url('/assets/img/backgrounds/button_cta.png') no-repeat center center / contain;
+  }
+  &.primary::after {
+    background: url('/assets/img/backgrounds/button_cta_glow.png') no-repeat center center / contain;
+  }
+
   &.cancel::before {
     background: url('/assets/img/backgrounds/button_cancel.png') no-repeat center center / contain;
   }
   &.cancel::after {
     background: url('/assets/img/backgrounds/button_cancel_glow.png') no-repeat center center / contain;
+  }
+
+  &.disabled {
+    opacity: 0.75;
+    cursor: default;
+    -webkit-filter: grayscale(100%);
+  	filter: grayscale(100%);
+  	filter: gray;
+  }
+  &.disabled::before {
+    opacity: 1 !important;
+  }
+  &.disabled::after {
+    display: none;
   }
 
   &:hover {
@@ -448,6 +475,34 @@ body {
 
   &:hover::after {
     opacity: 1;
+  }
+}
+
+[data-layout="layout-sprite"] .card,
+.card.layout-sprite {
+  height: 70px;
+  width: 70px;
+  cursor: initial;
+  margin: 0;
+  margin-right: 0.5rem;
+
+  .card-caption,
+  .card-stats,
+  .card-description {
+    display: none;
+  }
+
+  .card-sprite {
+    position: absolute;
+    top: 50%;
+    left: 35px;
+    transform: translate(-50%, -50%);
+  }
+
+  &[data-type="Unit"] .card-sprite {
+    top: initial;
+    bottom: 0;
+    transform: translateX(-50%);
   }
 }
 
@@ -820,7 +875,37 @@ $generalsWidth: 1506px;
 
 [for="deck-meta-toggle"] {
   right: 100%;
+  top: 6.5rem;
+
+  input:checked ~ i {
+    color: #fff;
+  }
+}
+
+
+
+
+
+.deck-export-wrapper {
+  display: none;
+}
+
+.export-open {
+  .deck-info-wrapper {
+    display: none;
+  }
+  .deck-export-wrapper {
+    display: block;
+  }
+}
+
+[for="deck-export-toggle"] {
+  right: 100%;
   top: 4rem;
+
+  i {
+    font-size: 1.65rem;
+  }
 
   input:checked ~ i {
     color: #fff;
@@ -968,13 +1053,13 @@ $deckInfoWidthCollapsed: 142px;
   border: 1px solid #90dff5;
 
   background: rgba(55,119,138,1);
-  background: -moz-linear-gradient(-30deg, rgba(55,119,138,1) 0%, rgba(56,96,130,0.96) 15%, rgba(47,65,102,0.87) 53%, rgba(87,48,107,0.75) 100%);
-  background: -webkit-gradient(left top, right bottom, color-stop(0%, rgba(55,119,138,1)), color-stop(15%, rgba(56,96,130,0.96)), color-stop(53%, rgba(47,65,102,0.87)), color-stop(100%, rgba(87,48,107,0.75)));
-  background: -webkit-linear-gradient(-30deg, rgba(55,119,138,1) 0%, rgba(56,96,130,0.96) 15%, rgba(47,65,102,0.87) 53%, rgba(87,48,107,0.75) 100%);
-  background: -o-linear-gradient(-30deg, rgba(55,119,138,1) 0%, rgba(56,96,130,0.96) 15%, rgba(47,65,102,0.87) 53%, rgba(87,48,107,0.75) 100%);
-  background: -ms-linear-gradient(-30deg, rgba(55,119,138,1) 0%, rgba(56,96,130,0.96) 15%, rgba(47,65,102,0.87) 53%, rgba(87,48,107,0.75) 100%);
-  background: linear-gradient(160deg, rgba(55,119,138,1) 0%, rgba(56,96,130,0.96) 15%, rgba(47,65,102,0.87) 53%, rgba(87,48,107,0.75) 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#37778a', endColorstr='#57306b', GradientType=1 );
+  background: -moz-linear-gradient(124deg, rgba(52,23,64,0.75) 0%, rgba(48,31,70,0.85) 9%, rgba(44,35,75,0.91) 21%, rgba(39,40,83,0.94) 38%, rgba(43,58,101,0.98) 67%, rgba(54,70,112,0.98) 79%, rgba(60,76,115,0.99) 92%, rgba(56,102,135,1) 100%); /* ff3.6+ */
+  background: -webkit-gradient(linear, left top, right bottom, color-stop(0%, rgba(56,102,135,1)), color-stop(8%, rgba(60,76,115,0.99)), color-stop(21%, rgba(54,70,112,0.98)), color-stop(33%, rgba(43,58,101,0.98)), color-stop(62%, rgba(39,40,83,0.94)), color-stop(79%, rgba(44,35,75,0.91)), color-stop(91%, rgba(48,31,70,0.85)), color-stop(100%, rgba(52,23,64,0.75))); /* safari4+,chrome */
+  background: -webkit-linear-gradient(124deg, rgba(52,23,64,0.75) 0%, rgba(48,31,70,0.85) 9%, rgba(44,35,75,0.91) 21%, rgba(39,40,83,0.94) 38%, rgba(43,58,101,0.98) 67%, rgba(54,70,112,0.98) 79%, rgba(60,76,115,0.99) 92%, rgba(56,102,135,1) 100%); /* safari5.1+,chrome10+ */
+  background: -o-linear-gradient(124deg, rgba(52,23,64,0.75) 0%, rgba(48,31,70,0.85) 9%, rgba(44,35,75,0.91) 21%, rgba(39,40,83,0.94) 38%, rgba(43,58,101,0.98) 67%, rgba(54,70,112,0.98) 79%, rgba(60,76,115,0.99) 92%, rgba(56,102,135,1) 100%); /* opera 11.10+ */
+  background: -ms-linear-gradient(124deg, rgba(52,23,64,0.75) 0%, rgba(48,31,70,0.85) 9%, rgba(44,35,75,0.91) 21%, rgba(39,40,83,0.94) 38%, rgba(43,58,101,0.98) 67%, rgba(54,70,112,0.98) 79%, rgba(60,76,115,0.99) 92%, rgba(56,102,135,1) 100%); /* ie10+ */
+  background: linear-gradient(326deg, rgba(52,23,64,0.75) 0%, rgba(48,31,70,0.85) 9%, rgba(44,35,75,0.91) 21%, rgba(39,40,83,0.94) 38%, rgba(43,58,101,0.98) 67%, rgba(54,70,112,0.98) 79%, rgba(60,76,115,0.99) 92%, rgba(56,102,135,1) 100%); /* w3c */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#386687', endColorstr='#341740',GradientType=0 ); /* ie6-9 */
 
   .deck-import-form {
     display: flex;
@@ -1066,7 +1151,7 @@ $deckInfoWidthCollapsed: 142px;
   right: 100%;
 }
 .deck-info-toggle {
-  &~ .fa-expand {
+  & ~ .fa-expand {
     display: none;
   }
   &:checked {
@@ -1076,6 +1161,23 @@ $deckInfoWidthCollapsed: 142px;
     & ~ .fa-compress {
       display: none;
     }
+  }
+}
+.meta-open,
+.export-open {
+  [for="deck-info-toggle"] {
+    display: none;
+  }
+}
+
+[for="deck-info-show"] {
+  display: none;
+  right: 100%;
+}
+.meta-open,
+.export-open {
+  [for="deck-info-show"] {
+    display: initial;
   }
 }
 
@@ -1232,7 +1334,7 @@ $deckbuilderFiltersWidth: 17rem;
 .builder-state-toggles {
 
   position: absolute;
-  top: 8rem;
+  top: 10rem;
   right: 100%;
 
   font-size: 1.5rem;
@@ -1434,6 +1536,247 @@ $deckbuilderFiltersWidth: 17rem;
 
 
 
+
+
+
+
+
+
+
+
+
+.deckview {
+  .deckview-name {
+    margin: 0;
+    line-height: 1;
+    font-size: 1rem;
+    white-space: nowrap;
+  }
+
+  .deckview-general {
+    margin: 0;
+    line-height: 1;
+    font-size: 1.75rem;
+    white-space: nowrap;
+  }
+
+  .deckview-stats {
+    .type-counts {
+      display: flex;
+    }
+    .type-count {
+      flex: 1;
+      text-align: left;
+    }
+    .type-count-value {
+      font-size: 1.25rem;
+      color: #fff;
+      display: block;
+    }
+    .crafting-cost {
+      text-align: right;
+    }
+    .crafting-cost-value {
+      font-size: 1.25rem;
+      color: #fff;
+    }
+    .deck-breakdown {
+      display: flex;
+      align-items: end;
+    }
+    .deck-card-count {
+      white-space: nowrap;
+      flex: 1;
+    }
+    .deck-card-count-value {
+      font-size: 1.25rem;
+      color: #fff;
+
+      &.warn_too-many-cards {
+        color: #ee5426;
+      }
+    }
+  }
+}
+
+.deckview-landscape {
+  display: flex;
+  align-items: center;
+
+  & > div {
+    margin-right: 1rem;
+  }
+
+  .deckview-general-img {
+    width: 102px;
+
+    img {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      transform: translateY(-50%);
+    }
+  }
+
+  .deckview-title {
+    min-width: 12rem;
+  }
+
+  .deckview-cardlists {
+    margin: 0;
+  }
+
+  .deckview-cardlist {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0.5rem;
+  }
+
+  .deckview-card {
+    display: flex;
+    align-items: end;
+    margin-right: 1.5rem;
+
+    .card {
+      margin: 0;
+
+      &::before, &::after {
+        display: none;
+      }
+
+      &[data-type="Artifact"],
+      &[data-type="Spell"] {
+        width: 54px;
+
+        .card-sprite {
+          left: 50%;
+        }
+      }
+    }
+
+    .card-manaCost {
+      right: 100%;
+      top: 0.25rem;
+      display: initial;
+      background: transparent;
+      width: initial;
+      height: initial;
+
+      line-height: initial;
+      font-size: 1rem;
+      font-weight: 700;
+      color: $manaColor;
+      text-shadow: 0 0 1rem rgba(164,255,255,.5);
+    }
+  }
+
+  .deckview-card-count {
+    position: absolute;
+    right: 100%;
+    bottom: 0;
+    transform: translateY(-50%);
+    text-shadow:
+      -1px -1px 0 #161B22,
+      1px -1px 0 #161B22,
+      -1px 1px 0 #161B22,
+      1px 1px 0 #161B22;
+  }
+
+  .deckview-cardType {
+    margin-top: 0;
+    font-size: 1rem;
+    border-bottom: 1px solid $duelystGrey;
+  }
+
+  .deckview-textlist-wrapper {
+    margin-right: 1rem;
+  }
+  .deckview-textlist {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 0.5rem;
+  }
+  .deckview-text {
+    white-space: nowrap;
+    width: 10rem;
+    margin-top: 0.25rem;
+    font-size: 0.75rem;
+  }
+}
+
+.deckview-portrait {
+  width: 320px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+
+  .deckview-general-img {
+    -webkit-filter: grayscale(100%);
+  	filter: grayscale(100%);
+  	filter: gray;
+    position: absolute;
+    left: 50%;
+    top: 10px;
+    transform: translateX(-50%);
+    opacity: 0.2;
+  }
+
+  .deckview-name,
+  .deckview-general {
+    text-align: center;
+  }
+
+  .deckview-card {
+    overflow: hidden;
+    border-bottom: 1px solid $duelystGrey;
+
+    .card {
+      height: 50px;
+      width: 100%;
+      margin-right: 0;
+    }
+    .card-manaCost {
+      transform: scale(0.5) translateY(-50%);
+      top: 50%;
+      transform-origin: top center;
+    }
+
+    [data-type="Artifact"] .card-sprite,
+    [data-type="Spell"] .card-sprite {
+      right: 0;
+      left: initial;
+      transform: translateY(-50%);
+    }
+
+    [data-type="Unit"] .card-sprite {
+      right: 10px;
+      left: initial;
+      transform: scaleX(-1) translate(-25%,12.5%);
+    }
+  }
+
+  .deckview-card-info {
+    font-size: 0.75rem;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 60px;
+  }
+}
+
+.deckview-container {
+  display: flex;
+
+  .deckview-drawStats {
+    flex: 1;
+    max-width: 1024px;
+    padding: 0 1rem;
+
+    h1 {
+      margin-top: 0;
+    }
+  }
+}
 
 
 

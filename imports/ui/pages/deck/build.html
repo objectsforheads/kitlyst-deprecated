@@ -4,6 +4,7 @@
   <div class="deckbuilder-container {{#if statsEnabled}}hide-add-cards{{/if}}">
     {{> addCards}}
     {{#if statsEnabled}}
+      <h1>Stats</h1>
       {{> drawStats}}
     {{/if}}
   </div>
@@ -94,23 +95,65 @@
 </template>
 
 <template name="builderStateToggle">
-  {{#if statsAvailable}}
   <div class="builder-state-toggles">
     <label for="builder-state_cards" class="builder-state-toggle">
       <input type="radio" name="builder-state" value="false" checked id="builder-state_cards">
       <i class="fa fa-book"></i>
     </label>
+    {{#if statsAvailable}}
     <label for="builder-state_stats" class="builder-state-toggle">
       <input type="radio" name="builder-state" value="true" id="builder-state_stats">
       <i class="fa fa-bar-chart"></i>
     </label>
+    {{/if}}
   </div>
-  {{/if}}
+</template>
+
+<template name="navDeckExport">
+  <label for="deck-export-toggle" class="toggle">
+    <input type="radio" id="deck-export-toggle" name="deck-nav-state" class="deck-export-toggle toggle-checkbox"/>
+    <i class="fa fa-code"></i>
+  </label>
+  <div class="deck-export-wrapper fixed-nav-wrapper">
+    <h2>Export</h2>
+    <h3>View link</h3>
+    {{#if deckSaved}}
+    <div class="deckbuilder-input-wrapper">
+      <input id="deckViewUrl" name="deckViewUrl" type="text" class="deckbuilder-input" readonly value="{{viewUrl}}"/>
+      <button class="deckbuilder-input-aside clipboardJS-trigger" data-clipboard-target="#deckViewUrl">
+        <i class="fa fa-clipboard"></i>
+      </button>
+    </div>
+    <small>Please note: the view link uses a different hash than your edit link so that you can share your deck without sharing edit permissions.</small>
+    {{else}}
+    <p>Save this deck to generate a view link for it.</p>
+    {{/if}}
+    <h3>Textlist</h3>
+    <div class="deckbuilder-input-wrapper textarea">
+      <textarea class="deck-textlist" value="{{deckTextlist}}"></textarea>
+    </div>
+    <h3>Image</h3>
+    {{#unless deckExported}}
+      {{#unless exportingImg}}
+        <button class="cta default exportDeckImg"><span class="btn-text">Export to Imgur</span></button>
+      {{else}}
+        <button class="cta disabled"><span class="btn-text">Exporting...</span></button>
+      {{/unless}}
+    {{else}}
+      <div class="deckbuilder-input-wrapper">
+        <input id="deckImageUrl" name="deckImageUrl" type="text" class="deckbuilder-input" readonly value="{{deckImageUrl}}"/>
+        <button class="deckbuilder-input-aside clipboardJS-trigger" data-clipboard-target="#deckImageUrl">
+          <i class="fa fa-clipboard"></i>
+        </button>
+      </div>
+      <img src="{{deckImageUrl}}" class="deck-image">
+    {{/unless}}
+  </div>
 </template>
 
 <template name="navDeckMeta">
   <label for="deck-meta-toggle" class="toggle">
-    <input type="checkbox" id="deck-meta-toggle" class="deck-meta-toggle toggle-checkbox"/>
+    <input type="radio" id="deck-meta-toggle" name="deck-nav-state" class="deck-meta-toggle toggle-checkbox"/>
     <i class="fa fa-info-circle"></i>
   </label>
   <div class="deck-meta-wrapper fixed-nav-wrapper">
@@ -129,31 +172,44 @@
         <i class="fa fa-floppy-o"></i>
       </button>
     </div>
-    <h3>Edit link</h3>
-    <div class="deckbuilder-input-wrapper">
-      <input id="deckEditUrl" name="deckEditUrl" type="text" class="deckbuilder-input" readonly value="{{editUrl}}"/>
-      <button class="deckbuilder-input-aside clipboardJS-trigger" data-clipboard-target="#deckEditUrl">
-        <i class="fa fa-clipboard"></i>
-      </button>
-    </div>
-    {{#if currentUser}}
-      <p>You've own this draft and can access it through this link and your <a href="/">drafts</a></p>
-    {{else}}
-      <p>Because no one owns this draft, this link is currently your only way to access this deck while you're editing, so keep it safe! <a href="/" target="_blank">Log in</a> to claim this deck and save it to your drafts.</p>
+    {{#if deckSaved}}
+      <h3>Edit link</h3>
+      <div class="deckbuilder-input-wrapper">
+        <input id="deckEditUrl" name="deckEditUrl" type="text" class="deckbuilder-input" readonly value="{{editUrl}}"/>
+        <button class="deckbuilder-input-aside clipboardJS-trigger" data-clipboard-target="#deckEditUrl">
+          <i class="fa fa-clipboard"></i>
+        </button>
+      </div>
+      {{#if currentUser}}
+        <small>You've own this draft and can access it through this link and your <a href="/">drafts</a></small>
+      {{else}}
+        <small>Because no one owns this draft, this link is currently your only way to access this deck while you're editing, so keep it safe! <a href="/" target="_blank">Log in</a> to claim this deck and save it to your drafts.</small>
+      {{/if}}
     {{/if}}
+    <h3>Publish Deck</h3>
+    {{#unless deckInvalid}}
+      <button class="cta primary publishDeck"><span class="btn-text">Publish Deck</span></button>
+    {{else}}
+      <button class="cta disabled"><span class="btn-text">{{deckInvalidReason}}</span></button>
+    {{/unless}}
+    <small>Publish this deck to share it on decklyst<sup>1</sup>. A published deck can longer be edited, but you can always export the cards into another draft.</small>
+    <small><sup>1</sup> At the moment, this means very little. But additional features are coming Soon<sup>TM</sup></small>
   </div>
 </template>
 
 <template name="navDeckInfo">
   <div class="deck-info fixed-nav">
     {{> builderStateToggle}}
-    {{#if deckSaved}}
-      {{> navDeckMeta}}
-    {{/if}}
+    {{> navDeckMeta}}
+    {{> navDeckExport}}
     <label for="deck-info-toggle" class="toggle">
       <input type="checkbox" id="deck-info-toggle" class="deck-info-toggle toggle-checkbox"/>
       <i class="fa fa-expand"></i>
       <i class="fa fa-compress"></i>
+    </label>
+    <label for="deck-info-show" class="toggle">
+      <input type="checkbox" id="deck-info-show" class="deck-info-show toggle-checkbox"/>
+      <i class="fa fa-times-circle-o"></i>
     </label>
     <div class="deck-info-wrapper fixed-nav-wrapper">
       <div class="deck-stats">
@@ -161,7 +217,7 @@
         <div class="deck-mods">
           {{> deckMods}}
         </div>
-        {{> deckStats}}
+        {{> deckStats ratio="ct-major-twelfth"}}
       </div>
       {{> deckList}}
     </div>
@@ -310,7 +366,7 @@
 </template>
 
 <template name="deckStats">
-  <div class="ct-chart ct-major-twelfth deckstat-manaCost" id="deckstat-manaCost"></div>
+  <div class="ct-chart {{this.ratio}} deckstat-manaCost" id="deckstat-manaCost"></div>
   <div class="type-counts">
     <div class="type-count">
       <span class="type-count-value">
