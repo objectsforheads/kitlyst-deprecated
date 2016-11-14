@@ -311,7 +311,7 @@ Template.cardDrawDistribution.onRendered(function() {
   }
   var guarantee = 0;
   var turn = 1;
-  while (guarantee < 99) {
+  while (guarantee < 95) {
     var chance = percentifyNum(drop(this.data.count, turn));
 
     cardDrawData.labels.push(turn);
@@ -323,6 +323,7 @@ Template.cardDrawDistribution.onRendered(function() {
   var chart = '#drawstat-cardDrawDist_' + this.data.count;
   window['cardDrawChart_' + this.data.count] = new Chartist.Bar(chart,
   cardDrawData, {
+  chartPadding: {top: 30, right: 30},
   axisY: {
     high: 100,
     low: 0,
@@ -612,7 +613,7 @@ Template.winConditionStats.helpers({
           }
           drawData.series[index].data.push(percentifyNum(guarantee))
         }
-        while (guarantee < 0.99) {
+        while (guarantee < 0.95) {
           // attempt to draw
           chance = chance * ((deck - count)/deck);
           // attempt to replace

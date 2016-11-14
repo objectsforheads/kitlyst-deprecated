@@ -1,5 +1,5 @@
 <template name="displayTwoDropDistribution">
-  <div id="drawstat-twoDropDist" class="ct-chart ct-double-octave drawstat-twoDropDist">
+  <div id="drawstat-twoDropDist" class="ct-chart ct-major-twelfth drawstat-twoDropDist">
   </div>
 </template>
 
@@ -13,7 +13,7 @@
       </div>
     </div>
     <div class="startDraw-chart">
-      <div id="drawstat-startDrawDist_{{cardCount}}" class="ct-chart ct-double-octave drawstat-startDrawDist_{{cardCount}}">
+      <div id="drawstat-startDrawDist_{{cardCount}}" class="ct-chart ct-major-twelfth drawstat-startDrawDist_{{cardCount}}">
       </div>
     </div>
   </div>
@@ -72,7 +72,7 @@
       </div>
     </div>
     <div class="cardDraw-chart">
-      <div id="drawstat-cardDrawDist_{{cardCount}}" class="ct-chart ct-double-octave drawstat-cardDrawDist_{{cardCount}}">
+      <div id="drawstat-cardDrawDist_{{cardCount}}" class="ct-chart ct-major-twelfth drawstat-cardDrawDist_{{cardCount}}">
       </div>
     </div>
   </div>
@@ -99,11 +99,15 @@
       </div>
     </div>
     <h3>Distributions</h3>
+    {{#if startHands}}
     <div class="winCondition-stats">
       {{#each startHands}}
         {{> winConditionStats}}
       {{/each}}
     </div>
+    {{else}}
+    <p>Calculate your draw chances by dragging and dropping cards from your deck into your hand.</p>
+    {{/if}}
   </div>
 </template>
 
@@ -114,7 +118,7 @@
       {{> winConditionHand}}
     {{/each}}
   </div>
-    <div id="drawstat-winCondition_{{handCount}}" class="ct-chart ct-double-octave drawstat-winCondition_{{handCount}} {{#unless handSelected}}hidden{{/unless}}"></div>
+    <div id="drawstat-winCondition_{{handCount}}" class="ct-chart ct-major-twelfth drawstat-winCondition_{{handCount}} {{#unless handSelected}}hidden{{/unless}}"></div>
   {{#unless handSelected}}
     <ul>
       <li>Select a hand to calculate the draw distribution</li>
@@ -148,7 +152,7 @@
 <template name="drawStats">
   <h2>Turn 1</h2>
   <p>
-    With <span class="draw-stat-value">{{twoDropCount}}</span> 2-drops in your deck, you have a <span class="draw-stat-value">{{twoDropStat}}</span> chance of drawing at least one of them on turn 1 (taking advantage of your mulligan and replacing on open).
+    With <span class="draw-stat-value">{{twoDropCount}}</span> 2-drop units in your deck, you have a <span class="draw-stat-value">{{twoDropStat}}</span> chance of drawing at least one of them on turn 1 (taking advantage of your mulligan and replacing on open).
   </p>
   <h3>2-drop count distribution</h3>
   <p>The number of 2-drops you're likely to draw on turn 1 (not including your opening replace)</p>
