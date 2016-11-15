@@ -27,20 +27,20 @@
         {{loadDeck}}
         {{> deckBuild}}
       {{else}}
-        You don't own this deck!
+        {{> errorShim error="You don't own this deck!"}}
       {{/if}}
     {{else}}
       {{> deckBuild}}
     {{/if}}
   {{else}}
-    Loading...
+    {{> loader}}
   {{/if}}
 </template>
 
 <template name="importDeck">
   {{#if importing}}
-    <div class="deck-import-shim">
-      <div class="deck-import-wrapper">
+    <div class="deck-import-shim shim">
+      <div class="deck-import-wrapper shim-content">
         <div class="deck-import-form">
           <div class="deck-import-input-wrapper">
             <h3>Paste Textlist</h3>

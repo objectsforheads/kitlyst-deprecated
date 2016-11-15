@@ -274,16 +274,16 @@ body {
     color: #0C52A1;
     text-shadow: 0 0 1rem rgba(164,255,255,.5);
   }
+}
 
-  .card-sprite {
-    image-rendering: optimizeSpeed;
-    image-rendering: -moz-crisp-edges;
-    image-rendering: -o-crisp-edges;
-    image-rendering: -webkit-optimize-contrast;
-    image-rendering: pixelated;
-    image-rendering: optimize-contrast;
-  -ms-interpolation-mode: nearest-neighborz;
-  }
+.card-sprite {
+  image-rendering: optimizeSpeed;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -o-crisp-edges;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: pixelated;
+  image-rendering: optimize-contrast;
+-ms-interpolation-mode: nearest-neighborz;
 }
 
 
@@ -1030,20 +1030,7 @@ $deckInfoWidthCollapsed: 142px;
   }
 }
 
-.deck-import-shim {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.75);
-  z-index: 1;
-}
 .deck-import-wrapper {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   width: 90%;
   height: 90%;
   max-width: 40rem;
@@ -1779,6 +1766,7 @@ $deckbuilderFiltersWidth: 17rem;
 
   .deckview-card-info {
     font-size: 0.75rem;
+    color: #fff;
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
@@ -1799,6 +1787,69 @@ $deckbuilderFiltersWidth: 17rem;
     }
   }
 }
+
+
+
+
+
+
+
+
+
+
+.shim {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.75);
+  z-index: 1;
+
+  .shim-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+  }
+}
+
+.loader-shim {
+  .loader {
+    text-align: center;
+
+    .card-sprite {
+      margin: auto;
+      transform: scale(2);
+      transform-origin: bottom center;
+    }
+  }
+
+  .loading-indicator {
+    display: inline-block;
+    animation: fadeInOut 2000ms ease-in-out infinite 0ms;
+  }
+}
+
+.error-shim {
+  text-align: center;
+
+  .card-sprite {
+    margin: auto;
+    transform: scale(2);
+    transform-origin: bottom center;
+  }
+}
+
+@keyframes fadeInOut {
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
 
 
 

@@ -1,4 +1,6 @@
 import './view.html';
+import '../../components/loader.html';
+import '../../components/error.html';
 
 Template.deckView.onCreated(function() {
   var self = this;

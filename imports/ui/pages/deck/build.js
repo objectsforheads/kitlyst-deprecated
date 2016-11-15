@@ -9,6 +9,7 @@ import '../../css/faction/abyssian.css';
 import '../../css/faction/magmar.css';
 import '../../css/faction/vanar.css';
 import '../../css/faction/neutral.css';
+import '../../css/faction/misc.css';
 
 import Chartist from 'chartist';
 import '/node_modules/chartist/dist/chartist.min.css';
