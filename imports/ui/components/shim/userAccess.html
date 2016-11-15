@@ -1,0 +1,18 @@
+<template name="userAccessShim">
+  <div class="user-access-shim shim">
+    <button class="userAccessToggle"><i class="fa fa-times"></i></button>
+    <div class="user-acccess shim-content">
+      <div class="user-signup-container">
+        <h2>Get Started</h2>
+        <p>Register an account to access Decklyst's additional features. It's free and we promise your email will forever languish in a database somewhere, never to be sold or distributed otherwise to other parties.</p>
+        {{> userSignup}}
+        <p>Already have an account? <button class="btn-link toggleAccountAccess">Log in</button> to continue.</p>
+      </div>
+      <div class="user-login-container hidden">
+        <h2>Login</h2>
+        {{> userLogin}}
+        <p>Don't have an account? <button class="btn-link toggleAccountAccess">Get started</button> by registering an account.</p>
+      </div>
+    </div>
+  </div>
+</template>

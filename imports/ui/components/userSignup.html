@@ -1,19 +1,14 @@
 <template name="userSignup">
   <form class="userSignup">
-    <div class="form-group">
-      <label for="signupEmailAddress">Email Address</label>
-      <input type="email" name="signupEmailAddress" class="form-control" placeholder="Email Address" required>
-    </div>
-    <div class="form-group">
-      <label for="signupUsername">Username</label>
-      <input type="text" name="signupUsername" class="form-control" placeholder="Username" required>
-    </div>
-    <div class="form-group">
-      <label for="signupPassword">Password</label>
-      <input type="password" name="signupPassword" class="form-control" placeholder="Password" required>
-    </div>
-    <div class="form-group">
-      <input type="submit" class="btn btn-success btn-block btn-lg" value="Get Started">
-    </div>
+    <label for="signupEmailAddress" class="h3 form-label">Email Address</label>
+    <input type="email" name="signupEmailAddress" class="form-input" placeholder="you@mailprovider.com" required>
+
+    <label for="signupUsername" class="h3 form-label">Username</label>
+    <input type="text" name="signupUsername" class="form-input" placeholder="No spaces or special characters" required>
+
+    <label for="signupPassword" class="h3 form-label">Password</label>
+    <input type="password" name="signupPassword" class="form-input" placeholder="At least 6 characters - be responsible!" required>
+
+    <button class="cta primary"><span class="btn-text">get started</span></button>
   </form>
 </template>

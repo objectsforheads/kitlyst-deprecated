@@ -47,6 +47,11 @@ Template.userSignup.events({
         sAlert.error(error.reason);
       } else {
         var userId = Meteor.userId();
+
+        if (Session.get('userAccess') !== undefined) {
+          Session.set('userAccess', false);
+        }
+
         sAlert.success('Hello there, new friend!');
       }
     });

@@ -1,15 +1,11 @@
 <template name="userLogin">
   <form class="userLogin">
-    <div class="form-group">
-      <label for="loginUser">Username or Email</label>
-      <input type="text" name="loginUser" class="form-control" placeholder="Username or Email" required>
-    </div>
-    <div class="form-group">
-      <label for="loginPassword">Password</label>
-      <input type="password" name="loginPassword" class="form-control" placeholder="Password" required>
-    </div>
-    <div class="form-group">
-      <input type="submit" class="btn btn-success btn-block btn-lg" value="Log In">
-    </div>
+    <label for="loginUser" class="h3 form-label">Username or Email</label>
+    <input type="text" name="loginUser" class="form-input" placeholder="Username or Email" required>
+
+    <label for="loginPassword" class="h3 form-label">Password</label>
+    <input type="password" name="loginPassword" class="form-input" placeholder="Password" required>
+
+    <button class="cta primary"><span class="btn-text">log in</span></button>
   </form>
 </template>

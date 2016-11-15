@@ -11,6 +11,11 @@ Template.userLogin.events({
       if (error) {
         sAlert.error(error.reason);
       }
+      else {
+        if (Session.get('userAccess') !== undefined) {
+          Session.set('userAccess', false);
+        }
+      }
     });
   }
 })
