@@ -1,22 +1,78 @@
 <template name="homepage">
-  <nav>
-    <h2>Deck</h2>
-    <a href="/deck/build">Build a Deck</a> | <a href="/deck/edit">Edit a Deck</a> | <a href="/deck/view">View a Deck</a>
+  <nav class="homepage-nav">
+    <div class="h2 homepage-nav-title"><span style="color: #eee;">kit.</span><span style="color:#02B6EB;">listlyst</span></div>
+    {{#unless currentUser}}
+    <button class="cta confirm homepage-nav-cta toggleUserAccess"><span class="btn-text">sign in/up</span></button>
+    {{else}}
+    {{> userLogout classes="default homepage-nav-logout"}}
+    {{/unless}}
+    <ul class="homepage-nav-links">
+      <li class="homepage-nav-link">
+        <a href="/deck/build">deckbuilder</a>
+      </li>
+      <li class="homepage-nav-link">
+        <a href="http://spritelyst.objectsforheads.com">spritelyst
+        </a>
+      </li>
+      <li class="homepage-nav-link">
+        <a href="http://listlyst.com">listlyst</a>
+      </li>
+    </ul>
   </nav>
-  {{#if currentUser}}
-  hey what's up friend
-  {{> userLogout}}
-  {{else}}
-  <div class="user-signup-container">
-    <h2>Get Started</h2>
-    <p>Register an account to access Decklyst's additional features. It's free and we promise your email will forever languish in a database somewhere, never to be sold or distributed otherwise to other parties.</p>
-    {{> userSignup}}
-    <p>Already have an account? <button class="btn-link toggleAccountAccess">Log in</button> to continue.</p>
-  </div>
-  <div class="user-login-container hidden">
-    <h2>Login</h2>
-    {{> userLogin}}
-    <p>Don't have an account? <button class="btn-link toggleAccountAccess">Get started</button> by registering an account.</p>
-  </div>
+  <section class="jumbotron">
+    <h1 class="site-title"><span style="color: #eee;">kit.</span><span style="color:#02B6EB;">listlyst</span></h1>
+    {{#unless currentUser}}
+    <button class="cta confirm toggleUserAccess"><span class="btn-text">sign in/up</span></button>
+    {{/unless}}
+    <div class="homepageNavAnchor"></div>
+  </section>
+  <main class="homepage-container">
+    <section id="decklistlyst" class="homepage-section decklistlyst">
+      <div class="homepage-section-content">
+        <h2 class="section-heading"><a href="/deck/build">kit.listlyst/deck</a></h2>
+        <ul class="homepage-features">
+          <li class="homepage-feature">build, save, and share decks</li>
+          <li class="homepage-feature">generate card draw stats dynamically</li>
+          <li class="homepage-feature">export as a textlist or image</li>
+        </ul>
+      </div>
+    </section>
+    <section id="spritelyst" class="homepage-section spritelyst">
+      <div class="homepage-section-content">
+        <ul class="homepage-features">
+          <li class="homepage-feature">see every sprite animation</li>
+          <li class="homepage-feature">all at the same time</li>
+          <li class="homepage-feature">also in dance party mode</li>
+          <li class="homepage-feature">with search and filter capabilities</li>
+        </ul>
+        <h2 class="section-heading"><a href="http://spritelyst.objectsforheads.com">spritelyst</a></h2>
+      </div>
+    </section>
+    <section id="listlyst" class="homepage-section listlyst">
+      <div class="homepage-section-content">
+        <h2 class="section-heading"><a href="http://listlyst.com">listlyst</a></h2>
+        <ul class="homepage-features">
+          <li class="homepage-feature">RESTful API for card info</li>
+          <li class="homepage-feature">supports patch 0.62 to current</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+  <footer>
+    <p>An <a href="http://objectsforheads.com" target="_blank">objectsforheads</a> endeavor</p>
+  </footer>
+  <style class="homepage-scrollFance"></style>
+  <svg width="0" height="0">
+    <defs>
+      <clipPath id="bullhorn_right" clipPathUnits="objectBoundingBox">
+        <polygon points="0 0.1, 1 0, 1 1, 0 0.9" />
+      </clipPath>
+      <clipPath id="bullhorn_left" clipPathUnits="objectBoundingBox">
+        <polygon points="0 0, 1 0.1, 1 0.9, 0 1" />
+      </clipPath>
+    </defs>
+  </svg>
+  {{#if userAccessing}}
+    {{> userAccessShim}}
   {{/if}}
 </template>
