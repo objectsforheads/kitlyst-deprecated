@@ -1,0 +1,25 @@
+<template name="mainNav">
+  <nav class="{{classes}} main-nav">
+    <div class="h2 main-nav-title"><a href="/"><span class="subtool-heading">kit.</span><span class="tool-heading">listlyst</span></a></div>
+    {{#unless onlyTitle}}
+    {{#unless currentUser}}
+    <button class="cta confirm main-nav-cta toggleUserAccess"><span class="btn-text">sign in/up</span></button>
+    {{else}}
+    {{> userLogout classes="default main-nav-logout"}}
+    {{/unless}}
+    <ul class="main-nav-links">
+      <li class="main-nav-link">
+        <a href="/deck/build">deckbuilder</a>
+      </li>
+      <li class="main-nav-link">
+        <a href="http://spritelyst.objectsforheads.com">spritelyst
+        </a>
+      </li>
+      <li class="main-nav-link">
+        <a href="http://listlyst.com">listlyst</a>
+      </li>
+    </ul>
+    {{/unless}}
+  </nav>
+
+</template>

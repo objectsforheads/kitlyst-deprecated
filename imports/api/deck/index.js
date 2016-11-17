@@ -37,19 +37,29 @@ Meteor.publish('viewDeck', function(hash) {
 
 Meteor.methods({
   'exportDeckImg': function(arg) {
-    check(arg, Match.Optional(null));
+    check(arg, {
+      url: String,
+      orientation: String
+    });
 
-    var url2png = require('url2png')('P090DD7D4CAD90B', 'S_BD8211D791E61');
+    import Urlbox from 'urlbox';
+    var urlbox = Urlbox('dd9c90fb-3db4-4d92-8195-0b35954726f5', '7380ebc8-8c87-4bda-a1a0-4053bfd89781');
+
     var options = {
-      viewport : '900x600',
-      thumbnail_max_width : 400,
-      protocol: 'http'
+      url: 'http://kit.listlyst.com/deck/view/Wqb8RAEL2Sr87kkTh' + '?compact=' + arg.orientation,
+      full_page: true
+    };
+    if (arg.orientation === 'landscape') {
+      options.width = 1002;
+    }
+    if (arg.orientation === 'portrait') {
+      options.width = 320;
     }
 
     var futureGet = new Future();
-    var url2pngUrl = url2png.buildURL('http://google.com', options);
+    var urlboxUrl = urlbox.buildUrl(options);
 
-    futureGet.return(HTTP.get(url2pngUrl, {}));
+    futureGet.return(HTTP.get(urlboxUrl, {}));
     var resultGet = futureGet.wait();
 
     var futureUpload = new Future();
@@ -61,7 +71,7 @@ Meteor.methods({
         Accept: 'application/json'
       },
        data: {
-         image: url2pngUrl
+         image: urlboxUrl
        }
     }
 
@@ -110,6 +120,7 @@ Meteor.methods({
       hash: Match.Optional(String),
       name: Match.Optional(String),
       description: Match.Optional(String),
+      draft: Match.Optional(String),
       faction: String,
       general: Array,
       deck: Array
@@ -131,7 +142,7 @@ Meteor.methods({
         Decks.update({ hash: hash }, {$set: {
           name: arg.name || 'Deck ' + hash,
           description: arg.description || "",
-          draft: false,
+          draft: arg.draft || false,
           faction: arg.faction,
           general: arg.general,
           deck: arg.deck
@@ -144,7 +155,7 @@ Meteor.methods({
           patch: 1.75,
           view: 'public',
           view_hash: viewHash,
-          draft: false,
+          draft: arg.draft || false,
           owner: this.userId,
           name: arg.name || 'Deck ' + viewHash,
           description: arg.description || "",
@@ -154,7 +165,7 @@ Meteor.methods({
         })
       }
 
-     return hash;
+     return {hash: hash, view_hash: viewHash};
     }
     else {
       return {General: generalValid, Faction: factionValid, Cards: cardsValid};

@@ -1,6 +1,4 @@
 import './view.html';
-import '../../components/shim/loader.html';
-import '../../components/shim/error.html';
 
 Template.deckView.onCreated(function() {
   var self = this;
@@ -40,6 +38,21 @@ Template.deckView.helpers({
   'compactPortrait': function() {
     if (FlowRouter.getQueryParam('compact') === 'portrait') {
       return true;
+    }
+    return false;
+  },
+  'deckValid': function() {
+    if (Session.get('deckCardCount') === 40) {
+      return true;
+    }
+    return false;
+  },
+  'deckError': function() {
+    if (Session.get('deckCardCount') > 40) {
+      return "Your deck has too many cards. Remove " + (Session.get('deckCardCount') - 40) + " to enable stats."
+    }
+    else if (Session.get('deckCardCount') < 40) {
+      return "Your deck doesn't have enough cards. Add " + (40 - Session.get('deckCardCount')) + " to enable stats."
     }
     return false;
   },
@@ -176,6 +189,13 @@ Template.deckView.helpers({
       return true;
     }
     return false;
+  },
+  'availableCards': function() {
+    var cards = [];
+    Decks.findOne().deck.forEach(function(card) {
+      cards.push(allCards.findOne({id: card.id}));
+    })
+    return cards;
   }
 })
 

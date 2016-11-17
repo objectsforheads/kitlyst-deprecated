@@ -9,7 +9,6 @@ import '../../css/faction/abyssian.css';
 import '../../css/faction/magmar.css';
 import '../../css/faction/vanar.css';
 import '../../css/faction/neutral.css';
-import '../../css/faction/misc.css';
 
 import Chartist from 'chartist';
 import '/node_modules/chartist/dist/chartist.min.css';
@@ -147,13 +146,13 @@ Template.deckMods.events({
         sAlert.error(error.reason);
       }
       else {
-        if (typeof data === 'string') {
+        if (typeof data.hash === 'string') {
           if (FlowRouter.getParam('hash')) {
             sAlert.success('Deck saved!');
           } else {
             sAlert.success('Deck saved! Redirecting to draft...', {
               onClose: function() {
-                FlowRouter.go('/deck/build/' + data);
+                FlowRouter.go('/deck/build/' + data.hash);
               }
             })
           }
@@ -893,10 +892,9 @@ Template.navDeckMeta.events({
   },
   'click .deck-meta-toggle': function() {
     $('.deck-info').removeClass('export-open');
+    $('.deckbuilder-container').removeClass('min-info');
+    $('#deck-info-toggle').prop('checked', false);
     $('.deck-info').addClass('meta-open');
-  },
-  'click .deck-meta-off': function() {
-    $('.deck-info').removeClass('meta-open');
   },
   'click .saveDeckName': function() {
     var startNameSave = sAlert.info('Saving deck name...', {timeout: 'none'});
@@ -1001,69 +999,123 @@ Template.navDeckExport.helpers({
 Template.navDeckExport.events({
   'click .deck-export-toggle': function() {
     $('.deck-info').removeClass('meta-open');
+    $('.deckbuilder-container').removeClass('min-info');
+    $('#deck-info-toggle').prop('checked', false);
     $('.deck-info').addClass('export-open');
-  },
-  'click .deck-export-off': function() {
-    $('.deck-info').removeClass('export-open');
   },
   'click .exportDeckImg': function() {
     var self = Template.instance();
     var startDeckExport = sAlert.info("Exporting your deck to imgur...", {timeout: 'none'});
     self.exportingImg.set(true);
+    var args = {
+      url: null,
+      orientation: 'portrait'
+    }
     if (FlowRouter.getParam('hash')) {
       // deck exists, push the view link to the server
+      args.url = window.location.host + '/deck/view/' + Decks.findOne().view_hash;
+      Meteor.call('exportDeckImg', args, function(err, res) {
+        self.exportingImg.set(false);
+        sAlert.close(startDeckExport);
+        if (err) {
+          sAlert.error(err.reason);
+        }
+        else {
+          if (res.success === true && res.status === 200) {
+            self.deckExported.set(true);
+            self.deckImageUrl.set(res.data.link);
+            sAlert.success("Deck successfully uploaded to imgur!");
+          } else {
+            sAlert.error("Something went wrong! Please try again.");
+          }
+        }
+      })
     }
     else {
       // deck hasn't been saved yet, generate a temporary draft for it
-    }
-    Meteor.call('exportDeckImg', null, function(err, res) {
-      self.exportingImg.set(false);
-      sAlert.close(startDeckExport);
-      if (err) {
-        sAlert.error(error.reason);
+      var startDeckSaveTemp = sAlert.info("Generating your deck view for export...", {timeout: 'none'});
+      let deck = {
+        name: $('.deck-draft-name').val(),
+        description: $('.deck-draft-description').val(),
+        faction: Session.get('deckFaction'),
+        general: JSON.parse(Session.get('deckGeneral')),
+        deck: JSON.parse(Session.get('deckCards')),
+        draft: 'temp'
       }
-      else {
-        if (res.success === true && res.status === 200) {
-          self.deckExported.set(true);
-          self.deckImageUrl.set(res.data.link);
-          sAlert.success("Deck successfully uploaded to imgur!");
-        } else {
-          sAlert.error("Something went wrong! Please try again.");
+      Meteor.call('saveDeckDraft', deck, function(err, data) {
+        sAlert.close(startDeckSaveTemp);
+        if (err) {
+          sAlert.error(error.reason);
         }
-      }
-    })
+        else {
+          if (typeof data.hash === 'string') {
+            var startDeckExportTemp = sAlert.info('View generated! Requesting export...', {timeout: 'none'});
+            args.url = window.location.host + '/deck/view/' + data.view_hash;
+            Meteor.call('exportDeckImg', args, function(err, res) {
+              self.exportingImg.set(false);
+              sAlert.close(startDeckExport);
+              sAlert.close(startDeckExportTemp);
+              if (err) {
+                sAlert.error(error.reason);
+              }
+              else {
+                if (res.success === true && res.status === 200) {
+                  self.deckExported.set(true);
+                  self.deckImageUrl.set(res.data.link);
+                  sAlert.success("Deck successfully uploaded to imgur!");
+                } else {
+                  sAlert.error("Something went wrong! Please try again.");
+                }
+              }
+            })
+          }
+          else {
+            for (var validation in data) {
+              if (data[validation] === false) {
+                sAlert.error(validation + ' failed to validate');
+              }
+            }
+          }
+        }
+      });
+    }
   }
 })
 
 // Event delegation
 
-// Create tooltip for min view cards
-$('body').on('mouseenter', '[data-layout="layout-min"] .has-tooltip:not(.tooltipstered)', function() {
-  $(this)
-    .tooltipster({
-      contentAsHTML: true,
-      delay: 0,
-      contentCloning: true,
-      side: ['top', 'bottom', 'right', 'left']
-    })
-    .tooltipster('open');
+// Create tooltips for cards
+$('body').on('mouseenter', '.has-tooltip:not(.tooltipstered)', function() {
+  // But only if they're not already cards
+  if ($(this).closest('[data-layout]').attr('data-layout') !== 'layout-full' && $(this).hasClass('layout-full') === false) {
+    // If it's the list view, it opens side first
+    if ($(this).closest('[data-layout]').attr('data-layout') === 'layout-list' || $(this).hasClass('layout-list') === true) {
+      $(this)
+        .tooltipster({
+          contentAsHTML: true,
+          delay: 0,
+          contentCloning: true,
+          side: ['left', 'right', 'top', 'bottom']
+        })
+        .tooltipster('open');
+    }
+    // Otherwise default
+    else {
+      $(this)
+        .tooltipster({
+          contentAsHTML: true,
+          delay: 0,
+          contentCloning: true,
+          side: ['top', 'bottom', 'right', 'left']
+        })
+        .tooltipster('open');
+    }
+  }
 });
 
-
-// Create tooltip for list view cards
-$('body').on('mouseenter', '[data-layout="layout-list"] .has-tooltip:not(.tooltipstered)', function() {
-  $(this)
-    .tooltipster({
-      contentAsHTML: true,
-      delay: 0,
-      contentCloning: true,
-      side: ['left', 'top', 'bottom', 'right']
-    })
-    .tooltipster('open');
-});
 
 // Disable tooltips for full view cards
-$('body').on('mouseenter', '[data-layout="layout-full"].tooltipstered', function() {
+$('body').on('mouseenter', '[data-layout="layout-full"] .tooltipstered', function() {
   $(this).tooltipster('destroy')
 })
 
@@ -1187,9 +1239,11 @@ $('body').on('keyup change', '.deckbuilder-search', function(e) {
 $('body').on('click', '[name="builder-state"]:checked', function(e) {
   if (JSON.parse($(e.currentTarget).val()) === true) {
     $('.deckbuilder-container').addClass('min-info');
+    $('#deck-info-toggle').prop('checked', true);
   }
   else {
     $('.deckbuilder-container').removeClass('min-info');
+    $('#deck-info-toggle').prop('checked', false);
   }
   Session.set('statsEnabled', JSON.parse($(e.currentTarget).val()));
 })

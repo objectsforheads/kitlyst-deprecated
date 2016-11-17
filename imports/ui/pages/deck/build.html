@@ -2,11 +2,13 @@
   <style class="deckbuilder-search-styles"></style>
   {{#if generalSelected}}
   <div class="deckbuilder-container {{#if statsEnabled}}hide-add-cards{{/if}}">
+    {{> mainNav onlyTitle=true}}
     {{> addCards}}
     {{#if statsEnabled}}
-      <h1>Stats</h1>
+      <h1 class="h2">Stats</h1>
       {{> drawStats}}
     {{/if}}
+    {{> mainFooter}}
   </div>
   {{> navDeckInfo}}
   {{> navDeckbuilderSettings}}
@@ -14,7 +16,8 @@
   {{> importDeck}}
   {{else}}
     <div class="select-general-wrapper">
-      <h1>Build a Deck</h1>
+      {{> mainNav onlyTitle=true}}
+      <h1 class="h2">Build Deck: Select General</h1>
       {{> selectGeneral}}
     </div>
   {{/if}}
@@ -95,18 +98,18 @@
 </template>
 
 <template name="builderStateToggle">
+  {{#if statsAvailable}}
   <div class="builder-state-toggles">
     <label for="builder-state_cards" class="builder-state-toggle">
       <input type="radio" name="builder-state" value="false" checked id="builder-state_cards">
       <i class="fa fa-book"></i>
     </label>
-    {{#if statsAvailable}}
     <label for="builder-state_stats" class="builder-state-toggle">
       <input type="radio" name="builder-state" value="true" id="builder-state_stats">
       <i class="fa fa-bar-chart"></i>
     </label>
-    {{/if}}
   </div>
+  {{/if}}
 </template>
 
 <template name="navDeckExport">
@@ -278,7 +281,7 @@
       <div class="range-filter-label">
         <h3>Mana Cost</h3>
         <div class="check-enabled">
-          <label for="range-filter_manaCost" class="filter_type check-enabled">
+          <label for="range-filter_manaCost" class="filter_type">
             <input type="checkbox" id="range-filter_manaCost" value="Artifact">
             <i class="fa fa-eye is-enabled"></i>
             <i class="fa fa-eye-slash is-disabled"></i>
@@ -291,7 +294,7 @@
       <div class="range-filter-label">
         <h3>Attack</h3>
         <div class="check-enabled">
-          <label for="range-filter_attack" class="filter_type check-enabled">
+          <label for="range-filter_attack" class="filter_type">
             <input type="checkbox" id="range-filter_attack" value="Artifact">
             <i class="fa fa-eye is-enabled"></i>
             <i class="fa fa-eye-slash is-disabled"></i>
@@ -304,7 +307,7 @@
       <div class="range-filter-label">
         <h3>Health</h3>
         <div class="check-enabled">
-          <label for="range-filter_health" class="filter_type check-enabled">
+          <label for="range-filter_health" class="filter_type">
             <input type="checkbox" id="range-filter_health" value="Artifact">
             <i class="fa fa-eye is-enabled"></i>
             <i class="fa fa-eye-slash is-disabled"></i>
@@ -325,7 +328,7 @@
       {{#if deckExists}}
         {{#each deckCards}}
         <div class="decklist-card">
-          {{> card info=this layoutType="layout-list" hasTooltip=true}}
+          {{> card info=this layoutType="layout-list" hasTooltip=true actionable=false}}
           <div class="decklist-card-info">
             <div class="decklist-card-caption">
               <span class="decklist-card-name">{{name}}</span><span class="decklist-card-count"> x{{count}}</span>
@@ -350,14 +353,12 @@
   <div class="decklist-card deck-general">
     <div class="decklist-card-info">
       <div class="decklist-card-options">
-        {{#if deckExists}}
         <button class="modDeck newDraft"><i class="fa fa-floppy-o"></i></button>
-        {{/if}}
         <button class="modDeck changeGeneral"><i class="fa fa-exchange"></i></button>
         <button class="modDeck deleteDeck"><i class="fa fa-trash"></i></button>
       </div>
     </div>
-    {{> card info=this layoutType="layout-list" hasTooltip=true}}
+    {{> card info=this layoutType="layout-list" classes="general" hasTooltip=true}}
   </div>
   <div class="tooltip-wrapper">
     {{> card info=this classes="card-tooltip" layoutType="layout-full" isTooltip=true}}
@@ -398,21 +399,20 @@
 </template>
 
 <template name="addCards">
-  <div class="add-cards-wrapper">
-    <h1>Build a Deck</h1>
+  <div class="add-cards-wrapper animated_on-hover">
+    <h1 class="h2 deckbuilder-heading">Build Deck: Add Cards</h1>
     <div class="deckbuilder" data-layout="layout-min" data-showArtifacts="true" data-showSpells="true" data-showUnits="true">
       <div class="add-cards">
-        <h2>Add Cards</h2>
-        <h3>Faction Cards</h3>
+        <h2 class="h3 deckbuilder-subheading">Faction Cards</h2>
         <div class="deckbuilder-cards">
           {{#each availableFactionCards}}
-            {{> card info=this classes="addCard deckbuilder-card" maxCount="3" hasTooltip=true}}
+            {{> card info=this classes="addCard deckbuilder-card" maxCount="3" hasTooltip=true actionable=true}}
           {{/each}}
         </div>
-        <h3>Neutral Cards</h3>
+        <h2 class="h3 deckbuilder-subheading">Neutral Cards</h2>
         <div class="deckbuilder-cards">
         {{#each availableNeutralCards}}
-        {{> card info=this classes="addCard deckbuilder-card" maxCount="3" hasTooltip=true}}
+        {{> card info=this classes="addCard deckbuilder-card" maxCount="3" hasTooltip=true actionable=true}}
         {{/each}}
         </div>
         <div class="tooltip-wrapper">
@@ -430,13 +430,12 @@
 
 <template name="selectGeneral">
   <div class="select-general">
-    <h2>Select your General</h2>
     <div class="generals animated">
       {{#each factions}}
       {{passFaction}}
         {{#each factionGenerals faction=getFaction}}
         <div class="general-choice-wrapper">
-          {{> card info=this classes="general-choice" layoutType="layout-full"}}
+          {{> card info=this classes="general general-choice" layoutType="layout-full" actionable=true}}
         </div>
         {{/each}}
       {{/each}}

@@ -1,24 +1,5 @@
 <template name="homepage">
-  <nav class="homepage-nav">
-    <div class="h2 homepage-nav-title"><span style="color: #eee;">kit.</span><span style="color:#02B6EB;">listlyst</span></div>
-    {{#unless currentUser}}
-    <button class="cta confirm homepage-nav-cta toggleUserAccess"><span class="btn-text">sign in/up</span></button>
-    {{else}}
-    {{> userLogout classes="default homepage-nav-logout"}}
-    {{/unless}}
-    <ul class="homepage-nav-links">
-      <li class="homepage-nav-link">
-        <a href="/deck/build">deckbuilder</a>
-      </li>
-      <li class="homepage-nav-link">
-        <a href="http://spritelyst.objectsforheads.com">spritelyst
-        </a>
-      </li>
-      <li class="homepage-nav-link">
-        <a href="http://listlyst.com">listlyst</a>
-      </li>
-    </ul>
-  </nav>
+  {{> mainNav classes="homepage-nav"}}
   <section class="jumbotron">
     <h1 class="site-title"><span style="color: #eee;">kit.</span><span style="color:#02B6EB;">listlyst</span></h1>
     {{#unless currentUser}}
@@ -58,9 +39,7 @@
       </div>
     </section>
   </main>
-  <footer>
-    <p>An <a href="http://objectsforheads.com" target="_blank">objectsforheads</a> endeavor</p>
-  </footer>
+  {{> mainFooter}}
   <style class="homepage-scrollFance"></style>
   <svg width="0" height="0">
     <defs>

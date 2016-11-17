@@ -1,5 +1,4 @@
 import './homepage.html';
-import '../components/shim/userAccess.js';
 
 Template.homepage.onCreated(function() {
   Session.set('userAccess', false)
