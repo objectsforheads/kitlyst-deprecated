@@ -14,7 +14,7 @@ import Chartist from 'chartist';
 import '/node_modules/chartist/dist/chartist.min.css';
 require('chartist-plugin-legend');
 
-import Clipboard from 'clipboard';
+
 
 
 
@@ -87,6 +87,16 @@ Template.deckBuild.onCreated(function() {
 
   // states
   Session.set('importingDeck', false);
+})
+
+Template.deckBuild.onRendered(function() {
+
+})
+
+Template.deckBuild.onDestroyed(function() {
+  if (typeof urlCopy === 'object') {
+    urlCopy.destroy();
+  }
 })
 
 
@@ -848,14 +858,7 @@ Template.navDeckMeta.onCreated(function() {
 })
 
 Template.navDeckMeta.onRendered(function() {
-  var urlCopy = new Clipboard('.deck-meta-wrapper .clipboardJS-trigger');
 
-  urlCopy.on('success', function() {
-    sAlert.success('Url copied!');
-  })
-  urlCopy.on('error', function() {
-    sAlert.error('Could not copy URL! Ctrl+C to continue.');
-  })
 })
 
 Template.navDeckMeta.helpers({
@@ -983,14 +986,7 @@ Template.navDeckExport.onCreated(function() {
 })
 
 Template.navDeckExport.onRendered(function() {
-  var urlCopy = new Clipboard('.deck-export-wrapper .clipboardJS-trigger');
 
-  urlCopy.on('success', function() {
-    sAlert.success('Url copied!');
-  })
-  urlCopy.on('error', function() {
-    sAlert.error('Could not copy URL! Ctrl+C to continue.');
-  })
 })
 
 Template.navDeckExport.helpers({

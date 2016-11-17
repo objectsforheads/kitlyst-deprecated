@@ -11,8 +11,21 @@ import '../components/shim/userAccess.js';
 
 import './main.html';
 
+import Clipboard from 'clipboard';
+
 Template.mainLayout.helpers({
   'userAccessing': function() {
     return Session.get('userAccess');
   }
+})
+
+Template.mainLayout.onRendered(function() {
+  var urlCopy = new Clipboard('.clipboardJS-trigger');
+
+  urlCopy.on('success', function() {
+    sAlert.success('Url copied');
+  })
+  urlCopy.on('error', function() {
+    sAlert.error('Could not copy URL! Ctrl+C to continue.');
+  })
 })
