@@ -129,7 +129,7 @@
     </div>
     <small>Please note: the view link uses a different hash than your edit link so that you can share your deck without sharing edit permissions.</small>
     {{else}}
-    <p>Save this deck to generate a view link for it.</p>
+    <p><a href="#" class="saveDeckDraft">Save this deck</a> to generate a view link for it.</p>
     {{/if}}
     <h3>Textlist</h3>
     <div class="deckbuilder-input-wrapper textarea">
@@ -186,27 +186,23 @@
         </button>
       </div>
       {{#if currentUser}}
-        <small>You've own this draft and can access it through this link and your <a href="/">drafts</a></small>
+        <small>You own this draft and can access it through this link and your <a href="/account">drafts</a></small>
       {{else}}
         <small>Because no one owns this draft, this link is currently your only way to access this deck while you're editing, so keep it safe! <a href="/" target="_blank">Log in</a> to claim this deck and save it to your drafts.</small>
       {{/if}}
-    {{/if}}
-    <h3>Publish Deck</h3>
-    {{#unless deckInvalid}}
-      <button class="cta primary publishDeck"><span class="btn-text">Publish Deck</span></button>
     {{else}}
-      <button class="cta disabled"><span class="btn-text">{{deckInvalidReason}}</span></button>
-    {{/unless}}
-    <small>Publish this deck to share it on decklyst<sup>1</sup>. A published deck can longer be edited, but you can always export the cards into another draft.</small>
-    <small><sup>1</sup> At the moment, this means very little. But additional features are coming Soon<sup>TM</sup></small>
+      <small>You haven't saved this deck yet - any changes you make to the deck meta information will automatically save this deck as a draft as well.</small>
+    {{/if}}
   </div>
 </template>
 
 <template name="navDeckInfo">
   <div class="deck-info fixed-nav">
     {{> builderStateToggle}}
-    {{> navDeckMeta}}
-    {{> navDeckExport}}
+    {{#if deckExists}}
+      {{> navDeckMeta}}
+      {{> navDeckExport}}
+    {{/if}}
     <label for="deck-info-toggle" class="toggle">
       <input type="checkbox" id="deck-info-toggle" class="deck-info-toggle toggle-checkbox"/>
       <i class="fa fa-expand"></i>
@@ -355,7 +351,7 @@
   <div class="decklist-card deck-general">
     <div class="decklist-card-info">
       <div class="decklist-card-options">
-        <button class="modDeck newDraft"><i class="fa fa-floppy-o"></i></button>
+        <button class="modDeck {{#if deckExists}}newDraft{{else}}inactive{{/if}} helper-tooltip" data-title="{{#if deckExists}}Save deck draft{{else}}Add cards first!{{/if}}"><i class="fa fa-floppy-o"></i></button>
         <button class="modDeck changeGeneral"><i class="fa fa-exchange"></i></button>
         <button class="modDeck deleteDeck"><i class="fa fa-trash"></i></button>
       </div>
@@ -363,7 +359,7 @@
     {{> card info=this layoutType="layout-list" classes="general" hasTooltip=true}}
   </div>
   <div class="tooltip-wrapper">
-    {{> card info=this classes="card-tooltip" layoutType="layout-full" isTooltip=true}}
+    {{> card info=this classes="card-tooltip general" layoutType="layout-full" isTooltip=true}}
   </div>
   {{/each}}
 </template>

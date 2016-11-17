@@ -675,7 +675,7 @@ $generalsWidth: 1506px;
   }
 
   .deck-general {
-    align-items: start;
+    align-items: flex-start;
 
     .card {
       transform: translateY(-25%);
@@ -705,7 +705,7 @@ $generalsWidth: 1506px;
   }
   .deck-breakdown {
     display: flex;
-    align-items: end;
+    align-items: flex-end;
   }
   .deck-card-count {
     white-space: nowrap;
@@ -749,6 +749,11 @@ $generalsWidth: 1506px;
 
       &:hover {
         opacity: 1;
+      }
+
+      &.inactive {
+        cursor: default;
+        opacity: 0.5;
       }
     }
   }
@@ -890,7 +895,7 @@ $generalsWidth: 1506px;
 
 [for="deck-meta-toggle"] {
   right: 100%;
-  top: 6.5rem;
+  top: 4rem;
 
   input:checked ~ .fa {
     opacity: 1;
@@ -916,7 +921,7 @@ $generalsWidth: 1506px;
 
 [for="deck-export-toggle"] {
   right: 100%;
-  top: 4rem;
+  top: 6.5rem;
 
   .fa {
     font-size: 1.65rem;
@@ -1079,7 +1084,7 @@ $deckInfoWidthCollapsed: 142px;
     left: 0;
     width: 100%;
     height: 100%;
-    align-items: start;
+    align-items: flex-start;
     padding: 0 1rem 1.5rem 1rem;
   }
 
@@ -1097,7 +1102,7 @@ $deckInfoWidthCollapsed: 142px;
     height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: end;
+    justify-content: flex-end;
   }
 
   .deck-import-input {
@@ -1395,7 +1400,7 @@ $deckbuilderFiltersWidth: 17rem;
 .startDraw-labels-flex {
   display: flex;
   align-items: center;
-  justify-content: end;
+  justify-content: flex-end;
   min-width: 220px;
   width: 33.33%;
 
@@ -1621,7 +1626,7 @@ $deckbuilderFiltersWidth: 17rem;
     }
     .deck-breakdown {
       display: flex;
-      align-items: end;
+      align-items: flex-end;
     }
     .deck-card-count {
       white-space: nowrap;
@@ -1673,7 +1678,7 @@ $deckbuilderFiltersWidth: 17rem;
 
   .deckview-card {
     display: flex;
-    align-items: end;
+    align-items: flex-end;
     margin-right: 1.5rem;
 
     .card {
@@ -2075,10 +2080,12 @@ $deckbuilderFiltersWidth: 17rem;
   }
 
   &:nth-child(2n+1) {
+    clip-path: polygon(0 10%, 100% 0, 100% 100%, 0 90%);
+    -webkit-clip-path: polygon(0 10%, 100% 0, 100% 100%, 0 90%);
     clip-path: url("#bullhorn_right");
 
     .homepage-section-content {
-      justify-content: start;
+      justify-content: flex-start;
     }
 
     .section-heading::before {
@@ -2093,10 +2100,12 @@ $deckbuilderFiltersWidth: 17rem;
     }
   }
   &:nth-child(2n) {
+    clip-path: polygon(0 0, 100% 10%, 1 90%, 0 100%);
+    -webkit-clip-path: polygon(0 0, 100% 10%, 1 90%, 0 100%);
     clip-path: url("#bullhorn_left");
 
     .homepage-section-content {
-      justify-content: end;
+      justify-content: flex-end;
     }
 
     .section-heading::before {

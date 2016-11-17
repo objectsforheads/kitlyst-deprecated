@@ -402,6 +402,19 @@ Template.importDeck.events({
 
 
 
+Template.navDeckInfo.helpers({
+  'deckExists': function() {
+    if (Session.get('deckCardCount') > 1) {
+      return true;
+    }
+    return false;
+  }
+})
+
+
+
+
+
 Template.deckList.helpers({
   'deckExists': function() {
     if (Session.get('deckCardCount') > 1) {
@@ -897,28 +910,36 @@ Template.navDeckMeta.events({
     $('.deck-info').addClass('meta-open');
   },
   'click .saveDeckName': function() {
-    var startNameSave = sAlert.info('Saving deck name...', {timeout: 'none'});
-    Meteor.call('saveDeckName', {hash: FlowRouter.getParam('hash'), name: $('.deck-draft-name').val()}, function(err, data) {
-      sAlert.close(startNameSave);
-      if (err) {
-        sAlert.error(error.reason);
-      }
-      else {
-        sAlert.success('Deck saved as ' + data + '!');
-      }
-    });
+    if (Decks.findOne() === undefined) {
+      saveDeckDraft();
+    } else {
+      var startNameSave = sAlert.info('Saving deck name...', {timeout: 'none'});
+      Meteor.call('saveDeckName', {hash: FlowRouter.getParam('hash'), name: $('.deck-draft-name').val()}, function(err, data) {
+        sAlert.close(startNameSave);
+        if (err) {
+          sAlert.error(error.reason);
+        }
+        else {
+          sAlert.success('Deck saved as ' + data + '!');
+        }
+      });
+    }
   },
   'click .saveDeckDescription': function() {
-    var startDescriptionSave = sAlert.info('Saving deck description...', {timeout: 'none'});
-    Meteor.call('saveDeckDescription', {hash: FlowRouter.getParam('hash'), description: $('.deck-draft-description').val()}, function(err, data) {
-      sAlert.close(startDescriptionSave);
-      if (err) {
-        sAlert.error(error.reason);
-      }
-      else {
-        sAlert.success('Deck description updated!');
-      }
-    });
+    if (Decks.findOne() === undefined) {
+      saveDeckDraft();
+    } else {
+      var startDescriptionSave = sAlert.info('Saving deck description...', {timeout: 'none'});
+      Meteor.call('saveDeckDescription', {hash: FlowRouter.getParam('hash'), description: $('.deck-draft-description').val()}, function(err, data) {
+        sAlert.close(startDescriptionSave);
+        if (err) {
+          sAlert.error(error.reason);
+        }
+        else {
+          sAlert.success('Deck description updated!');
+        }
+      });
+    }
   },
   'click .publishDeck': function() {
     var startDeckPublish = sAlert.info('Publishing your deck...', {timeout: 'none'});
@@ -1002,6 +1023,10 @@ Template.navDeckExport.events({
     $('.deckbuilder-container').removeClass('min-info');
     $('#deck-info-toggle').prop('checked', false);
     $('.deck-info').addClass('export-open');
+  },
+  'click .saveDeckDraft': function(e) {
+    e.preventDefault();
+    saveDeckDraft();
   },
   'click .exportDeckImg': function() {
     var self = Template.instance();
@@ -1248,3 +1273,41 @@ $('body').on('click', '[name="builder-state"]:checked', function(e) {
   }
   Session.set('statsEnabled', JSON.parse($(e.currentTarget).val()));
 })
+
+function saveDeckDraft() {
+  var startDraftSave = sAlert.info('Saving your deck...', {timeout: 'none'});
+  let deck = {
+    hash: FlowRouter.getParam('hash'),
+    name: $('.deck-draft-name').val(),
+    description: $('.deck-draft-description').val(),
+    faction: Session.get('deckFaction'),
+    general: JSON.parse(Session.get('deckGeneral')),
+    deck: JSON.parse(Session.get('deckCards'))
+  }
+  Meteor.call('saveDeckDraft', deck, function(err, data) {
+    sAlert.close(startDraftSave);
+    if (err) {
+      sAlert.error(error.reason);
+    }
+    else {
+      if (typeof data.hash === 'string') {
+        if (FlowRouter.getParam('hash')) {
+          sAlert.success('Deck saved!');
+        } else {
+          sAlert.success('Deck saved! Redirecting to draft...', {
+            onClose: function() {
+              FlowRouter.go('/deck/build/' + data.hash);
+            }
+          })
+        }
+      }
+      else {
+        for (var validation in data) {
+          if (data[validation] === false) {
+            sAlert.error(validation + ' failed to validate');
+          }
+        }
+      }
+    }
+  });
+}
