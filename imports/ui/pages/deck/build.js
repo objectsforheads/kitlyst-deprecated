@@ -433,6 +433,12 @@ Template.deckList.helpers({
       })
     }
     return cards
+  },
+  'copiesAvailable': function() {
+    if (this.count < 3) {
+      return true;
+    }
+    return false;
   }
 })
 
@@ -1110,6 +1116,20 @@ Template.navDeckExport.events({
 
 // Event delegation
 
+// Create helper tooltips
+$('body').on('mouseenter', '.helper-tooltip:not(.tooltipstered)', function(e) {
+  var side = $(e.currentTarget).attr('data-side') || "left, right, top, bottom";
+  side = side.split(', ');
+
+  $(this)
+    .tooltipster({
+      delay: 0,
+      side: side,
+      theme: 'tooltipster-helper'
+    })
+    .tooltipster('open');
+});
+
 // Create tooltips for cards
 $('body').on('mouseenter', '.has-tooltip:not(.tooltipstered)', function() {
   // But only if they're not already cards
@@ -1121,7 +1141,8 @@ $('body').on('mouseenter', '.has-tooltip:not(.tooltipstered)', function() {
           contentAsHTML: true,
           delay: 0,
           contentCloning: true,
-          side: ['left', 'right', 'top', 'bottom']
+          side: ['left', 'right', 'top', 'bottom'],
+          arrow: false
         })
         .tooltipster('open');
     }
@@ -1132,7 +1153,8 @@ $('body').on('mouseenter', '.has-tooltip:not(.tooltipstered)', function() {
           contentAsHTML: true,
           delay: 0,
           contentCloning: true,
-          side: ['top', 'bottom', 'right', 'left']
+          side: ['top', 'bottom', 'right', 'left'],
+          arrow: false
         })
         .tooltipster('open');
     }
