@@ -1005,13 +1005,13 @@ Template.navDeckExport.events({
   },
   'click .exportDeckImg': function() {
     var self = Template.instance();
-    var startDeckExport = sAlert.info("Exporting your deck to imgur...", {timeout: 'none'});
     self.exportingImg.set(true);
     var args = {
       url: null,
       orientation: 'portrait'
     }
     if (FlowRouter.getParam('hash')) {
+      var startDeckExport = sAlert.info("Exporting your deck to imgur...", {timeout: 'none'});
       // deck exists, push the view link to the server
       args.url = window.location.host + '/deck/view/' + Decks.findOne().view_hash;
       Meteor.call('exportDeckImg', args, function(err, res) {
@@ -1026,7 +1026,7 @@ Template.navDeckExport.events({
             self.deckImageUrl.set(res.data.link);
             sAlert.success("Deck successfully uploaded to imgur!");
           } else {
-            sAlert.error("Something went wrong! Please try again.");
+            sAlert.error("Something went wrong; please try again.");
           }
         }
       })
@@ -1045,18 +1045,18 @@ Template.navDeckExport.events({
       Meteor.call('saveDeckDraft', deck, function(err, data) {
         sAlert.close(startDeckSaveTemp);
         if (err) {
-          sAlert.error(error.reason);
+          sAlert.error(err.reason);
         }
         else {
           if (typeof data.hash === 'string') {
-            var startDeckExportTemp = sAlert.info('View generated! Requesting export...', {timeout: 'none'});
+            var startDeckExportTemp = sAlert.info('View generated - requesting export...', {timeout: 'none'});
             args.url = window.location.host + '/deck/view/' + data.view_hash;
             Meteor.call('exportDeckImg', args, function(err, res) {
               self.exportingImg.set(false);
               sAlert.close(startDeckExport);
               sAlert.close(startDeckExportTemp);
               if (err) {
-                sAlert.error(error.reason);
+                sAlert.error(err.reason);
               }
               else {
                 if (res.success === true && res.status === 200) {
@@ -1077,6 +1077,7 @@ Template.navDeckExport.events({
             }
           }
         }
+        Meteor.call('cleanTempDrafts', null);
       });
     }
   }

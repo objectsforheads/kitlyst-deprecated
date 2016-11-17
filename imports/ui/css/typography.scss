@@ -928,7 +928,11 @@ $generalsWidth: 1506px;
 }
 
 .deck-image {
-  max-width: 100%;
+  max-height: 100px;
+
+  img {
+    max-width: 100%;
+  }
 }
 
 

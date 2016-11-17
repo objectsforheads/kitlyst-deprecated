@@ -46,8 +46,9 @@ Meteor.methods({
     var urlbox = Urlbox('dd9c90fb-3db4-4d92-8195-0b35954726f5', '7380ebc8-8c87-4bda-a1a0-4053bfd89781');
 
     var options = {
-      url: 'http://kit.listlyst.com/deck/view/Wqb8RAEL2Sr87kkTh' + '?compact=' + arg.orientation,
-      full_page: true
+      url: arg.url + '?compact=' + arg.orientation,
+      full_page: true,
+      force: true
     };
     if (arg.orientation === 'landscape') {
       options.width = 1002;
@@ -220,6 +221,13 @@ Meteor.methods({
     else {
       return {General: generalValid, Faction: factionValid, Cards: cardsValid};
     }
+  },
+  'cleanTempDrafts': function(arg) {
+    check(arg, null);
+
+    Decks.remove({draft: 'temp'});
+
+    return true;
   }
 })
 
