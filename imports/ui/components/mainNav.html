@@ -5,7 +5,7 @@
     {{#unless currentUser}}
     <button class="cta confirm main-nav-cta toggleUserAccess"><span class="btn-text">sign in/up</span></button>
     {{else}}
-    {{> userLogout classes="default main-nav-logout"}}
+    <div class="main-nav-logout">Welcome, <a href="/account">{{currentUser.username}}</a> | {{> userLogout inline=true}}</div>
     {{/unless}}
     <ul class="main-nav-links">
       <li class="main-nav-link">

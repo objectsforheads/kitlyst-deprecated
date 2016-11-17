@@ -1,0 +1,23 @@
+<template name="userAccount">
+  {{#if Template.subscriptionsReady}}
+    {{> mainNav}}
+    <div class="page">
+      <h1>Account</h1>
+      {{#if currentUser}}
+      <h2>Your decks</h2>
+      {{#each userDecks}}
+      <div>
+        <h3>{{name}}</h3> <a href="/deck/build/{{hash}}">Edit</a> | <a href="/deck/view/{{view_hash}}">View</a>
+        {{#if description}}
+        <div><p>{{description}}</p></div>
+        {{/if}}
+      </div>
+      {{/each}}
+      {{else}}
+      {{> userAccessShim escape=false}}
+      {{/if}}
+    </div>
+  {{else}}
+  {{> loader}}
+  {{/if}}
+</template>

@@ -1970,6 +1970,7 @@ $deckbuilderFiltersWidth: 17rem;
     right: 0;
     top: 0;
     margin: 0;
+    padding-right: 1rem;
     line-height: 3.5rem;
   }
 
@@ -1996,9 +1997,6 @@ $deckbuilderFiltersWidth: 17rem;
   .main-nav-title {
     transform: translate(-50%,-150%);
     transition: all 300ms;
-  }
-  .main-nav-links {
-    padding-right: 1rem;
   }
   .main-nav-cta {
     transform: translate(-150%, -50%);
@@ -2174,6 +2172,20 @@ footer {
   text-align: center;
   text-transform: uppercase;
   margin: 3rem 0 1.5rem 0;
+}
+
+
+
+
+
+
+
+
+
+
+.page {
+  max-width: 1024px;
+  margin: auto;
 }
 
 

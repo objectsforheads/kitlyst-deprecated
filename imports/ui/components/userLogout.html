@@ -1,3 +1,7 @@
 <template name="userLogout">
+  {{#if inline}}
+  <a class="user-logout">Logout</a>
+  {{else}}
   <button class="{{this.classes}} cta user-logout"><span class="btn-text">Logout</span></button>
+  {{/if}}
 </template>

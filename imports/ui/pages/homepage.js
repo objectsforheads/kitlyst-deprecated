@@ -10,12 +10,6 @@ Template.homepage.events({
   }
 })
 
-Template.homepage.helpers({
-  'userAccessing': function() {
-    return Session.get('userAccess');
-  }
-})
-
 Template.homepage.onRendered(function() {
   scrollAnimation();
 	$(window).on('scroll', scrollAnimation);

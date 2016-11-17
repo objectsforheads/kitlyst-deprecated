@@ -6,6 +6,9 @@
   <div class="container">
     {{> mainContent}}
   </div>
+  {{#if userAccessing}}
+    {{> userAccessShim}}
+  {{/if}}
 </template>
 
 <template name="mainContent">

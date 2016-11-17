@@ -8,6 +8,13 @@ FlowRouter.route( '/', {
   }
 });
 
+FlowRouter.route( '/account', {
+  name: 'account',
+  action: function() {
+    BlazeLayout.render( 'mainLayout', { main: 'userAccount' } );
+  }
+});
+
 var deckBuild = FlowRouter.group({
   prefix: '/deck/build'
 })
