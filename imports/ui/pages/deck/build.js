@@ -595,6 +595,8 @@ Template.deckStats.helpers({
 Template.addCards.onCreated(function() {
   // This variable holds the card filter
   Session.set('deckbuilderFilters', {});
+  // This variable lets users change the sort
+  Session.set('addCardsSort', {sort: [ ["set", "asc"], ["manaCost", "asc"], ["name", "asc"] ] })
 })
 
 Template.addCards.helpers({
@@ -605,10 +607,11 @@ Template.addCards.helpers({
         'race': {$ne: 'General'},
         'faction': Session.get('deckFaction')
       }
+      var sortFilter = Session.get('addCardsSort')
       for (var filter in addFilter) {
         cardFilter[filter] = addFilter[filter];
       }
-      return allCards.find(cardFilter).fetch();
+      return allCards.find(cardFilter, sortFilter).fetch();
     }
   },
   'availableNeutralCards': function() {
@@ -616,10 +619,11 @@ Template.addCards.helpers({
     var addFilter = {
       'faction': 'Neutral'
     }
+    var sortFilter = Session.get('addCardsSort')
     for (var filter in addFilter) {
       cardFilter[filter] = addFilter[filter];
     }
-    return allCards.find(cardFilter).fetch();
+    return allCards.find(cardFilter, sortFilter).fetch();
   }
 })
 
