@@ -8,6 +8,12 @@ import '/node_modules/chartist/dist/chartist.min.css';
 require('chartist-plugin-legend');
 
 Template.drawStats.helpers({
+  'deckValid': function () {
+    if (Session.get('deckCardCount') === 40) {
+      return true;
+    }
+    return false;
+  },
   'twoDropCount': function() {
     return countTwoDrops();
   },

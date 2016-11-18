@@ -150,6 +150,7 @@
 </template>
 
 <template name="drawStats">
+  {{#if deckValid}}
   <h2 class="h3 deckbuilder-subheading">Turn 1</h2>
   <p>
     With <span class="draw-stat-value">{{twoDropCount}}</span> 2-drop units in your deck, you have a <span class="draw-stat-value">{{twoDropStat}}</span> chance of drawing at least one of them on turn 1 (taking advantage of your mulligan and replacing on open).
@@ -186,4 +187,5 @@
     <li>On turn 4, you draw one of them. The chart, <code>Hand has 1/3 Cards</code>, with a <code>turn</code> setting of <code>5</code> (you drew into this scenario on turn 4) will show you the likelihood of drawing the final card.</li>
   </ul>
   {{> winConditionDistribution}}
+  {{/if}}
 </template>
