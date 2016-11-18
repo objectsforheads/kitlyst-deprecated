@@ -5,21 +5,24 @@ Template.deckView.onCreated(function() {
   self.subscribe('allCards');
   self.subscribe('viewDeck', FlowRouter.getParam('hash'));
   self.autorun(function() {
-    if (Decks.findOne()) {
+    if (typeof Decks.findOne() !== 'undefined') {
       Tracker.nonreactive(function(){
         Session.set('deckManaBreakdown', 0);
         Session.set('deckTypeBreakdown', 0);
         Session.set('deckSpiritCost', 0);
         Session.set('deckCardCount', 1);
 
-        Session.set('deckCards', JSON.stringify(Decks.findOne().deck));
-        Decks.findOne().deck.forEach(function(card) {
-          var info = allCards.findOne({id: card.id});
-          Session.set('deckCardCount', Session.get('deckCardCount') + card.count);
-          editDeckStat('mana', 'add', info.manaCost, card.count);
-          editDeckStat('type', 'add', info.type, card.count);
-          editDeckStat('spirit', 'add', info.rarity, card.count);
-        })
+        if (Decks.findOne().deck) {
+          Session.set('deckCards', JSON.stringify(Decks.findOne().deck));
+
+          Decks.findOne().deck.forEach(function(card) {
+            var info = allCards.findOne({id: card.id});
+            Session.set('deckCardCount', Session.get('deckCardCount') + card.count);
+            editDeckStat('mana', 'add', info.manaCost, card.count);
+            editDeckStat('type', 'add', info.type, card.count);
+            editDeckStat('spirit', 'add', info.rarity, card.count);
+          })
+        }
       });
     }
   })
