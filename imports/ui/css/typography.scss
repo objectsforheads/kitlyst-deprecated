@@ -982,8 +982,24 @@ $deckInfoWidthCollapsed: 142px;
     // hide the add cards settings navs
     & ~ .deckbuilder-settings,
     & ~ .deckbuilder-filters {
-      display: none;
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+      top: 0;
     }
+  }
+}
+
+.drawstats-container {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+  top: 0;
+
+  &.show-draw-stats {
+    position: relative;
+    opacity: 1;
+    pointer-events: initial;
   }
 }
 
@@ -992,7 +1008,7 @@ $deckInfoWidthCollapsed: 142px;
 
   & ~ .deck-info {
     right: 0;
-    width: $deckInfoWidthCollapsed;
+    transform: translateX( calc(#{$deckInfoWidth} - #{$deckInfoWidthCollapsed}) );
     z-index: 10;
 
     [for="newDraft"] {
@@ -1211,7 +1227,8 @@ $deckInfoWidthCollapsed: 142px;
 $deckbuilderSettingsWidth: 17rem;
 
 .deckbuilder-settings {
-  left: -$deckbuilderSettingsWidth;
+  left: 0;
+  transform: translateX(-100%);
   width: $deckbuilderSettingsWidth;
 
   &::before {
@@ -1226,7 +1243,7 @@ $deckbuilderSettingsWidth: 17rem;
   margin-left: $deckbuilderSettingsWidth;
 
   & ~ .deckbuilder-settings {
-    left: 0;
+    transform: initial;
     z-index: 10;
   }
 }
@@ -1242,7 +1259,8 @@ $deckbuilderSettingsWidth: 17rem;
 $deckbuilderFiltersWidth: 17rem;
 
 .deckbuilder-filters {
-  left: -$deckbuilderFiltersWidth;
+  left: 0;
+  transform: translateX(-100%);
   width: $deckbuilderFiltersWidth;
 
   &::before {
@@ -1257,7 +1275,7 @@ $deckbuilderFiltersWidth: 17rem;
   margin-left: $deckbuilderSettingsWidth;
 
   & ~ .deckbuilder-filters {
-    left: 0;
+    transform: initial;
     z-index: 10;
   }
 }

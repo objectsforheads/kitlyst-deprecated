@@ -4,10 +4,10 @@
   <div class="deckbuilder-container {{#if statsEnabled}}hide-add-cards{{/if}}">
     {{> mainNav onlyTitle=true}}
     {{> addCards}}
-    {{#if statsEnabled}}
+    <div class="drawstats-container {{#if statsEnabled}}show-draw-stats{{/if}}">
       <h1 class="h2">Stats</h1>
       {{> drawStats}}
-    {{/if}}
+    </div>
     {{> mainFooter}}
   </div>
   {{> navDeckInfo}}

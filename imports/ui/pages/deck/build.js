@@ -1259,6 +1259,9 @@ $('body').on('click', '[name="builder-state"]:checked', function(e) {
   if (JSON.parse($(e.currentTarget).val()) === true) {
     $('.deckbuilder-container').addClass('min-info');
     $('#deck-info-toggle').prop('checked', true);
+    $('.deck-info').removeClass('meta-open export-open');
+    $('#deck-meta-toggle').prop('checked', false)
+    $('#deck-export-toggle').prop('checked', false)
   }
   else {
     $('.deckbuilder-container').removeClass('min-info');
