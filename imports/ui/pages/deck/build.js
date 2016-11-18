@@ -697,6 +697,7 @@ Template.card.events({
             editDeckStat('mana', 'subtract', check.manaCost, currentDeck[i].count)
             editDeckStat('type', 'subtract', check.type, currentDeck[i].count)
             editDeckStat('spirit', 'subtract', check.rarity, currentDeck[i].count)
+            Session.set('deckCardCount', Session.get('deckCardCount') - currentDeck[i].count)
 
             currentDeck.splice(i, 1);
           }
