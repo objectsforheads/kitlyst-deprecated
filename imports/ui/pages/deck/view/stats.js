@@ -797,11 +797,11 @@ function drop(count, turns) {
 
   // but wait, there's more!
   for (var i = 1; i <= turns - 1; i++) {
-    // Keep drawing, friend
-    deck--;
-    chance.push((deck - count)/deck);
-    // And remember, you have a replace every turn
+    // You have a replace every turn
     deck++;
+    chance.push((deck - count)/deck);
+    deck--;
+    // Keep drawing, friend
     chance.push((deck - count)/deck);
     deck--;
   }
