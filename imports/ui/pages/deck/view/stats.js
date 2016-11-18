@@ -146,7 +146,7 @@ Template.displayTwoDropDistribution.onRendered(function() {
 
     var barHorizontalCenter, barVerticalCenter, label, value;
     if (data.type === "bar") {
-      barHorizontalCenter = data.x1 + (data.element.width() * .5) + 2.5;
+      barHorizontalCenter = data.x1 + (10 * .5) + 2.5; // 10 is the stroke width because Chrome isn't reading it
       barVerticalCenter = data.y1 + (data.element.height() * -1) - 10;
       value = data.element.attr('ct:value');
       if (value) {
@@ -346,7 +346,7 @@ Template.cardDrawDistribution.onRendered(function() {
 
     var barHorizontalCenter, barVerticalCenter, label, value;
     if (data.type === "bar") {
-      barHorizontalCenter = data.x1 + (data.element.width() * .5) + 2.5;
+      barHorizontalCenter = data.x1 + (10 * .5) + 2.5; // 10 is the stroke width because Chrome isn't reading it
       barVerticalCenter = data.y1 + (data.element.height() * -1) - 10;
       value = data.element.attr('ct:value');
       if (value) {
@@ -666,7 +666,7 @@ Template.winConditionStats.helpers({
 
         var barHorizontalCenter, barVerticalCenter, label, value;
         if (data.type === "bar") {
-          barHorizontalCenter = data.x1 + (data.element.width() * .5) + 2.5;
+          barHorizontalCenter = data.x1 + (10 * .5) + 2.5; // 10 is the stroke width because Chrome isn't reading it
           barVerticalCenter = data.y1 + (data.element.height() * -1) - 10;
           value = data.element.attr('ct:value');
           if (value) {
