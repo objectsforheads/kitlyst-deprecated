@@ -1,4 +1,6 @@
 import './view.html';
+import './view/exportDeckTxt.js';
+import './view/exportDeckImg.js';
 
 Template.deckView.onCreated(function() {
   var self = this;
@@ -14,6 +16,8 @@ Template.deckView.onCreated(function() {
 
         if (Decks.findOne().deck) {
           Session.set('deckCards', JSON.stringify(Decks.findOne().deck));
+          Session.set('deckGeneral', JSON.stringify(Decks.findOne().general));
+          Session.set('deckFaction', Decks.findOne().faction);
 
           Decks.findOne().deck.forEach(function(card) {
             var info = allCards.findOne({id: card.id});

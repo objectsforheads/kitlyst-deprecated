@@ -1,0 +1,30 @@
+<template name="exportDeckImg">
+  {{#unless exportingImg}}
+  <div class="deckbuilder-filter_options">
+    <label for="deck-export_orientation--portrait" class="filter_type check-enabled helper-tooltip" title="Export deck in portrait view" data-side="top, bottom, right, left">
+      <input type="radio" id="deck-export_orientation--portrait" name="deck-export_orientation" value="portrait" checked>
+      <i class="fa fa-picture-o"></i>
+      <div class="filter-label">Portrait</div>
+    </label>
+    <label for="deck-export_orientation--landscape" class="filter_type check-enabled helper-tooltip" title="Export deck in landscape view" data-side="top, bottom, right, left">
+      <input type="radio" id="deck-export_orientation--landscape" name="deck-export_orientation" value="landscape">
+      <i class="fa fa-file-image-o"></i>
+      <div class="filter-label">Landscape</div>
+    </label>
+  </div>
+    <button class="cta default exportDeckImg"><span class="btn-text">Export to Imgur</span></button>
+  {{else}}
+    <button class="cta disabled"><span class="btn-text">Exporting...</span></button>
+  {{/unless}}
+  {{#if deckExported}}
+  <div class="deckbuilder-input-wrapper">
+    <input id="deckImageUrl" name="deckImageUrl" type="text" class="deckbuilder-input" readonly value="{{deckImageUrl}}"/>
+    <button class="deckbuilder-input-aside clipboardJS-trigger" data-clipboard-target="#deckImageUrl">
+      <i class="fa fa-clipboard"></i>
+    </button>
+  </div>
+  <div class="deck-image">
+    <a href="{{deckImageUrl}}" target="_blank"><img src="{{deckImageUrl}}"></a>
+  </div>
+  {{/if}}
+</template>

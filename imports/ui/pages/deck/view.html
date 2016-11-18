@@ -47,7 +47,7 @@
     {{#unless compactView}}
       {{> mainNav escape=true}}
     {{/unless}}
-    <div class="deckview-container">
+    <div class="deckview-container {{#unless compactView}}viewing{{/unless}}">
       <div class="deckview deckview-portrait">
         <div class="deckview-general-img">
           <img src="{{generalImgUrl}}">
@@ -73,6 +73,12 @@
             </div>
           {{/each}}
         </div>
+        {{#unless compactView}}
+        <h3>Txtlist</h3>
+        {{> exportDeckTxt}}
+        <h3>Image</h3>
+        {{> exportDeckImg}}
+        {{/unless}}
       </div>
       {{#unless compactView}}
         <div class="deckview-drawStats">
