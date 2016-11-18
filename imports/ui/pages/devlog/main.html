@@ -1,0 +1,176 @@
+<template name="devlogMain">
+  {{> mainNav}}
+  <div class="page language-javascript">
+    <h1 class="page-header">Devlog</h1>
+    <div class="post-heading">
+      <span class="post-meta h3">Posted 11.17.2016</span>
+      <h2>Calculating Draw Stats</h2>
+    </div>
+
+{{#markdown}}
+###Core Formulas
+
+Most of the calculations shown in stats are derived from these formulas and utilize the chain rule &amp; inclusion-exclusion principles of probability.
+
+####Factorial
+
+For a given `number`, multiply it by `number - 1` until `number` equals `0` and return the final product.
+
+<pre><code>function factorial(number) {
+  if (number === 0) {
+    return 1;
+  }
+  else if (number < 0) {
+    return false;
+  }
+  return (number * factorial(number-1));
+}</code></pre>
+
+####Combination
+
+Given `n` possible cards, calculate all possible combinations using `r` number of them.
+
+<pre><code>function C(n, r) {
+  return factorial(n)/(factorial(r) * factorial(n-r));
+}</code></pre>
+
+####Hypergeometric Distribution
+
+Given a deck of `N` cards, where there are `k` cards we want, calculate the chance of drawing `x` number of `k` cards, given that we draw `n` cards with no replacement.
+
+<pre><code>// N = cards in deck
+// k = number of successful cards
+// n = draws
+// x = number of successes in draw
+function hypergeometric(N, k, n, x) {
+  var kCx = factorial(k) / (factorial(k-x) * factorial(x));
+  var NkCnx = factorial(N-k) / (factorial((N-k) - (n-x)) * factorial(n-x));
+  var NCn = factorial(N) / (factorial(N-n) * factorial(n));
+
+  var p = kCx * NkCnx / NCn;
+  return p;
+}</code></pre>
+
+####Drop Chance Per Turn
+
+Drop chance calculates the chance of *not* having a successful draw, given a sequence of of draw/replace operations and then uses the inclusion-exclusion principle to return the chance of drawing successfully at any point in the sequence.
+
+<pre><code>// Drop returns the chance of getting a COUNT of cards by a number of TURNS
+function drop(count, turns) {
+  var chance = [];
+  var deck = 39;
+  // chance of not getting it on draw
+  chance.push(hypergeometric(deck, count, 5, 0));
+  deck -= 5;
+  // according to the devs, mulligan doesn't let you re-draw your mulligan
+  // chance of not getting it on first mulligan draw
+  deck--;
+  chance.push((deck - count)/deck);
+  // second mulligan draw
+  deck--;
+  chance.push((deck - count)/deck);
+  // but you do replace those 2 afterward
+  deck += 2;
+  // replace on opener
+  deck++;
+  chance.push((deck - count)/deck);
+  deck--;
+
+
+  // but wait, there's more!
+  for (var i = 1; i <= turns - 1; i++) {
+    // Keep drawing, friend
+    deck--;
+    chance.push((deck - count)/deck);
+    // And remember, you have a replace every turn
+    deck++;
+    chance.push((deck - count)/deck);
+    deck--;
+  }
+
+  chance = chance.reduce(function(a, b) {
+    return a * b;
+  })
+
+  return 1 - chance;
+}</code></pre>
+
+### Calculations
+
+#### Turn 1 2-Drop Chance
+
+Determine the number of 2-drop units in a deck, where any 'Unit' card with a mana cost from 0-2 is considered a 2-drop unit. The count of 2-drop units is the number of successes (`k` in the hypergeometric distribution). Use it to calculate `drop()`.
+
+<pre><code>drop(2DropCount, 1)</code></pre>
+
+#### 2-Drop Count Distribution
+
+- Does not take into account opening replace
+
+Using `hypergeometric()`, calculate the chance of drawing exactly `x` successes, where `x` ranges from `0` to `5`. Because the mulligan doesn't let you draw a card you already drew, we can sum up the entire sequence as 'draw 7 without replace'.
+
+<pre><code>hypergeometric(39, 2DropCount, 7, 0)
+hypergeometric(39, 2DropCount, 7, 1)
+hypergeometric(39, 2DropCount, 7, 2)
+hypergeometric(39, 2DropCount, 7, 3)
+hypergeometric(39, 2DropCount, 6, 4) // You have 4, so only mulligan 1
+hypergeometric(39, 2DropCount, 5, 5) // No mulligan available</code></pre>
+
+#### Starting Draw Distribution
+
+Calculate the chance of drawing a card on turn 1 by using `drop(copyCount, 1)`, where the copy count of a card is `k`, the number of successes.
+
+<pre><code>drop(1, 1)
+drop(2, 1)
+drop(3, 1)</code></pre>
+
+#### Turn 1 Hand Chance
+
+- Does not take into account opening replace
+- Calculates the chance of drawing *exactly* those cards (ie. drawing 1x is a success, drawing 2x of the card is not)
+- Does not properly calculate a turn 1 where you draw 4-5 cards you want and can't mulligan 2
+
+For each card wanted, use the chain rule to calculate the number of successful combinations `C(totalNumberOfCopies, copiesWanted)` that contain the wanted cards. Divide that by `C(39, 7)`, which represents all possible hands, to determine the chance of drawing the wanted hand on turn 1.
+
+<pre><code>var chance = 1;
+
+for (var card in wanted) {
+  chance = chance * C(cardCopy.count, wantedCard.count);
+}
+// and then any cards for the rest of the hand
+chance = chance * C(39 - hand, 7 - hand);
+
+// there are a total of 39C7 hands
+return chance/C(39,7);
+</code></pre>
+
+####Card Draw Distribution
+
+Use `drop()` to calculate the chance of drawing the card during a `turn` where the copy count of the card is `k`.
+
+<pre><code>drop(1, turn)
+drop(2, turn)
+drop(3, turn)</code></pre>
+
+####Win Condition Draw Distribution
+
+Given a starting hand, calculate the chance of drawing a card by a certain turn. This assumes that you've already gone through your mulligan and opening replace and that the only source of new cards is through your turn's draw/replace.
+
+After your opening turn, given a `count` number of copies of the desired card left in the deck, where `deckCount = 39 - 5 (opening hand) - turn (draw)`, calculate the chance of drawing the card.
+
+<pre><code>var chance = 1;
+
+// attempt to replace
+deckCount++;
+chance = chance * ((deckCount - count)/deckCount);
+deckCount--;
+
+// attempt to draw
+chance = chance * ((deckCount - count)/deckCount);
+deckCount--;
+chance = 1 - chance;</code></pre>
+
+{{/markdown}}
+  </div>
+  {{> mainFooter}}
+</template>

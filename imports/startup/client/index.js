@@ -12,6 +12,8 @@ import '../../ui/pages/deck/view.js';
 
 import '../../ui/pages/admin/main.js';
 
+import '../../ui/pages/devlog/main.js';
+
 sAlert.config({
   effect: 'jelly',
   position: 'top-left',

@@ -59,6 +59,11 @@ a,
     color: $duelystGrey;
   }
 }
+h1, h2 {
+  a {
+    font-weight: 300;
+  }
+}
 
 .btn {
   font-size: 1rem;
@@ -2214,6 +2219,23 @@ footer {
 .page {
   max-width: 1024px;
   margin: auto;
+
+  .page-header {
+    text-align: center;
+    margin: 3rem 0 6rem 0;
+  }
+}
+
+
+
+
+
+.post-heading {
+  text-align: center;
+
+  h2 {
+    margin: 0;
+  }
 }
 
 

@@ -51,3 +51,10 @@ FlowRouter.route( '/secret-passage', {
     BlazeLayout.render( 'mainLayout', { main: 'adminMain' } );
   }
 });
+
+FlowRouter.route( '/devlog', {
+  name: 'devlog',
+  action: function() {
+    BlazeLayout.render( 'mainLayout', { main: 'devlogMain' } );
+  }
+});
