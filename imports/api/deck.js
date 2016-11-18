@@ -1,4 +1,3 @@
-// export const Decks = new Mongo.Collection('decks');
 var Future = Npm.require("fibers/future");
 
 Meteor.publish('allCards', function() {
@@ -98,24 +97,6 @@ Meteor.methods({
 
     return arg.owner;
   },
-  'saveDeckName': function(arg) {
-    check(arg, {
-      hash: String,
-      name: String
-    });
-
-    Decks.update({ hash: arg.hash }, {$set: {name: arg.name}});
-
-    return arg.name;
-  },
-  'saveDeckDescription': function(arg) {
-    check(arg, {
-      hash: String,
-      description: String
-    })
-
-    Decks.update({ hash: arg.hash }, {$set: {description: arg.description}});
-  },
   'saveDeckDraft': function(arg) {
     check(arg, {
       hash: Match.Optional(String),
@@ -127,15 +108,14 @@ Meteor.methods({
       deck: Array
     });
 
-    var apiKey = 'cf156a2e4b5296b5a184e53ab14dd99f';
     // validate against the api to make sure the general exists
-    var generalValid = checkGeneralValid(apiKey, arg);
+    var generalValid = checkGeneralValid(arg);
     // validate that the faction matches one of the available ones
-    var factionValid = checkFactionValid(apiKey, arg);
+    var factionValid = checkFactionValid(arg);
     // validate every card that comes through and make sure it:
     //  1. exists
     //  2. doesn't exceed 3 copies
-    var cardsValid = checkCardsValid(apiKey, arg);
+    var cardsValid = checkCardsValid(arg);
 
     if (generalValid && factionValid && cardsValid) {
       var hash = arg.hash || Random.id();
@@ -172,56 +152,6 @@ Meteor.methods({
       return {General: generalValid, Faction: factionValid, Cards: cardsValid};
     }
   },
-  'publishDeck': function(arg) {
-    check(arg, {
-      hash: Match.Optional(String),
-      name: String,
-      description: Match.Optional(String),
-      faction: String,
-      general: Array,
-      deck: Array
-    });
-
-    var apiKey = 'cf156a2e4b5296b5a184e53ab14dd99f';
-    var generalValid = checkGeneralValid(apiKey, arg);
-    var factionValid = checkFactionValid(apiKey, arg);
-    var cardsValid = checkCardsValid(apiKey, arg);
-
-    if (generalValid && factionValid && cardsValid) {
-      var hash = arg.hash || Random.id();
-      if (arg.hash) {
-        Decks.update({ hash: hash }, {$set: {
-          name: arg.name,
-          description: arg.description,
-          draft: false,
-          faction: arg.faction,
-          general: arg.general,
-          deck: arg.deck
-        }})
-      }
-      else {
-        var viewHash = Random.id();
-        Decks.insert({
-          name: arg.name,
-          description: arg.description,
-          view: 'public',
-          view_hash: viewHash,
-          draft: false,
-          hash: hash,
-          owner: this.userId,
-          patch: 1.76,
-          faction: arg.faction,
-          general: arg.general,
-          deck: arg.deck
-        })
-      }
-
-     return hash;
-    }
-    else {
-      return {General: generalValid, Faction: factionValid, Cards: cardsValid};
-    }
-  },
   'cleanTempDrafts': function(arg) {
     check(arg, null);
 
@@ -231,7 +161,7 @@ Meteor.methods({
   }
 })
 
-checkGeneralValid = function(apiKey, arg) {
+checkGeneralValid = function(arg) {
   var self = false;
   arg.general.forEach(function(toCheck) {
     if (allCards.find({id: toCheck.id}).count() > 0) {
@@ -242,7 +172,7 @@ checkGeneralValid = function(apiKey, arg) {
   return self;
 }
 
-checkFactionValid = function(apiKey, arg) {
+checkFactionValid = function(arg) {
   var self = false;
   var validFactions = ['Lyonar Kingdoms', 'Songhai Empire', 'Vetruvian Imperium', 'Abyssian Host', 'Magmar Aspects', 'Vanar Kindred'];
   if (validFactions.indexOf(arg.faction) !== -1) {
@@ -252,7 +182,7 @@ checkFactionValid = function(apiKey, arg) {
   return self;
 }
 
-checkCardsValid = function(apiKey, arg) {
+checkCardsValid = function(arg) {
   var self = arg.deck.reduce(function(a, b) {
     if (a !== false) {
       if (allCards.find({id: b.id}).count() > 0) {

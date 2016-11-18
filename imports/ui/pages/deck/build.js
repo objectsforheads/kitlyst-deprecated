@@ -89,10 +89,6 @@ Template.deckBuild.onCreated(function() {
   Session.set('importingDeck', false);
 })
 
-Template.deckBuild.onRendered(function() {
-
-})
-
 Template.deckBuild.onDestroyed(function() {
   if (typeof urlCopy === 'object') {
     urlCopy.destroy();
@@ -894,30 +890,6 @@ Template.navDeckMeta.events({
   },
   'click .saveDeckDescription': function() {
     saveDeckDraft();
-  },
-  'click .publishDeck': function() {
-    var startDeckPublish = sAlert.info('Publishing your deck...', {timeout: 'none'});
-    Meteor.call('publishDeck', {
-      hash: FlowRouter.getParam('hash'),
-      name: $('.deck-draft-name').val(),
-      description: $('.deck-draft-description').val(),
-      faction: Session.get('deckFaction'),
-      general: Session.get('deckGeneral'),
-      deck: Session.get('deckCards')
-    }, function(err, data) {
-      sAlert.close(startDeckPublish);
-      if (err) {
-        sAlert.error(error.reason);
-      }
-      else {
-        sAlert.success('Deck published!', {
-          onClose: function() {
-            FlowRouter.go('/deck/view/' + data);
-          }
-        });
-      }
-    })
-
   }
 })
 
