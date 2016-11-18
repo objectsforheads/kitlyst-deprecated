@@ -13,6 +13,9 @@ BrowserPolicy.content.allowOriginForAll('cdn.jsdelivr.net');
 // Allow imgur images
 BrowserPolicy.content.allowOriginForAll('i.imgur.com');
 
+// Kadira monitoring
+Kadira.connect('3oYXaAx7z59jNmaMP', 'cb0440e0-58e6-49d8-9ce1-d8cab4f2d647');
+
 import '../../api/deck.js';
 import '../../api/account.js';
 import '../../api/admin.js';

@@ -59,6 +59,8 @@ markdown@1.0.10
 markoshust:nouislider@8.2.1
 meteor@1.2.17_1
 meteor-base@1.0.4
+meteorhacks:kadira@2.30.2
+meteorhacks:meteorx@1.4.1
 minifier-css@1.2.14_1
 minifier-js@1.2.14_1
 minimongo@1.0.17
@@ -68,6 +70,7 @@ modules@0.7.6_1
 modules-runtime@0.7.6_1
 mongo@1.1.13
 mongo-id@1.0.5
+mongo-livedata@1.0.12
 npm-bcrypt@0.9.1_1
 npm-mongo@2.2.11_1
 observe-sequence@1.0.13
