@@ -31,8 +31,7 @@ Template.exportDeckImg.events({
     }
     // generate a temporary draft for the deck
     let deck = {
-      name: $('.deck-draft-name').val(),
-      description: $('.deck-draft-description').val(),
+      name: $('.deck-draft-name').val() || Decks.findOne().name,
       faction: Session.get('deckFaction'),
       general: JSON.parse(Session.get('deckGeneral')),
       deck: JSON.parse(Session.get('deckCards')),
