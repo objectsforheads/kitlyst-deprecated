@@ -26,11 +26,21 @@ var deckView = FlowRouter.group({
 deckBuild.route('/', {
   action: function() {
     BlazeLayout.render( 'mainLayout', { main: 'deckBuildWrapper' } );
+  },
+  triggersEnter: function() {
+    // Clear all Session variables
+    Object.keys(Session.keys).forEach(function(key){ Session.set(key, undefined); })
+    Session.keys = {}
   }
 })
 deckBuild.route('/:hash', {
   action: function(params) {
     BlazeLayout.render( 'mainLayout', { main: 'deckBuildWrapper' } );
+  },
+  triggersEnter: function() {
+    // Clear all Session variables
+    Object.keys(Session.keys).forEach(function(key){ Session.set(key, undefined); })
+    Session.keys = {}
   }
 })
 

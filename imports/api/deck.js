@@ -51,7 +51,7 @@ Meteor.methods({
       force: true
     };
     if (arg.orientation === 'landscape') {
-      options.width = 1002;
+      options.width = 1020;
     }
     if (arg.orientation === 'portrait') {
       options.width = 320;
@@ -233,16 +233,11 @@ Meteor.methods({
 
 checkGeneralValid = function(apiKey, arg) {
   var self = false;
-  var validateGeneral = 'http://listlyst.com/api/v1/cards?race=general&apikey=' + apiKey;
-  var validGenerals = HTTP.get(validateGeneral, {})
-  if (Array.isArray(validGenerals.data)) {
-    arg.general.forEach(function(toCheck) {
-      var generalIndex = validGenerals.data.findIndex(test => test.id === toCheck.id)
-      if (generalIndex !== -1) {
-        self = true;
-      }
-    })
-  }
+  arg.general.forEach(function(toCheck) {
+    if (allCards.find({id: toCheck.id}).count() > 0) {
+      self = true;
+    }
+  })
 
   return self;
 }
@@ -260,12 +255,11 @@ checkFactionValid = function(apiKey, arg) {
 checkCardsValid = function(apiKey, arg) {
   var self = arg.deck.reduce(function(a, b) {
     if (a !== false) {
-      var validateCard = 'http://listlyst.com/api/v1/card/' + b.id + '?apikey=' + apiKey;
-      var validCard = HTTP.get(validateCard, {})
-      if (Array.isArray(validCard.data)) {
-        if (validCard.data.length > 0 && b.count <= 3) {
-          return true;
-        }
+      if (allCards.find({id: b.id}).count() > 0) {
+        return true;
+      }
+      else {
+        return false;
       }
     }
   }, null)

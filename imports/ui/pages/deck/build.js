@@ -102,7 +102,9 @@ Template.deckBuild.onDestroyed(function() {
 
 Template.deckBuild.helpers({
   'generalSelected': function() {
-    return JSON.parse(Session.get('deckGeneral'));
+    if (Session.get('deckGeneral')) {
+      return JSON.parse(Session.get('deckGeneral'));
+    }
   },
   'statsEnabled': function() {
     return Session.get('statsEnabled');
@@ -141,41 +143,7 @@ Template.deckMods.events({
     })
   },
   'click .newDraft': function() {
-    var startDraftSave = sAlert.info('Saving your deck...', {timeout: 'none'});
-    let deck = {
-      hash: FlowRouter.getParam('hash'),
-      name: $('.deck-draft-name').val(),
-      description: $('.deck-draft-description').val(),
-      faction: Session.get('deckFaction'),
-      general: JSON.parse(Session.get('deckGeneral')),
-      deck: JSON.parse(Session.get('deckCards'))
-    }
-    Meteor.call('saveDeckDraft', deck, function(err, data) {
-      sAlert.close(startDraftSave);
-      if (err) {
-        sAlert.error(error.reason);
-      }
-      else {
-        if (typeof data.hash === 'string') {
-          if (FlowRouter.getParam('hash')) {
-            sAlert.success('Deck saved!');
-          } else {
-            sAlert.success('Deck saved! Redirecting to draft...', {
-              onClose: function() {
-                FlowRouter.go('/deck/build/' + data.hash);
-              }
-            })
-          }
-        }
-        else {
-          for (var validation in data) {
-            if (data[validation] === false) {
-              sAlert.error(validation + ' failed to validate');
-            }
-          }
-        }
-      }
-    });
+    saveDeckDraft();
   }
 })
 
@@ -633,15 +601,17 @@ Template.addCards.onCreated(function() {
 
 Template.addCards.helpers({
   'availableFactionCards': function() {
-    var cardFilter = Session.get('deckbuilderFilters');
-    var addFilter = {
-      'race': {$ne: 'General'},
-      'faction': Session.get('deckFaction')
+    if (Session.get('deckFaction')) {
+      var cardFilter = Session.get('deckbuilderFilters');
+      var addFilter = {
+        'race': {$ne: 'General'},
+        'faction': Session.get('deckFaction')
+      }
+      for (var filter in addFilter) {
+        cardFilter[filter] = addFilter[filter];
+      }
+      return allCards.find(cardFilter).fetch();
     }
-    for (var filter in addFilter) {
-      cardFilter[filter] = addFilter[filter];
-    }
-    return allCards.find(cardFilter).fetch();
   },
   'availableNeutralCards': function() {
     var cardFilter = Session.get('deckbuilderFilters');
@@ -920,36 +890,10 @@ Template.navDeckMeta.events({
     $('.deck-info').addClass('meta-open');
   },
   'click .saveDeckName': function() {
-    if (Decks.findOne() === undefined) {
-      saveDeckDraft();
-    } else {
-      var startNameSave = sAlert.info('Saving deck name...', {timeout: 'none'});
-      Meteor.call('saveDeckName', {hash: FlowRouter.getParam('hash'), name: $('.deck-draft-name').val()}, function(err, data) {
-        sAlert.close(startNameSave);
-        if (err) {
-          sAlert.error(error.reason);
-        }
-        else {
-          sAlert.success('Deck saved as ' + data + '!');
-        }
-      });
-    }
+    saveDeckDraft();
   },
   'click .saveDeckDescription': function() {
-    if (Decks.findOne() === undefined) {
-      saveDeckDraft();
-    } else {
-      var startDescriptionSave = sAlert.info('Saving deck description...', {timeout: 'none'});
-      Meteor.call('saveDeckDescription', {hash: FlowRouter.getParam('hash'), description: $('.deck-draft-description').val()}, function(err, data) {
-        sAlert.close(startDescriptionSave);
-        if (err) {
-          sAlert.error(error.reason);
-        }
-        else {
-          sAlert.success('Deck description updated!');
-        }
-      });
-    }
+    saveDeckDraft();
   },
   'click .publishDeck': function() {
     var startDeckPublish = sAlert.info('Publishing your deck...', {timeout: 'none'});
