@@ -7,7 +7,7 @@
       <h2>Your decks</h2>
       {{#each userDecks}}
       <div>
-        <h3>{{name}}</h3> <a href="/deck/build/{{hash}}">Edit</a> | <a href="/deck/view/{{view_hash}}">View</a>
+        <h3>{{name}}</h3> <a href="/deck/build/{{hash}}">Edit</a> | <a href="/deck/view/{{view_hash}}">View</a> | <a href="#" class="deleteDraft">Delete</a>
         {{#if description}}
         <div><p>{{description}}</p></div>
         {{/if}}

@@ -152,6 +152,19 @@ Meteor.methods({
       return {General: generalValid, Faction: factionValid, Cards: cardsValid};
     }
   },
+  'deleteDraft': function(arg) {
+    check(arg, {
+      owner: String,
+      hash: String
+    })
+
+    if (Decks.findOne({hash: arg.hash}).owner === arg.owner) {
+      Decks.remove({hash: arg.hash});
+      return 'Deck successfully deleted!'
+    } else {
+      return false;
+    }
+  },
   'cleanTempDrafts': function(arg) {
     check(arg, null);
 

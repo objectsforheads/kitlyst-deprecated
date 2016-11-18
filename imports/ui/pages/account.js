@@ -10,3 +10,21 @@ Template.userAccount.helpers({
     return Decks.find();
   }
 })
+
+Template.userAccount.events({
+  'click .deleteDraft': function(e) {
+    e.preventDefault();
+
+    Meteor.call('deleteDraft', {hash: this.hash, owner: Meteor.userId()}, function(err, res) {
+      if (err) {
+        sAlert.error(err.reason);
+      } else {
+        if (res) {
+          sAlert.success(res);
+        } else {
+          sAlert.error('Server error - try again later');
+        }
+      }
+    })
+  }
+})
