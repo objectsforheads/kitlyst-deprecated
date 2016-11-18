@@ -985,10 +985,6 @@ Template.navDeckExport.onCreated(function() {
   this.deckImageUrl = new ReactiveVar(null);
 })
 
-Template.navDeckExport.onRendered(function() {
-
-})
-
 Template.navDeckExport.helpers({
   deckSaved: function() {
     return FlowRouter.getParam('hash');
@@ -1033,80 +1029,58 @@ Template.navDeckExport.events({
   'click .exportDeckImg': function() {
     var self = Template.instance();
     self.exportingImg.set(true);
+
+    var startDeckSaveTemp = sAlert.info("Generating your deck view for export...", {timeout: 'none'});
+
     var args = {
       url: null,
-      orientation: 'portrait'
+      orientation: $('[name="deck-export_orientation"]:checked').val()
     }
-    if (FlowRouter.getParam('hash')) {
-      var startDeckExport = sAlert.info("Exporting your deck to imgur...", {timeout: 'none'});
-      // deck exists, push the view link to the server
-      args.url = window.location.host + '/deck/view/' + Decks.findOne().view_hash;
-      Meteor.call('exportDeckImg', args, function(err, res) {
-        self.exportingImg.set(false);
-        sAlert.close(startDeckExport);
-        if (err) {
-          sAlert.error(err.reason);
-        }
-        else {
-          if (res.success === true && res.status === 200) {
-            self.deckExported.set(true);
-            self.deckImageUrl.set(res.data.link);
-            sAlert.success("Deck successfully uploaded to imgur!");
-          } else {
-            sAlert.error("Something went wrong; please try again.");
-          }
-        }
-      })
+    // generate a temporary draft for the deck
+    let deck = {
+      name: $('.deck-draft-name').val(),
+      description: $('.deck-draft-description').val(),
+      faction: Session.get('deckFaction'),
+      general: JSON.parse(Session.get('deckGeneral')),
+      deck: JSON.parse(Session.get('deckCards')),
+      draft: 'temp'
     }
-    else {
-      // deck hasn't been saved yet, generate a temporary draft for it
-      var startDeckSaveTemp = sAlert.info("Generating your deck view for export...", {timeout: 'none'});
-      let deck = {
-        name: $('.deck-draft-name').val(),
-        description: $('.deck-draft-description').val(),
-        faction: Session.get('deckFaction'),
-        general: JSON.parse(Session.get('deckGeneral')),
-        deck: JSON.parse(Session.get('deckCards')),
-        draft: 'temp'
+    Meteor.call('saveDeckDraft', deck, function(err, data) {
+      sAlert.close(startDeckSaveTemp);
+      if (err) {
+        sAlert.error(err.reason);
       }
-      Meteor.call('saveDeckDraft', deck, function(err, data) {
-        sAlert.close(startDeckSaveTemp);
-        if (err) {
-          sAlert.error(err.reason);
+      else {
+        if (typeof data.hash === 'string') {
+          var startDeckExportTemp = sAlert.info('View generated. Uploading to imgur...', {timeout: 'none'});
+          args.url = window.location.host + '/deck/view/' + data.view_hash;
+          Meteor.call('exportDeckImg', args, function(err, res) {
+            self.exportingImg.set(false);
+            sAlert.close(startDeckExportTemp);
+            if (err) {
+              sAlert.error(err.reason);
+            }
+            else {
+              if (res.success === true && res.status === 200) {
+                self.deckExported.set(true);
+                self.deckImageUrl.set(res.data.link);
+                sAlert.success("Deck successfully uploaded to imgur!");
+              } else {
+                sAlert.error("Something went wrong! Please try again.");
+              }
+            }
+          })
         }
         else {
-          if (typeof data.hash === 'string') {
-            var startDeckExportTemp = sAlert.info('View generated - requesting export...', {timeout: 'none'});
-            args.url = window.location.host + '/deck/view/' + data.view_hash;
-            Meteor.call('exportDeckImg', args, function(err, res) {
-              self.exportingImg.set(false);
-              sAlert.close(startDeckExport);
-              sAlert.close(startDeckExportTemp);
-              if (err) {
-                sAlert.error(err.reason);
-              }
-              else {
-                if (res.success === true && res.status === 200) {
-                  self.deckExported.set(true);
-                  self.deckImageUrl.set(res.data.link);
-                  sAlert.success("Deck successfully uploaded to imgur!");
-                } else {
-                  sAlert.error("Something went wrong! Please try again.");
-                }
-              }
-            })
-          }
-          else {
-            for (var validation in data) {
-              if (data[validation] === false) {
-                sAlert.error(validation + ' failed to validate');
-              }
+          for (var validation in data) {
+            if (data[validation] === false) {
+              sAlert.error(validation + ' failed to validate');
             }
           }
         }
-        Meteor.call('cleanTempDrafts', null);
-      });
-    }
+      }
+      Meteor.call('cleanTempDrafts', null);
+    });
   }
 })
 
