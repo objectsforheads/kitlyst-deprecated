@@ -620,9 +620,11 @@ Template.winConditionStats.helpers({
           drawData.series[index].data.push(percentifyNum(guarantee))
         }
         while (guarantee < 0.95) {
-          // attempt to draw
-          chance = chance * ((deck - count)/deck);
           // attempt to replace
+          deck++;
+          chance = chance * ((deck - count)/deck);
+          deck--;
+          // attempt to draw
           chance = chance * ((deck - count)/deck);
           deck--;
           guarantee = 1 - chance;
