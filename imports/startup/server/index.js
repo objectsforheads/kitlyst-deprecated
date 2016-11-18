@@ -13,8 +13,9 @@ BrowserPolicy.content.allowOriginForAll('cdn.jsdelivr.net');
 // Allow imgur images
 BrowserPolicy.content.allowOriginForAll('i.imgur.com');
 
-import '../../api/deck';
+import '../../api/deck.js';
 import '../../api/account.js';
+import '../../api/admin.js';
 
 if (allCards.find().count() === 0) {
   var apiKey = 'cf156a2e4b5296b5a184e53ab14dd99f';

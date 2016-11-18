@@ -10,6 +10,8 @@ import '../../ui/pages/account.js';
 import '../../ui/pages/deck/build.js';
 import '../../ui/pages/deck/view.js';
 
+import '../../ui/pages/admin/main.js';
+
 sAlert.config({
   effect: 'jelly',
   position: 'top-left',

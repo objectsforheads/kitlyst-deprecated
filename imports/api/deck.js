@@ -153,7 +153,7 @@ Meteor.methods({
         var viewHash = Random.id();
         Decks.insert({
           hash: hash,
-          patch: 1.75,
+          patch: 1.76,
           view: 'public',
           view_hash: viewHash,
           draft: arg.draft || false,
@@ -209,7 +209,7 @@ Meteor.methods({
           draft: false,
           hash: hash,
           owner: this.userId,
-          patch: 1.75,
+          patch: 1.76,
           faction: arg.faction,
           general: arg.general,
           deck: arg.deck

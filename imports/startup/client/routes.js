@@ -44,3 +44,10 @@ deckView.route('/:hash', {
     Session.keys = {}
   }
 })
+
+FlowRouter.route( '/secret-passage', {
+  name: 'admin',
+  action: function() {
+    BlazeLayout.render( 'mainLayout', { main: 'adminMain' } );
+  }
+});
