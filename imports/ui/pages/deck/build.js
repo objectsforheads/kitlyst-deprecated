@@ -824,10 +824,6 @@ Template.navDeckMeta.onCreated(function() {
   this.deckName = new ReactiveVar(null);
 })
 
-Template.navDeckMeta.onRendered(function() {
-
-})
-
 Template.navDeckMeta.helpers({
   'deckName': function() {
     if (Decks.findOne()) {
@@ -890,6 +886,10 @@ Template.navDeckMeta.events({
   },
   'click .saveDeckDescription': function() {
     saveDeckDraft();
+  },
+  'click .userAccessToggle': function(e) {
+    e.preventDefault();
+    return Session.set('userAccess', true);
   }
 })
 

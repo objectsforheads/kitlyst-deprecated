@@ -44,6 +44,9 @@
       </div>
     </div>
   {{else}}
+    {{#unless compactView}}
+      {{> mainNav escape=true}}
+    {{/unless}}
     <div class="deckview-container">
       <div class="deckview deckview-portrait">
         <div class="deckview-general-img">

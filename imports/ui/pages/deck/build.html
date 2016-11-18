@@ -8,7 +8,7 @@
       <h1 class="h2">Stats</h1>
       {{> drawStats}}
     </div>
-    {{> mainFooter}}
+    {{> mainFooter includeNav=true}}
   </div>
   {{> navDeckInfo}}
   {{> navDeckbuilderSettings}}
@@ -20,6 +20,7 @@
       <h1 class="h2">Build Deck: Select General</h1>
       {{> selectGeneral}}
     </div>
+    {{> mainFooter includeNav=true}}
   {{/if}}
 </template>
 
@@ -199,7 +200,7 @@
       {{#if currentUser}}
         <small>You own this draft and can access it through this link and your <a href="/account">drafts</a></small>
       {{else}}
-        <small>Because no one owns this draft, this link is currently your only way to access this deck while you're editing, so keep it safe! <a href="/" target="_blank">Log in</a> to claim this deck and save it to your drafts.</small>
+        <small>Because no one owns this draft, this link is currently your only way to access this deck while you're editing, so keep it safe! <a href="#" class="userAccessToggle">Log in</a> to claim this deck and save it to your drafts.</small>
       {{/if}}
     {{else}}
       <small>You haven't saved this deck yet - any changes you make to the deck meta information will automatically save this deck as a draft as well.</small>
