@@ -886,15 +886,18 @@ $generalsWidth: 1506px;
 
 
 .deck-meta-wrapper {
-  display: none;
+  opacity: 0;
+  pointer-events: none;
 }
 
 .meta-open {
   .deck-info-wrapper {
-    display: none;
+    opacity: 0;
+    pointer-events: none;
   }
   .deck-meta-wrapper {
-    display: block;
+    opacity: 1;
+    pointer-events: auto;
   }
 }
 
@@ -912,15 +915,18 @@ $generalsWidth: 1506px;
 
 
 .deck-export-wrapper {
-  display: none;
+  opacity: 0;
+  pointer-events: none;
 }
 
 .export-open {
   .deck-info-wrapper {
-    display: none;
+    opacity: 0;
+    pointer-events: none;
   }
   .deck-export-wrapper {
-    display: block;
+    opacity: 1;
+    pointer-events: auto;
   }
 }
 
@@ -1844,6 +1850,10 @@ $deckbuilderFiltersWidth: 17rem;
 
 .deckview-container {
   display: flex;
+
+  &.viewing {
+    justify-content: center;
+  }
 
   .deckview-drawStats {
     flex: 1;

@@ -21,6 +21,8 @@ Template.mainLayout.helpers({
 })
 
 Template.mainLayout.onRendered(function() {
+  document.title = "Kit.Listlyst - Deckbuilder, Sprites, and Other Resources for Duelyst";
+
   var urlCopy = new Clipboard('.clipboardJS-trigger');
 
   urlCopy.on('success', function() {
