@@ -68,3 +68,10 @@ FlowRouter.route( '/devlog', {
     BlazeLayout.render( 'mainLayout', { main: 'devlogMain' } );
   }
 });
+
+FlowRouter.route( '/database', {
+  name: 'database',
+  action: function() {
+    BlazeLayout.render( 'mainLayout', { main: 'database' } );
+  }
+});

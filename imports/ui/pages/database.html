@@ -1,0 +1,109 @@
+<template name="database">
+  {{> databaseSearch}}
+</template>
+
+<template name="databaseSearch">
+  <h1>Search</h1>
+  <input type="text" name="searchDatabase" class="form-control" placeholder="Search for a card name, race, or description">
+  {{#if searching}}
+    <p>searching...</p>
+  {{else}}
+    {{#if results}}
+      <div class="database-results">
+        {{#each results}}
+        <a data-remodal-target="{{slugifiedName}}" class="db-card remodal-trigger" data-type="{{this.type}}">
+          <div class="mana-cost"><span class="value">{{this.manaCost}}</span></div>
+          <div class="sprite">
+            <div class="card-sprite {{#if this.health}}group_idle{{else}}group_passive{{/if}} card-id_{{this.id}}"></div>
+          </div>
+          <div class="card-caption">
+            <div class="name"><span class="value">{{> highlightQuery text=this.name query=query}}</span></div>
+            <p class="type">
+              <span class="value">{{> highlightQuery text=this.race query=query}}</span>
+            </p>
+            <p class="rarity {{this.rarity}}"><span class="value">{{this.rarity}}</span></p>
+            {{#if this.health}}
+            <ul class="stats">
+                <li class="stat-property stat-atk">
+                    <span class="value">{{this.attack}}</span>
+                </li>
+                <li class="stat-property stat-hp">
+                    <span class="value">{{this.health}}</span>
+                </li>
+            </ul>
+            {{/if}}
+          </div>
+          <p class="card-description"><span class="value">{{> highlightQuery text=this.description keywords=true query=query}}</span></p>
+        </a>
+
+        <div class="remodal" data-remodal-id="{{slugifiedName}}">
+          <button data-remodal-action="close" class="remodal-close"></button>
+          <div class="db-card" data-type="{{this.type}}">
+            <div class="mana-cost"><span class="value">{{this.manaCost}}</span></div>
+            <div class="sprite">
+              <div class="card-sprite {{#if this.health}}group_idle{{else}}group_passive{{/if}} card-id_{{this.id}}"></div>
+            </div>
+            <div class="card-caption">
+              <div class="name"><span class="value">{{> highlightQuery text=this.name query=query}}</span></div>
+              <p class="type">
+                <span class="value">{{> highlightQuery text=this.race query=query}}</span>
+              </p>
+              <p class="rarity {{this.rarity}}"><span class="value">{{this.rarity}}</span></p>
+              {{#if this.health}}
+              <ul class="stats">
+                  <li class="stat-property stat-atk">
+                      <span class="value">{{this.attack}}</span>
+                  </li>
+                  <li class="stat-property stat-hp">
+                      <span class="value">{{this.health}}</span>
+                  </li>
+              </ul>
+              {{/if}}
+            </div>
+            <p class="card-description"><span class="value">{{> highlightQuery text=this.description keywords=true query=query}}</span></p>
+          </div>
+          <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+          <p>hi</p>
+        </div>
+        {{/each}}
+      </div>
+    {{else}}
+      {{#if query}}
+        <p class="alert alert-warning">Nothing found for {{query}}</p>
+      {{/if}}
+    {{/if}}
+  {{/if}}
+</template>
+
+<template name="highlightQuery">
+  {{highlighted}}
+</template>
+
+<template name="databaseCards">
+  {{#each allCards}}
+  <div class="db-card" data-type="{{this.type}}">
+    <div class="mana-cost"><span class="value">{{this.manaCost}}</span></div>
+    <div class="sprite">
+      <div class="card-sprite group_idle" data-id="card-id_{{this.id}}"></div>
+    </div>
+    <div class="card-caption">
+      <div class="name"><span class="value">{{this.name}}</span></div>
+      <p class="type">
+        <span class="value">{{this.race}}</span>
+      </p>
+      <p class="rarity {{this.rarity}}"><span class="value">{{this.rarity}}</span></p>
+      {{#if this.health}}
+      <ul class="stats">
+          <li class="stat-property stat-atk">
+              <span class="value">{{this.attack}}</span>
+          </li>
+          <li class="stat-property stat-hp">
+              <span class="value">{{this.health}}</span>
+          </li>
+      </ul>
+      {{/if}}
+    </div>
+    <p class="card-description"><span class="value">{{parsedDescription}}</span></p>
+  </div>
+  {{/each}}
+</template>

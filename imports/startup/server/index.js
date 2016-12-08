@@ -14,11 +14,12 @@ BrowserPolicy.content.allowOriginForAll('cdn.jsdelivr.net');
 BrowserPolicy.content.allowOriginForAll('i.imgur.com');
 
 // Kadira monitoring
-Kadira.connect('3oYXaAx7z59jNmaMP', 'cb0440e0-58e6-49d8-9ce1-d8cab4f2d647');
+// Kadira.connect('3oYXaAx7z59jNmaMP', 'cb0440e0-58e6-49d8-9ce1-d8cab4f2d647');
 
 import '../../api/deck.js';
 import '../../api/account.js';
 import '../../api/admin.js';
+import '../../api/database.js';
 
 if (allCards.find().count() === 0) {
   var apiKey = 'cf156a2e4b5296b5a184e53ab14dd99f';

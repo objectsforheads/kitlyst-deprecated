@@ -14,6 +14,8 @@ import '../../ui/pages/admin/main.js';
 
 import '../../ui/pages/devlog/main.js';
 
+import '../../ui/pages/database.js';
+
 sAlert.config({
   effect: 'jelly',
   position: 'top-left',
