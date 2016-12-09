@@ -9,7 +9,7 @@ Meteor.publish( 'databaseResults', function( search ) {
   }
 
   let query      = {},
-      projection = { limit: 100, sort: { title: 1 } };
+      projection = { limit: 100, sort: { name: 1 } };
 
   if ( search ) {
     let regex = new RegExp( search, 'gi' );
