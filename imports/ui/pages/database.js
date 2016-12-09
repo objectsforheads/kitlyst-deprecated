@@ -8,37 +8,6 @@ Template.database.onCreated(function() {
   // this.subscribe('allCards');
 })
 
-Template.databaseCards.onRendered(function() {
-  document.querySelectorAll('.db-card').forEach(function(card) {
-    var watcher = scrollMonitor.create(card);
-    watcher.stateChange(lazyLoad);
-    lazyLoad.call(watcher);
-  })
-
-  function lazyLoad() {
-    if (this.isInViewport) {
-      var sprite = $(this.watchItem).find('.card-sprite');
-			sprite.addClass(sprite.attr('data-id'));
-      return this.destroy;
-		}
-  }
-})
-
-Template.databaseCards.helpers({
-  allCards: function() {
-    return allCards.find();
-  },
-  parsedDescription: function() {
-    var description = this.description;
-    var keywords = ['Bloodborn Spell', 'Zeal', 'Provoke', 'Opening Gambit', 'Celerity', 'Airdrop', 'Ranged', 'Backstab', 'Flying', 'Rush', 'Blast', 'Summon Dervish', 'Dying Wish', 'Frenzy', 'Deathwatch', 'Rebirth', 'Infiltrate', 'Forcefield', 'Grow', 'Stunned', 'Stun', 'Strikeback']
-    keywords.forEach(function(keyword) {
-      var regex = new RegExp(keyword, 'g');
-      description = description.replace(regex, "<b>" + keyword + "</b>");
-    })
-    return Spacebars.SafeString(description);
-  }
-})
-
 Template.databaseSearch.onCreated(function() {
   let self = Template.instance();
 
@@ -92,9 +61,6 @@ Template.databaseSearch.helpers({
       return results;
     }
     return false;
-  },
-  slugifiedName() {
-    return this.name.replace(/['"]+/g, "").replace(/[^a-zA-Z0-9]+/g,"-").replace("/--/g", "-").toLowerCase();
   }
 })
 
@@ -121,5 +87,48 @@ Template.highlightQuery.helpers({
     text = text.replace(/\\/g,'')
 
     return Spacebars.SafeString(text);
+  }
+})
+
+Template.databaseCard.helpers({
+  cardResult() {
+    if (this.layout === 'cardResult') { return true; }
+    return false;
+  },
+  pageModal() {
+    if (this.layout === 'pageModal') { return true; }
+    return false;
+  },
+  pageModalCard() {
+    if (this.layout === 'pageModalCard') { return true; }
+    return false;
+  },
+  slugifiedName() {
+    return this.info.name.replace(/['"]+/g, "").replace(/[^a-zA-Z0-9]+/g,"-").replace("/--/g", "-").toLowerCase();
+  },
+  parsedDescription: function() {
+    var description = this.info.description;
+    var keywords = ['Bloodborn Spell', 'Zeal', 'Provoke', 'Opening Gambit', 'Celerity', 'Airdrop', 'Ranged', 'Backstab', 'Flying', 'Rush', 'Blast', 'Summon Dervish', 'Dying Wish', 'Frenzy', 'Deathwatch', 'Rebirth', 'Infiltrate', 'Forcefield', 'Grow', 'Stunned', 'Stun', 'Strikeback']
+    keywords.forEach(function(keyword) {
+      var regex = new RegExp(keyword, 'g');
+      description = description.replace(regex, "<b>" + keyword + "</b>");
+    })
+    return Spacebars.SafeString(description);
+  }
+})
+
+Template.databaseCardPage.onCreated(function() {
+  let self = Template.instance();
+
+  self.autorun( () => {
+   self.subscribe( 'cardHistory', this.data.info.id, () => {
+   });
+ });
+})
+
+Template.databaseCardPage.helpers({
+  patchCards() {
+    var cards = JSON.parse(JSON.stringify(historicalCards.find({id: this.info.id}).fetch()));
+    return cards;
   }
 })

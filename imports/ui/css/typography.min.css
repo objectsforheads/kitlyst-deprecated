@@ -754,6 +754,10 @@ footer { text-align: center; text-transform: uppercase; margin: 3rem 0 1.5rem 0;
 
 .highlighted { background: rgba(255, 212, 84, 0.75); color: black; }
 
+[data-diff="removed"] { text-shadow: 0 0 0.5em white, 0 0 0.75em #e57373, 0 0 0.875em #e57373, 0 0 1em #e57373; }
+
+[data-diff="added"] { text-shadow: 0 0 0.5em white, 0 0 0.75em #81c784, 0 0 0.875em #81c784, 0 0 1em #81c784; }
+
 /* ========================================================================== Remodal's default mobile first theme ========================================================================== */
 /* Default theme styles for the background */
 .remodal-bg.remodal-is-opening, .remodal-bg.remodal-is-opened { -webkit-filter: blur(3px); filter: blur(3px); }

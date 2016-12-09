@@ -2492,6 +2492,14 @@ $spriteScale: 2.5;
   color: black;
 }
 
+[data-diff="removed"] {
+  text-shadow: 0 0 0.5em rgba(255,255,255,1) , 0 0 0.75em #e57373 , 0 0 0.875em #e57373 , 0 0 1em #e57373;
+}
+
+[data-diff="added"] {
+  text-shadow: 0 0 0.5em rgba(255,255,255,1) , 0 0 0.75em #81c784 , 0 0 0.875em #81c784 , 0 0 1em #81c784;
+}
+
 
 /* ==========================================================================
    Remodal's default mobile first theme

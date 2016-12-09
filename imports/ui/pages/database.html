@@ -11,65 +11,13 @@
     {{#if results}}
       <div class="database-results">
         {{#each results}}
-        <a data-remodal-target="{{slugifiedName}}" class="db-card remodal-trigger" data-type="{{this.type}}">
-          <div class="mana-cost"><span class="value">{{this.manaCost}}</span></div>
-          <div class="sprite">
-            <div class="card-sprite {{#if this.health}}group_idle{{else}}group_passive{{/if}} card-id_{{this.id}}"></div>
-          </div>
-          <div class="card-caption">
-            <div class="name"><span class="value">{{> highlightQuery text=this.name query=query}}</span></div>
-            <p class="type">
-              <span class="value">{{> highlightQuery text=this.race query=query}}</span>
-            </p>
-            <p class="rarity {{this.rarity}}"><span class="value">{{this.rarity}}</span></p>
-            {{#if this.health}}
-            <ul class="stats">
-                <li class="stat-property stat-atk">
-                    <span class="value">{{this.attack}}</span>
-                </li>
-                <li class="stat-property stat-hp">
-                    <span class="value">{{this.health}}</span>
-                </li>
-            </ul>
-            {{/if}}
-          </div>
-          <p class="card-description"><span class="value">{{> highlightQuery text=this.description keywords=true query=query}}</span></p>
-        </a>
-
-        <div class="remodal" data-remodal-id="{{slugifiedName}}">
-          <button data-remodal-action="close" class="remodal-close"></button>
-          <div class="db-card" data-type="{{this.type}}">
-            <div class="mana-cost"><span class="value">{{this.manaCost}}</span></div>
-            <div class="sprite">
-              <div class="card-sprite {{#if this.health}}group_idle{{else}}group_passive{{/if}} card-id_{{this.id}}"></div>
-            </div>
-            <div class="card-caption">
-              <div class="name"><span class="value">{{> highlightQuery text=this.name query=query}}</span></div>
-              <p class="type">
-                <span class="value">{{> highlightQuery text=this.race query=query}}</span>
-              </p>
-              <p class="rarity {{this.rarity}}"><span class="value">{{this.rarity}}</span></p>
-              {{#if this.health}}
-              <ul class="stats">
-                  <li class="stat-property stat-atk">
-                      <span class="value">{{this.attack}}</span>
-                  </li>
-                  <li class="stat-property stat-hp">
-                      <span class="value">{{this.health}}</span>
-                  </li>
-              </ul>
-              {{/if}}
-            </div>
-            <p class="card-description"><span class="value">{{> highlightQuery text=this.description keywords=true query=query}}</span></p>
-          </div>
-          <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-          <p>hi</p>
-        </div>
+        {{> databaseCard layout="cardResult" info=this query=query}}
+        {{> databaseCard layout="pageModal" info=this}}
         {{/each}}
       </div>
     {{else}}
       {{#if query}}
-        <p class="alert alert-warning">Nothing found for {{query}}</p>
+        <p class="alert alert-warning">Nothing found for <code>{{query}}</code></p>
       {{/if}}
     {{/if}}
   {{/if}}
@@ -79,31 +27,98 @@
   {{highlighted}}
 </template>
 
-<template name="databaseCards">
-  {{#each allCards}}
-  <div class="db-card" data-type="{{this.type}}">
-    <div class="mana-cost"><span class="value">{{this.manaCost}}</span></div>
+<template name="databaseCard">
+  {{#if cardResult}}
+  <a data-remodal-target="{{slugifiedName}}" class="db-card remodal-trigger" data-type="{{this.info.type}}">
+    <div class="mana-cost"><span class="value">{{this.info.manaCost}}</span></div>
     <div class="sprite">
-      <div class="card-sprite group_idle" data-id="card-id_{{this.id}}"></div>
+      <div class="card-sprite {{#if this.info.health}}group_idle{{else}}group_passive{{/if}} card-id_{{this.info.id}}"></div>
     </div>
     <div class="card-caption">
-      <div class="name"><span class="value">{{this.name}}</span></div>
+      <div class="name"><span class="value">{{> highlightQuery text=this.info.name query=query}}</span></div>
       <p class="type">
-        <span class="value">{{this.race}}</span>
+        <span class="value">{{> highlightQuery text=this.info.race query=query}}</span>
       </p>
-      <p class="rarity {{this.rarity}}"><span class="value">{{this.rarity}}</span></p>
-      {{#if this.health}}
+      <p class="rarity {{this.info.rarity}}"><span class="value">{{this.info.rarity}}</span></p>
+      {{#if this.info.health}}
       <ul class="stats">
           <li class="stat-property stat-atk">
-              <span class="value">{{this.attack}}</span>
+              <span class="value">{{this.info.attack}}</span>
           </li>
           <li class="stat-property stat-hp">
-              <span class="value">{{this.health}}</span>
+              <span class="value">{{this.info.health}}</span>
+          </li>
+      </ul>
+      {{/if}}
+    </div>
+    <p class="card-description"><span class="value">{{> highlightQuery text=this.info.description keywords=true query=query}}</span></p>
+  </a>
+  {{/if}}
+  {{#if pageModal}}
+  <div class="remodal" data-remodal-id="{{slugifiedName}}">
+    <button data-remodal-action="close" class="remodal-close"></button>
+    {{> databaseCardPage info=this.info}}
+  </div>
+  {{/if}}
+  {{#if pageModalCard}}
+  <div class="db-card" data-type="{{this.info.type}}">
+    <div class="mana-cost"><span class="value">{{this.info.manaCost}}</span></div>
+    <div class="sprite">
+      <div class="card-sprite {{#if this.info.health}}group_idle{{else}}group_passive{{/if}} card-id_{{this.info.id}}"></div>
+    </div>
+    <div class="card-caption">
+      <div class="name"><span class="value">{{this.info.name}}</span></div>
+      <p class="type">
+        <span class="value">{{this.info.race}}</span>
+      </p>
+      <p class="rarity {{this.info.rarity}}"><span class="value">{{this.info.rarity}}</span></p>
+      {{#if this.info.health}}
+      <ul class="stats">
+          <li class="stat-property stat-atk">
+              <span class="value">{{this.info.attack}}</span>
+          </li>
+          <li class="stat-property stat-hp">
+              <span class="value">{{this.info.health}}</span>
           </li>
       </ul>
       {{/if}}
     </div>
     <p class="card-description"><span class="value">{{parsedDescription}}</span></p>
   </div>
+  {{/if}}
+  {{#unless this.layout}}
+  <div class="db-card" data-type="{{this.info.type}}">
+    <div class="mana-cost"><span class="value">{{this.info.manaCost}}</span></div>
+    <div class="sprite">
+      <div class="card-sprite {{#if this.info.health}}group_idle{{else}}group_passive{{/if}} card-id_{{this.info.id}}"></div>
+    </div>
+    <div class="card-caption">
+      <div class="name"><span class="value">{{this.info.name}}</span></div>
+      <p class="type">
+        <span class="value">{{this.info.race}}</span>
+      </p>
+      <p class="rarity {{this.info.rarity}}"><span class="value">{{this.info.rarity}}</span></p>
+      {{#if this.info.health}}
+      <ul class="stats">
+          <li class="stat-property stat-atk">
+              <span class="value">{{this.info.attack}}</span>
+          </li>
+          <li class="stat-property stat-hp">
+              <span class="value">{{this.info.health}}</span>
+          </li>
+      </ul>
+      {{/if}}
+    </div>
+    <p class="card-description"><span class="value">{{parsedDescription}}</span></p>
+  </div>
+  {{/unless}}
+</template>
+
+<template name="databaseCardPage">
+  <h1>{{this.info.name}}</h1>
+  {{> databaseCard layout="pageModalCard" info=this.info}}
+  <h2>Patch History</h2>
+  {{#each patchCards}}
+  {{> databaseCard info=this}}
   {{/each}}
 </template>
