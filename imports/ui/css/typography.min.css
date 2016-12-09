@@ -716,11 +716,11 @@ footer { text-align: center; text-transform: uppercase; margin: 3rem 0 1.5rem 0;
 
 .db-card .card-caption { text-align: center; height: 30em; position: absolute; width: 100%; top: 60em; vertical-align: middle; }
 
-.db-card .name { font-weight: 500; text-transform: uppercase; color: #fff; min-height: 10em; }
+.db-card .name { font-weight: 500; text-transform: uppercase; color: #fff; min-height: 10em; position: absolute; top: 0; left: 0; width: 100%; }
 
 .db-card .name .value { font-size: 6.6em; line-height: 1; display: block; }
 
-.db-card .type { color: #90cacf; font-weight: 300; text-transform: uppercase; padding: 0; margin: 5.5em 0 0; }
+.db-card .type { color: #90cacf; font-weight: 300; text-transform: uppercase; padding: 0; margin: 5.5em 0 0; position: absolute; top: 10em; left: 0; width: 100%; }
 
 .db-card .type .value { display: block; font-size: 6em; line-height: 0; }
 
@@ -754,9 +754,9 @@ footer { text-align: center; text-transform: uppercase; margin: 3rem 0 1.5rem 0;
 
 .highlighted { background: rgba(255, 212, 84, 0.75); color: black; }
 
-[data-diff="removed"] { text-shadow: 0 0 0.5em white, 0 0 0.75em #e57373, 0 0 0.875em #e57373, 0 0 1em #e57373; }
+[data-diff="removed"] { text-shadow: 0 0 0.5em black, 0 0 0.75em #e57373, 0 0 0.875em #e57373, 0 0 1em #e57373; }
 
-[data-diff="added"] { text-shadow: 0 0 0.5em white, 0 0 0.75em #81c784, 0 0 0.875em #81c784, 0 0 1em #81c784; }
+[data-diff="added"] { text-shadow: 0 0 0.5em black, 0 0 0.75em #81c784, 0 0 0.875em #81c784, 0 0 1em #81c784; }
 
 /* ========================================================================== Remodal's default mobile first theme ========================================================================== */
 /* Default theme styles for the background */

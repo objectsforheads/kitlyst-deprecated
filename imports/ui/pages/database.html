@@ -86,6 +86,40 @@
     <p class="card-description"><span class="value">{{parsedDescription}}</span></p>
   </div>
   {{/if}}
+  {{#if historicalCard}}
+  <div class="db-card" data-type="{{this.info.type}}">
+    <div class="mana-cost">
+      <span class="value">{{this.info.manaCost}}</span>
+      <span class="value">{{{this.info.manaCostDiffAdd}}}</span>
+      <span class="value">{{{this.info.manaCostDiffRemove}}}</span>
+    </div>
+    <div class="sprite">
+      <div class="card-sprite {{#if this.info.health}}group_idle{{else}}group_passive{{/if}} card-id_{{this.info.id}}"></div>
+    </div>
+    <div class="card-caption">
+      <div class="name"><span class="value">{{this.info.name}}</span></div>
+      <div class="name"><span class="value">{{{this.info.nameDiffAdd}}}</span></div>
+      <div class="name"><span class="value">{{{this.info.nameDiffRemove}}}</span></div>
+      <p class="type"><span class="value">{{this.info.race}}</span></p>
+      <p class="type"><span class="value">{{this.info.raceDiffAdd}}</span></p>
+      <p class="type"><span class="value">{{this.info.raceDiffRemove}}</span></p>
+      <p class="rarity {{this.info.rarity}}"><span class="value">{{this.info.rarity}}</span></p>
+      {{#if this.info.health}}
+      <ul class="stats">
+          <li class="stat-property stat-atk">
+              <span class="value">{{this.info.attack}}</span>
+          </li>
+          <li class="stat-property stat-hp">
+              <span class="value">{{this.info.health}}</span>
+          </li>
+      </ul>
+      {{/if}}
+    </div>
+    <p class="card-description"><span class="value">{{parsedDescription}}</span></p>
+    <p class="card-description"><span class="value">{{{this.info.descriptionDiffRemove}}}</span></p>
+    <p class="card-description"><span class="value">{{{this.info.descriptionDiffAdd}}}</span></p>
+  </div>
+  {{/if}}
   {{#unless this.layout}}
   <div class="db-card" data-type="{{this.info.type}}">
     <div class="mana-cost"><span class="value">{{this.info.manaCost}}</span></div>
@@ -115,10 +149,14 @@
 </template>
 
 <template name="databaseCardPage">
-  <h1>{{this.info.name}}</h1>
-  {{> databaseCard layout="pageModalCard" info=this.info}}
-  <h2>Patch History</h2>
-  {{#each patchCards}}
-  {{> databaseCard info=this}}
-  {{/each}}
+  <div class="page-content">
+    <h1>{{this.info.name}}</h1>
+    {{> databaseCard layout="pageModalCard" info=this.info}}
+    <h2>Patch History</h2>
+    {{#if Template.subscriptionsReady}}
+    {{#each patchCards}}
+    {{> databaseCard info=this layout="historicalCard"}}
+    {{/each}}
+    {{/if}}
+  </div>
 </template>

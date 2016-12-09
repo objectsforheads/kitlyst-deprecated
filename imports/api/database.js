@@ -25,3 +25,8 @@ Meteor.publish( 'databaseResults', function( search ) {
     return allCards.find( query, projection );
   }
 });
+
+Meteor.publish( 'cardHistory', function(cardId) {
+  check(cardId, Number);
+  return historicalCards.find({id: cardId})
+})

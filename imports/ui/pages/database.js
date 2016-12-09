@@ -4,9 +4,7 @@ import scrollMonitor from 'scrollmonitor';
 import '/node_modules/remodal/dist/remodal.css';
 import '/node_modules/remodal/dist/remodal.min.js';
 
-Template.database.onCreated(function() {
-  // this.subscribe('allCards');
-})
+import JsDiff from 'diff';
 
 Template.databaseSearch.onCreated(function() {
   let self = Template.instance();
@@ -103,10 +101,15 @@ Template.databaseCard.helpers({
     if (this.layout === 'pageModalCard') { return true; }
     return false;
   },
+  historicalCard() {
+    if (this.layout === 'historicalCard') { return true; }
+    return false;
+  },
   slugifiedName() {
     return this.info.name.replace(/['"]+/g, "").replace(/[^a-zA-Z0-9]+/g,"-").replace("/--/g", "-").toLowerCase();
   },
   parsedDescription: function() {
+    console.log(this)
     var description = this.info.description;
     var keywords = ['Bloodborn Spell', 'Zeal', 'Provoke', 'Opening Gambit', 'Celerity', 'Airdrop', 'Ranged', 'Backstab', 'Flying', 'Rush', 'Blast', 'Summon Dervish', 'Dying Wish', 'Frenzy', 'Deathwatch', 'Rebirth', 'Infiltrate', 'Forcefield', 'Grow', 'Stunned', 'Stun', 'Strikeback']
     keywords.forEach(function(keyword) {
@@ -121,14 +124,86 @@ Template.databaseCardPage.onCreated(function() {
   let self = Template.instance();
 
   self.autorun( () => {
-   self.subscribe( 'cardHistory', this.data.info.id, () => {
-   });
- });
+    self.subscribe( 'cardHistory', this.data.info.id, () => {
+    });
+  });
 })
+
 
 Template.databaseCardPage.helpers({
   patchCards() {
-    var cards = JSON.parse(JSON.stringify(historicalCards.find({id: this.info.id}).fetch()));
+    var cards = JSON.parse(JSON.stringify(historicalCards.find({id: this.info.id}, {sort: { patch: 1 }}).fetch()));
+    cards.forEach(function(card, index) {
+      if (index < cards.length - 1) {
+        var next = cards[index + 1];
+
+        // Run the diff functions on each field
+        ['name','manaCost','race','description'].forEach(function(field) {
+
+          // Create the containers for the diff information
+          if (typeof card[field+'DiffRemove'] === 'undefined') {
+            card[field + 'DiffRemove'] = [];
+          }
+          if (typeof card[field+'DiffAdd'] === 'undefined') {
+            card[field + 'DiffAdd'] = [];
+          }
+
+          if (typeof next[field+'DiffRemove'] === 'undefined') {
+            next[field + 'DiffRemove'] = [];
+          }
+          if (typeof next[field+'DiffAdd'] === 'undefined') {
+            next[field + 'DiffAdd'] = [];
+          }
+
+          var diffs = JsDiff.diffChars(card[field].toString(), next[field].toString());
+
+          diffs.forEach(function(part) {
+            // Add the removed parts to the current card
+            if (part.removed) {
+              card[field + 'DiffRemove'].push(part);
+            } else if (part.added) {
+              //Add the added parts to the next card
+              next[field + 'DiffAdd'].push(part);
+            } else {
+              // All the standard parts should get added to both
+              card[field + 'DiffRemove'].push(part);
+              next[field + 'DiffAdd'].push(part);
+            }
+          })
+        })
+      }
+
+      // Loop through the diffs to make the strings
+      ['name','manaCost','race','description'].forEach(function(field) {
+        if (typeof card[field + 'DiffAdd'] !== 'undefined') {
+          var str = '';
+          card[field + 'DiffAdd'].forEach(function(part) {
+            if (part.removed) {
+              str += '<span data-diff="removed">' + part.value + '</span>';
+            } else if (part.added) {
+              str += '<span data-diff="added">' + part.value + '</span>';
+            } else {
+              str += part.value;
+            }
+          })
+          card[field + 'DiffAdd'] = str;
+        }
+        if (typeof card[field + 'DiffRemove'] !== 'undefined') {
+          var str = '';
+          card[field + 'DiffRemove'].forEach(function(part) {
+            if (part.removed) {
+              str += '<span data-diff="removed">' + part.value + '</span>';
+            } else if (part.added) {
+              str += '<span data-diff="added">' + part.value + '</span>';
+            } else {
+              str += part.value;
+            }
+          })
+          card[field + 'DiffRemove'] = str;
+        }
+      });
+
+    })
     return cards;
   }
 })

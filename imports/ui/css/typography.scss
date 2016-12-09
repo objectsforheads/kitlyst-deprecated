@@ -2347,6 +2347,11 @@ $spriteScale: 2.5;
     color: #fff;
     min-height: 10em;
 
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+
     .value {
       font-size: 6.6em;
       line-height: 1;
@@ -2360,6 +2365,11 @@ $spriteScale: 2.5;
     text-transform: uppercase;
     padding: 0;
     margin: 5.5em 0 0;
+
+    position: absolute;
+    top: 10em;
+    left: 0;
+    width: 100%;
 
     .value {
       display: block;
@@ -2493,11 +2503,11 @@ $spriteScale: 2.5;
 }
 
 [data-diff="removed"] {
-  text-shadow: 0 0 0.5em rgba(255,255,255,1) , 0 0 0.75em #e57373 , 0 0 0.875em #e57373 , 0 0 1em #e57373;
+  text-shadow: 0 0 0.5em rgba(0,0,0,1) , 0 0 0.75em #e57373 , 0 0 0.875em #e57373 , 0 0 1em #e57373;
 }
 
 [data-diff="added"] {
-  text-shadow: 0 0 0.5em rgba(255,255,255,1) , 0 0 0.75em #81c784 , 0 0 0.875em #81c784 , 0 0 1em #81c784;
+  text-shadow: 0 0 0.5em rgba(0,0,0,1) , 0 0 0.75em #81c784 , 0 0 0.875em #81c784 , 0 0 1em #81c784;
 }
 
 
