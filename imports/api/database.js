@@ -5,7 +5,7 @@ Meteor.publish( 'databaseResults', function( search ) {
   check( search, Match.OneOf( String, null, undefined ) );
 
   if (search !== null && typeof search !== 'undefined') {
-    search = search.replace(/[-[\]{}()*+?%.,\\=!<>^$|#]/g, "\\$&");
+    search = search.replace(/[-[\]{}()*+?.,\\=!<>^$|#]/g, "\\$&");
   }
 
   let query      = {},

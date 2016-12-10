@@ -38,7 +38,7 @@ Template.databaseSearch.events({
       if ( value === '' ) {
         template.searchQuery.set( value );
       }
-    }, 150);
+    }, 200);
   },
   'click .remodal-trigger' (e, template) {
     var id = $(e.currentTarget).attr('data-remodal-target');
@@ -75,9 +75,9 @@ Template.highlightQuery.helpers({
     }
 
     // Escape the query
-    var escapedQuery = this.query.replace(/[-[\]{}()*+?%.,\\=!<>^$|#]/g, "\\$&");
+    var escapedQuery = this.query.replace(/[-[\]{}()*+?.,\\=!<>^$|#]/g, "\\$&");
     // Esscape the text
-    text = text.replace(/[-[\]{}()*+?%.,\\=!<>^$|#]/g, "\\$&");
+    text = text.replace(/[-[\]{}()*+?.,\\=!<>^$|#]/g, "\\$&");
     // Run the highlighter
     var regex = new RegExp(escapedQuery, 'gi');
     text = text.replace(regex, '<span class="highlighted">$&</span>');
@@ -109,14 +109,7 @@ Template.databaseCard.helpers({
     return this.info.name.replace(/['"]+/g, "").replace(/[^a-zA-Z0-9]+/g,"-").replace("/--/g", "-").toLowerCase();
   },
   parsedDescription: function() {
-    console.log(this)
-    var description = this.info.description;
-    var keywords = ['Bloodborn Spell', 'Zeal', 'Provoke', 'Opening Gambit', 'Celerity', 'Airdrop', 'Ranged', 'Backstab', 'Flying', 'Rush', 'Blast', 'Summon Dervish', 'Dying Wish', 'Frenzy', 'Deathwatch', 'Rebirth', 'Infiltrate', 'Forcefield', 'Grow', 'Stunned', 'Stun', 'Strikeback']
-    keywords.forEach(function(keyword) {
-      var regex = new RegExp(keyword, 'g');
-      description = description.replace(regex, "<b>" + keyword + "</b>");
-    })
-    return Spacebars.SafeString(description);
+    return Spacebars.SafeString(boldKeywords(this.info.description));
   }
 })
 
@@ -134,12 +127,17 @@ Template.databaseCardPage.helpers({
   patchCards() {
     var cards = JSON.parse(JSON.stringify(historicalCards.find({id: this.info.id}, {sort: { patch: 1 }}).fetch()));
     cards.forEach(function(card, index) {
+      var fields = ['name','manaCost','race','description','rarity'];
+      if (card.type === 'Unit') {
+        fields.push('attack');
+        fields.push('health');
+      }
       if (index < cards.length - 1) {
         var next = cards[index + 1];
 
         // Run the diff functions on each field
-        ['name','manaCost','race','description'].forEach(function(field) {
 
+        fields.forEach(function(field) {
           // Create the containers for the diff information
           if (typeof card[field+'DiffRemove'] === 'undefined') {
             card[field + 'DiffRemove'] = [];
@@ -155,7 +153,7 @@ Template.databaseCardPage.helpers({
             next[field + 'DiffAdd'] = [];
           }
 
-          var diffs = JsDiff.diffChars(card[field].toString(), next[field].toString());
+          var diffs = JsDiff.diffWords(card[field].toString(), next[field].toString());
 
           diffs.forEach(function(part) {
             // Add the removed parts to the current card
@@ -174,32 +172,32 @@ Template.databaseCardPage.helpers({
       }
 
       // Loop through the diffs to make the strings
-      ['name','manaCost','race','description'].forEach(function(field) {
+      fields.forEach(function(field) {
         if (typeof card[field + 'DiffAdd'] !== 'undefined') {
           var str = '';
           card[field + 'DiffAdd'].forEach(function(part) {
             if (part.removed) {
-              str += '<span data-diff="removed">' + part.value + '</span>';
+              str += '<span class="diff-snippet" data-diff="removed">' + part.value + '</span>';
             } else if (part.added) {
-              str += '<span data-diff="added">' + part.value + '</span>';
+              str += '<span class="diff-snippet" data-diff="added">' + part.value + '</span>';
             } else {
-              str += part.value;
+              str +='<span class="diff-snippet">' +  part.value + '</span>';
             }
           })
-          card[field + 'DiffAdd'] = str;
+          card[field + 'DiffAdd'] = boldKeywords(str);
         }
         if (typeof card[field + 'DiffRemove'] !== 'undefined') {
           var str = '';
           card[field + 'DiffRemove'].forEach(function(part) {
             if (part.removed) {
-              str += '<span data-diff="removed">' + part.value + '</span>';
+              str += '<span class="diff-snippet" data-diff="removed">' + part.value + '</span>';
             } else if (part.added) {
-              str += '<span data-diff="added">' + part.value + '</span>';
+              str += '<span class="diff-snippet" data-diff="added">' + part.value + '</span>';
             } else {
-              str += part.value;
+              str +='<span class="diff-snippet">' +  part.value + '</span>';
             }
           })
-          card[field + 'DiffRemove'] = str;
+          card[field + 'DiffRemove'] = boldKeywords(str);
         }
       });
 
@@ -207,3 +205,14 @@ Template.databaseCardPage.helpers({
     return cards;
   }
 })
+
+function boldKeywords(str) {
+  var keywords = ['Bloodborn Spell', 'Zeal', 'Provoke', 'Opening Gambit', 'Celerity', 'Airdrop', 'Ranged', 'Backstab', 'Flying', 'Rush', 'Blast', 'Summon Dervish', 'Dying Wish', 'Frenzy', 'Deathwatch', 'Rebirth', 'Infiltrate', 'Forcefield', 'Grow', 'Stunned', 'Stun', 'Strikeback'];
+
+  keywords.forEach(function(keyword) {
+    var regex = new RegExp(keyword, 'g');
+    str = str.replace(regex, "<b>$&</b>");
+  })
+
+  return str;
+}
