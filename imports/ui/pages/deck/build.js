@@ -4,14 +4,6 @@ import './view/stats.js';
 import './view/exportDeckTxt.js';
 import './view/exportDeckImg.js';
 
-import '../../css/faction/lyonar.css';
-import '../../css/faction/songhai.css';
-import '../../css/faction/vetruvian.css';
-import '../../css/faction/abyssian.css';
-import '../../css/faction/magmar.css';
-import '../../css/faction/vanar.css';
-import '../../css/faction/neutral.css';
-
 import Chartist from 'chartist';
 import '/node_modules/chartist/dist/chartist.min.css';
 require('chartist-plugin-legend');
@@ -103,6 +95,30 @@ Template.deckBuild.helpers({
     if (Session.get('deckGeneral')) {
       return JSON.parse(Session.get('deckGeneral'));
     }
+  },
+  'factionSlug': function() {
+    var faction = Session.get('deckFaction');
+    switch(faction) {
+      case 'Lyonar Kingdoms':
+        faction = 'lyonar';
+        break;
+      case 'Songhai Empire':
+        faction = 'songhai';
+        break
+      case 'Vetruvian Imperium':
+        faction = 'vetruvian';
+        break
+      case 'Abyssian Host':
+        faction = 'abyssian';
+        break
+      case 'Magmar Aspects':
+        faction = 'magmar';
+        break
+      case 'Vanar Kindred':
+        faction = 'vanar';
+        break
+    }
+    return faction;
   },
   'statsEnabled': function() {
     return Session.get('statsEnabled');

@@ -1,6 +1,10 @@
 <template name="deckBuild">
   <style class="deckbuilder-search-styles"></style>
   {{#if generalSelected}}
+  <head>
+    <link href="/css/deckbuilder/faction/{{factionSlug}}.css" rel="stylesheet">
+    <link href="/css/deckbuilder/faction/neutral.css" rel="stylesheet">
+  </head>
   <div class="deckbuilder-container {{#if statsEnabled}}hide-add-cards{{/if}}">
     {{> mainNav onlyTitle=true}}
     {{> addCards}}
@@ -25,6 +29,9 @@
 </template>
 
 <template name="deckBuildWrapper">
+  <head>
+    <link href="/css/deckbuilder/generals.min.css" rel="stylesheet">
+  </head>
   {{#if Template.subscriptionsReady}}
     {{#if hash}}
       {{#if owned}}
