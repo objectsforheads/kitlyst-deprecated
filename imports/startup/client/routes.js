@@ -75,3 +75,10 @@ FlowRouter.route( '/database', {
     BlazeLayout.render( 'mainLayout', { main: 'database' } );
   }
 });
+
+FlowRouter.route( '/database/card/:slug', {
+  name: 'database',
+  action: function(params) {
+    BlazeLayout.render( 'mainLayout', { main: 'databaseCardPage' } );
+  }
+});

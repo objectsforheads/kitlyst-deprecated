@@ -1,35 +1,6 @@
-<template name="database">
-  {{> databaseSearch}}
-</template>
-
-<template name="databaseSearch">
-  <h1>Search</h1>
-  <input type="text" name="searchDatabase" class="form-control" placeholder="Search for a card name, race, or description">
-  {{#if searching}}
-    <p>searching...</p>
-  {{else}}
-    {{#if results}}
-      <div class="database-results">
-        {{#each results}}
-        {{> databaseCard layout="cardResult" info=this query=query}}
-        {{> databaseCard layout="pageModal" info=this}}
-        {{/each}}
-      </div>
-    {{else}}
-      {{#if query}}
-        <p class="alert alert-warning">Nothing found for <code>{{query}}</code></p>
-      {{/if}}
-    {{/if}}
-  {{/if}}
-</template>
-
-<template name="highlightQuery">
-  {{highlighted}}
-</template>
-
 <template name="databaseCard">
   {{#if cardResult}}
-  <a data-remodal-target="{{slugifiedName}}" class="db-card remodal-trigger" data-type="{{this.info.type}}">
+  <a href="/database/card/{{this.info.id}}" class="db-card" data-type="{{this.info.type}}">
     <div class="mana-cost"><span class="value">{{this.info.manaCost}}</span></div>
     <div class="sprite">
       <div class="card-sprite {{#if this.info.health}}group_idle{{else}}group_passive{{/if}} card-id_{{this.info.id}}"></div>
@@ -54,13 +25,7 @@
     <p class="card-description"><span class="value">{{> highlightQuery text=this.info.description keywords=true query=query}}</span></p>
   </a>
   {{/if}}
-  {{#if pageModal}}
-  <div class="remodal" data-remodal-id="{{slugifiedName}}">
-    <button data-remodal-action="close" class="remodal-close"></button>
-    {{> databaseCardPage info=this.info}}
-  </div>
-  {{/if}}
-  {{#if pageModalCard}}
+  {{#if currentCard}}
   <div class="db-card" data-type="{{this.info.type}}">
     <div class="mana-cost"><span class="value">{{this.info.manaCost}}</span></div>
     <div class="sprite">
@@ -154,22 +119,4 @@
     <p class="card-description"><span class="value">{{parsedDescription}}</span></p>
   </div>
   {{/unless}}
-</template>
-
-<template name="databaseCardPage">
-  <div class="page-content">
-    <h1>{{this.info.name}}</h1>
-    {{> databaseCard layout="pageModalCard" info=this.info}}
-    <h2>Patch History</h2>
-    {{#if Template.subscriptionsReady}}
-    <div class="patch-cards">
-      {{#each patchCards}}
-      <div class="patch-card">
-        <div><b>{{this.patch}}</b></div>
-        {{> databaseCard info=this layout="historicalCard"}}
-      </div>
-      {{/each}}
-    </div>
-    {{/if}}
-  </div>
 </template>

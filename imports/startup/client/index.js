@@ -14,7 +14,8 @@ import '../../ui/pages/admin/main.js';
 
 import '../../ui/pages/devlog/main.js';
 
-import '../../ui/pages/database.js';
+import '../../ui/pages/database/main.js';
+import '../../ui/pages/database/single.js';
 
 sAlert.config({
   effect: 'jelly',
