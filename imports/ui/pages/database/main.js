@@ -12,29 +12,36 @@ Template.databaseSearch.onCreated(function() {
   this.debounce = null;
 
   self.autorun( () => {
-   self.subscribe( 'databaseResults', self.searchQuery.get(), () => {
+    if (FlowRouter.getQueryParam('search')) {
+      self.searching.set(true);
+      self.searchQuery.set(FlowRouter.getQueryParam('search'))
+    }
+
+    self.subscribe( 'databaseResults', self.searchQuery.get(), () => {
      setTimeout( () => {
        self.searching.set( false );
+       FlowRouter.setQueryParams({search: self.searchQuery.get()})
      }, 300 );
-   });
+    });
  });
 })
 
 Template.databaseSearch.events({
-  'keyup [name="searchDatabase"]' ( event, template ) {
+  'keydown [name="searchDatabase"]' ( event, template ) {
     if (template.debounce) {
       Meteor.clearTimeout(template.debounce);
     }
     template.debounce = Meteor.setTimeout(function() {
-      let value = event.target.value.trim();
 
-      if ( value !== '' && value !== template.searchQuery.get()) {
-        template.searchQuery.set( value );
-        template.searching.set( true );
-      }
+      var isWordCharacter = event.key.length === 1;
+      var isBackspaceOrDelete = (event.keyCode == 8 || event.keyCode == 46);
 
-      if ( value === '' ) {
-        template.searchQuery.set( value );
+      if (isWordCharacter || isBackspaceOrDelete) {
+        let value = event.target.value.trim();
+
+        if ( value !== '' && value !== FlowRouter.getQueryParam('search')) {
+          FlowRouter.setQueryParams({search: value})
+        }
       }
     }, 200);
   }
