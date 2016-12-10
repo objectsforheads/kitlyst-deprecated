@@ -33,6 +33,30 @@ Template.deckView.onCreated(function() {
 })
 
 Template.deckView.helpers({
+  'factionSlug': function() {
+    var faction = Session.get('deckFaction');
+    switch(faction) {
+      case 'Lyonar Kingdoms':
+        faction = 'lyonar';
+        break;
+      case 'Songhai Empire':
+        faction = 'songhai';
+        break
+      case 'Vetruvian Imperium':
+        faction = 'vetruvian';
+        break
+      case 'Abyssian Host':
+        faction = 'abyssian';
+        break
+      case 'Magmar Aspects':
+        faction = 'magmar';
+        break
+      case 'Vanar Kindred':
+        faction = 'vanar';
+        break
+    }
+    return faction;
+  },
   'compactView': function() {
     return FlowRouter.getQueryParam('compact');
   },

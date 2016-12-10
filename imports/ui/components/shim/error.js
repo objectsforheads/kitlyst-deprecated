@@ -1,3 +1,3 @@
-import '../../css/faction/misc.css';
+import '../../css/loader.min.css';
 
 import './error.html';

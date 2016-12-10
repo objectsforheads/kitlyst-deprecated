@@ -1,8 +1,7 @@
-import '../../ui/css/normalize.css';
-import '../../ui/css/rpg-awesome.css';
-import '../../ui/css/typebase.css';
+import '../../ui/css/normalize.scss';
+import '../../ui/css/typebase.scss';
 import '../../ui/css/typography.scss';
-import '../../ui/css/prism.css';
+import '../../ui/css/prism.scss';
 
 import '../components/mainNav.js';
 import '../components/mainFooter.html';

@@ -1,5 +1,9 @@
 <template name="deckView">
   {{#if Template.subscriptionsReady}}
+  <head>
+    <link href="/css/sprites/faction/{{factionSlug}}.css" rel="stylesheet">
+    <link href="/css/sprites/faction/neutral.css" rel="stylesheet">
+  </head>
   {{#if compactLandscape}}
     <div class="deckview deckview-landscape">
       <div class="deckview-general-img-wrapper">
