@@ -7,12 +7,19 @@ Template.databaseCardPage.onCreated(function() {
   let self = Template.instance();
   self.subscribe( 'cardHistory', Number(FlowRouter.getParam('slug')))
   self.subscribe( 'cardPage', Number(FlowRouter.getParam('slug')))
+  self.subscribe( 'cardMeta', Number(FlowRouter.getParam('slug')))
 })
 
 
 Template.databaseCardPage.helpers({
   currentCard() {
     return allCards.findOne();
+  },
+  cardId() {
+    return FlowRouter.getParam('slug');
+  },
+  sprites() {
+    return cardMeta.findOne({id: Number(FlowRouter.getParam('slug'))}).sprites;
   },
   patchCards() {
     var cards = JSON.parse(JSON.stringify(historicalCards.find({id: Number(FlowRouter.getParam('slug'))}, {sort: { patch: 1 }}).fetch()));

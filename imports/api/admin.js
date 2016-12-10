@@ -46,5 +46,29 @@ Meteor.methods({
     })
   }
   return false;
+},
+'updateMeta': function(info) {
+  check(info, {
+    updateMeta_password: String,
+    updateMeta_meta: Array
+  })
+
+  if (info.updateMeta_password === 'mEFFg6COePONIoqYx6CY') {
+    var metas = info.updateMeta_meta;
+
+    metas.forEach(function(meta) {
+      var add = {
+        id: meta.id,
+        sprites: meta.groups,
+        association: meta.id
+      }
+      if (cardMeta.find({id: meta.id}).count() === 0) {
+        cardMeta.insert(add)
+      } else {
+        var id = cardMeta.findOne({id: meta.id})._id;
+        cardMeta.update({_id: id}, add)
+      }
+    })
+  }
 }
 })

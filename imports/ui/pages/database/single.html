@@ -3,6 +3,11 @@
   <div class="page-content">
     <h1>{{currentCard.name}}</h1>
     {{> databaseCard layout="currentCard" info=currentCard}}
+    <h2>Animations</h2>
+    {{#each sprites}}
+    {{this}}
+    <div class="card-sprite group_{{this}} card-id_{{cardId}}"></div>
+    {{/each}}
     <h2>Patch History</h2>
     <div class="patch-cards">
       {{#each patchCards}}

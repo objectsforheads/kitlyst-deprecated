@@ -35,3 +35,9 @@ Meteor.publish( 'cardPage', function(cardId) {
   check(cardId, Number);
   return allCards.find({id: cardId})
 })
+
+Meteor.publish( 'cardMeta', function(cardId) {
+  check (cardId, Number);
+
+  return cardMeta.find({association: cardId});
+})
