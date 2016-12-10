@@ -2262,7 +2262,7 @@ $spriteScale: 2.5;
 .db-card {
   font-size: #{$spriteScale * 1px};
   font-family: 'Lato', sans-serif;
-  margin: 10em 0 0 10em;
+  margin: 3em 0 0 5em; // mana icon
   width: 112em;
   height: 147em;
 
@@ -2386,12 +2386,11 @@ $spriteScale: 2.5;
       padding: 0;
       width: 100%;
       height: 0;
-      text-indent: 999.9em;
-      overflow: hidden;
 
       .value {
         font-size: 4.5em;
         line-height: 1;
+        color: rgba(0,0,0,0);
       }
   }
   .rarity::after {
@@ -2453,6 +2452,10 @@ $spriteScale: 2.5;
         font-size: 12em;
         font-weight: 700;
         color: #fff;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
       }
     }
   }
@@ -2495,6 +2498,11 @@ $spriteScale: 2.5;
   }
 }
 
+.patch-card {
+  display: inline-block;
+  text-align: center;
+}
+
 
 .highlighted {
   //text-shadow: 0 0 0.5em rgba(255,255,255,1) , 0 0 0.75em #ff00de , 0 0 0.875em #ff00de , 0 0 1em #ff00de;
@@ -2502,12 +2510,89 @@ $spriteScale: 2.5;
   color: black;
 }
 
-[data-diff="removed"] {
-  text-shadow: 0 0 0.5em rgba(0,0,0,1) , 0 0 0.75em #e57373 , 0 0 0.875em #e57373 , 0 0 1em #e57373;
-}
+$diffNeutral: #d9dab4;
 
-[data-diff="added"] {
-  text-shadow: 0 0 0.5em rgba(0,0,0,1) , 0 0 0.75em #81c784 , 0 0 0.875em #81c784 , 0 0 1em #81c784;
+.db-card {
+  .name,
+  .type,
+  .card-description {
+    [data-diff="added"] {
+      text-shadow: 0 0 0.5em rgba(0,0,0,1) , 0 0 0.75em $diffNeutral , 0 0 0.875em $diffNeutral , 0 0 1em $diffNeutral;
+    }
+
+    .diff-snippet {
+      color: rgba(0,0,0,0);
+      padding: 0 0.15em;
+      margin: 0 -0.15em;
+    }
+  }
+
+  .mana-cost {
+    [data-diff="added"] {
+      &::after {
+        content: '';
+        width: 36.25em;
+        height: 39.25em;
+        position: absolute;
+        background: url(/assets/img/core/patch_mana-change.png) no-repeat top left / cover;
+        font-size: #{$spriteScale * 1px};
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+      }
+    }
+  }
+
+  .rarity {
+    [data-diff="added"] {
+      font-size: 0;
+      &::after {
+          display: block;
+          width: 22em;
+          height: 22em;
+          font-size: #{$spriteScale * 1px};
+          content: "";
+          position: absolute;
+          top: -6em;
+          left: -10.75em;
+          background: url(/assets/img/core/patch_rarity-change.png) no-repeat center center / cover;
+      }
+    }
+  }
+
+  .stat-atk {
+    [data-diff="added"]::after {
+      content: '';
+      display: block;
+
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%,-50%);
+
+      background: url(/assets/img/core/patch_atk-change.png) no-repeat center center / cover;
+      font-size: #{$spriteScale * 1px};
+      width: 33em;
+      height: 28.5em;
+    }
+  }
+
+  .stat-hp {
+    [data-diff="added"]::after {
+      content: '';
+      display: block;
+
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%,-50%);
+
+      background: url(/assets/img/core/patch_hp-change.png) no-repeat center center / cover;
+      font-size: #{$spriteScale * 1px};
+      width: 33em;
+      height: 28.5em;
+    }
+  }
 }
 
 
@@ -2517,11 +2602,11 @@ $spriteScale: 2.5;
 
 /* Default theme styles for the background */
 
-.remodal-bg.remodal-is-opening,
-.remodal-bg.remodal-is-opened {
-  -webkit-filter: blur(3px);
-  filter: blur(3px);
-}
+// .remodal-bg.remodal-is-opening,
+// .remodal-bg.remodal-is-opened {
+//   -webkit-filter: blur(3px);
+//   filter: blur(3px);
+// }
 
 /* Default theme styles of the overlay */
 
@@ -2566,8 +2651,6 @@ $spriteScale: 2.5;
 
   -webkit-transform: translate3d(0, 0, 0);
   transform: translate3d(0, 0, 0);
-
-  color: #2b2e38;
 }
 
 .remodal.remodal-is-opening,

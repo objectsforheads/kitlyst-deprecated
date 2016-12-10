@@ -696,7 +696,7 @@ footer { text-align: center; text-transform: uppercase; margin: 3rem 0 1.5rem 0;
 
 .post-heading h2 { margin: 0; }
 
-.db-card { font-size: 2.5px; font-family: 'Lato', sans-serif; margin: 10em 0 0 10em; width: 112em; height: 147em; display: inline-block; }
+.db-card { font-size: 2.5px; font-family: 'Lato', sans-serif; margin: 3em 0 0 5em; width: 112em; height: 147em; display: inline-block; }
 
 .db-card[data-type="Artifact"] { background: url("/assets/img/backgrounds/neutral_artifact.png") no-repeat bottom center/contain; }
 
@@ -724,9 +724,9 @@ footer { text-align: center; text-transform: uppercase; margin: 3rem 0 1.5rem 0;
 
 .db-card .type .value { display: block; font-size: 6em; line-height: 0; }
 
-.db-card .rarity { position: absolute; display: block; top: 10.25em; left: 0; padding: 0; width: 100%; height: 0; text-indent: 999.9em; overflow: hidden; }
+.db-card .rarity { position: absolute; display: block; top: 10.25em; left: 0; padding: 0; width: 100%; height: 0; }
 
-.db-card .rarity .value { font-size: 4.5em; line-height: 1; }
+.db-card .rarity .value { font-size: 4.5em; line-height: 1; color: transparent; }
 
 .db-card .rarity::after { display: block; width: 22em; height: 22em; content: " "; position: absolute; top: 0; left: 45em; background-repeat: no-repeat; background-position: center; background-size: 100%; }
 
@@ -744,7 +744,7 @@ footer { text-align: center; text-transform: uppercase; margin: 3rem 0 1.5rem 0;
 
 .db-card .stats .stat-property { position: relative; margin: 0; width: 33em; height: 28.5em; line-height: 28.5em; overflow: hidden; }
 
-.db-card .stats .stat-property .value { font-size: 12em; font-weight: 700; color: #fff; }
+.db-card .stats .stat-property .value { font-size: 12em; font-weight: 700; color: #fff; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); }
 
 .db-card .card-description { text-align: center; font-weight: 300; margin: 0 auto; padding: 0; position: absolute; top: 99em; left: 0; right: 0; width: 95em; height: 35em; overflow: hidden; color: #90cacf; display: -webkit-box; display: -ms-flexbox; display: flex; -ms-flex-flow: column nowrap; flex-flow: column nowrap; -webkit-box-align: center; -ms-flex-align: center; align-items: center; -webkit-box-pack: center; -ms-flex-pack: center; justify-content: center; white-space: pre-wrap; }
 
@@ -752,16 +752,26 @@ footer { text-align: center; text-transform: uppercase; margin: 3rem 0 1.5rem 0;
 
 .db-card .card-description .value b { font-family: inherit; }
 
+.patch-card { display: inline-block; text-align: center; }
+
 .highlighted { background: rgba(255, 212, 84, 0.75); color: black; }
 
-[data-diff="removed"] { text-shadow: 0 0 0.5em black, 0 0 0.75em #e57373, 0 0 0.875em #e57373, 0 0 1em #e57373; }
+.db-card .name [data-diff="added"], .db-card .type [data-diff="added"], .db-card .card-description [data-diff="added"] { text-shadow: 0 0 0.5em black, 0 0 0.75em #d9dab4, 0 0 0.875em #d9dab4, 0 0 1em #d9dab4; }
 
-[data-diff="added"] { text-shadow: 0 0 0.5em black, 0 0 0.75em #81c784, 0 0 0.875em #81c784, 0 0 1em #81c784; }
+.db-card .name .diff-snippet, .db-card .type .diff-snippet, .db-card .card-description .diff-snippet { color: transparent; padding: 0 0.15em; margin: 0 -0.15em; }
+
+.db-card .mana-cost [data-diff="added"]::after { content: ''; width: 36.25em; height: 39.25em; position: absolute; background: url(/assets/img/core/patch_mana-change.png) no-repeat top left/cover; font-size: 2.5px; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+
+.db-card .rarity [data-diff="added"] { font-size: 0; }
+
+.db-card .rarity [data-diff="added"]::after { display: block; width: 22em; height: 22em; font-size: 2.5px; content: ""; position: absolute; top: -6em; left: -10.75em; background: url(/assets/img/core/patch_rarity-change.png) no-repeat center center/cover; }
+
+.db-card .stat-atk [data-diff="added"]::after { content: ''; display: block; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: url(/assets/img/core/patch_atk-change.png) no-repeat center center/cover; font-size: 2.5px; width: 33em; height: 28.5em; }
+
+.db-card .stat-hp [data-diff="added"]::after { content: ''; display: block; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: url(/assets/img/core/patch_hp-change.png) no-repeat center center/cover; font-size: 2.5px; width: 33em; height: 28.5em; }
 
 /* ========================================================================== Remodal's default mobile first theme ========================================================================== */
 /* Default theme styles for the background */
-.remodal-bg.remodal-is-opening, .remodal-bg.remodal-is-opened { -webkit-filter: blur(3px); filter: blur(3px); }
-
 /* Default theme styles of the overlay */
 .remodal-overlay { background: #161B22; }
 
@@ -777,7 +787,7 @@ footer { text-align: center; text-transform: uppercase; margin: 3rem 0 1.5rem 0;
 .remodal-wrapper.remodal-is-closing, .remodal-wrapper.remodal-is-opening { overflow-x: hidden !important; }
 
 /* Default theme styles of the modal dialog */
-.remodal { box-sizing: border-box; width: 100%; height: 100%; font-size: 1rem; -webkit-transform: translate3d(0, 0, 0); transform: translate3d(0, 0, 0); color: #2b2e38; }
+.remodal { box-sizing: border-box; width: 100%; height: 100%; font-size: 1rem; -webkit-transform: translate3d(0, 0, 0); transform: translate3d(0, 0, 0); }
 
 .remodal.remodal-is-opening, .remodal.remodal-is-closing { animation-duration: 0.3s; animation-fill-mode: forwards; }
 
