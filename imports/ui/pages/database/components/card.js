@@ -65,7 +65,7 @@ boldKeywords = function(str) {
 
 Template.registerHelper('loadSprites', function() {
   allCards.find({}).fetch().forEach(function(card) {
-    if ( $('head').find('link[href*="css/sprites/id/' + card.id + '"]').length === 0 ) {
+    if ( $('head').find('link[href*="css/sprites/id/' + card.id + '\.min.css"]').length === 0 ) {
       $('head').append('<link href="/css/sprites/id/' + card.id + '.min.css" rel="stylesheet">')
     }
   })
