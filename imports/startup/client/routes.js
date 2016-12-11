@@ -69,16 +69,27 @@ FlowRouter.route( '/devlog', {
   }
 });
 
-FlowRouter.route( '/database', {
+var database = FlowRouter.group({
+  prefix: '/database'
+})
+
+database.route( '/', {
   name: 'database',
   action: function() {
     BlazeLayout.render( 'mainLayout', { main: 'database' } );
   }
 });
 
-FlowRouter.route( '/database/card/:slug', {
-  name: 'database',
+database.route( '/card/:slug', {
+  name: 'singleCard',
   action: function(params) {
     BlazeLayout.render( 'mainLayout', { main: 'databaseCardPage' } );
   }
 });
+
+database.route( '/faction/:faction', {
+  name: 'faction',
+  action: function(params) {
+    BlazeLayout.render( 'mainLayout', { main: 'databaseFactionPage' } );
+  }
+})

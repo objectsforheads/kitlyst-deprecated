@@ -1,5 +1,5 @@
 // Set the compound index for database searching
-allCards._ensureIndex( { name: 1, race: 1, description: 1 } );
+allCards._ensureIndex( { name: 1, race: 1, description: 1, faction: 1 } );
 
 Meteor.publish( 'databaseResults', function( search ) {
   check( search, Match.OneOf( String, null, undefined ) );
@@ -40,4 +40,9 @@ Meteor.publish( 'cardMeta', function(cardId) {
   check (cardId, Number);
 
   return cardMeta.find({association: cardId});
+})
+
+Meteor.publish( 'factionCards', function(faction) {
+  check(faction, String);
+  return allCards.find({faction: new RegExp( faction, 'gi')});
 })

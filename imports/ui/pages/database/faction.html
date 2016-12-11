@@ -1,0 +1,23 @@
+<template name="databaseFactionPage">
+  {{#if Template.subscriptionsReady}}
+  {{loadSprites}}
+  {{#if factionGenerals}}
+  <h1>{{faction}}</h1>
+  <h2>Generals</h2>
+  {{#each factionGenerals}}
+  <a href="/database/card/{{this.id}}">
+  {{> databaseCard layout="currentCard" info=this}}
+  </a>
+  {{/each}}
+  {{/if}}
+  <h2>Cards</h2>
+  {{#each expansions}}
+    <h3>{{this}}</h3>
+    {{#each factionCards}}
+    <a href="/database/card/{{this.id}}">
+    {{> databaseCard layout="currentCard" info=this}}
+    </a>
+    {{/each}}
+  {{/each}}
+  {{/if}}
+</template>
