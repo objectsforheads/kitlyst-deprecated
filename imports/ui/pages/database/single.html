@@ -1,26 +1,34 @@
 <template name="databaseCardPage">
   {{#if Template.subscriptionsReady}}
   {{loadSprites}}
-  <div class="page-content">
+  <div class="card-page">
     <h1>{{currentCard.name}}</h1>
-    {{> databaseCard layout="currentCard" info=currentCard}}
-    <h2>Animations</h2>
-    <div class="all-sprites">
-      {{#each sprites}}
-      <div class="a-sprite">
-        <div class="sprite {{this}} id_{{cardId}}" data-playing="true"></div>
-        <div class="sprite-label"><b>{{this}}</b></div>
+    <div class="card-info">
+      <div class="current-card">
+        {{> databaseCard layout="currentCard" info=currentCard}}
       </div>
-      {{/each}}
+      <div class="card-animations">
+        <h2>Animations</h2>
+        <div class="all-sprites" data-type="{{currentCard.type}}">
+          {{#each sprites}}
+          <div class="a-sprite">
+            <div class="sprite {{this}} id_{{cardId}}" data-playing="true"></div>
+            <div class="sprite-label"><b>{{this}}</b></div>
+          </div>
+          {{/each}}
+        </div>
+      </div>
     </div>
-    <h2>Patch History</h2>
-    <div class="patch-cards">
-      {{#each patchCards}}
-      <div class="patch-card">
-        <div><b>{{this.patch}}</b></div>
-        {{> databaseCard info=this layout="historicalCard"}}
+    <div class="card-info_additional">
+      <h2>Patch History</h2>
+      <div class="patch-cards">
+        {{#each patchCards}}
+        <div class="patch-card">
+          <div><b>{{this.patch}}</b></div>
+          {{> databaseCard info=this layout="historicalCard"}}
+        </div>
+        {{/each}}
       </div>
-      {{/each}}
     </div>
   </div>
   {{/if}}

@@ -2615,9 +2615,22 @@ $diffNeutral: #d9dab4;
     text-align: center;
     position: absolute;
     width: 100%;
-    top: 100%;
+    top: 0;
     left: 0;
   }
+}
+
+[data-type="Artifact"],
+[data-type="Spell"] {
+  .a-sprite {
+    height: #{$spriteScale * 50px};
+  }
+}
+
+.card-page {
+  max-width: 1280px;
+  margin: auto;
+  text-align: center;
 }
 
 [data-playing="true"] {
