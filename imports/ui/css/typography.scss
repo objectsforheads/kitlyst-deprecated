@@ -2512,40 +2512,45 @@ $spriteScale: 2.5;
 }
 
 $diffNeutral: #d9dab4;
+$diffRemove: #f0301b;
+$diffAdd: #4bc61d;
 
 .db-card {
   .name,
   .type,
   .card-description {
-    [data-diff="added"] {
-      text-shadow: 0 0 0.5em rgba(0,0,0,1) , 0 0 0.75em $diffNeutral , 0 0 0.875em $diffNeutral , 0 0 1em $diffNeutral;
-    }
-
     .diff-snippet {
       color: rgba(0,0,0,0);
       padding: 0 0.15em;
       margin: 0 -0.15em;
     }
+
+    [data-diff="added"] {
+      text-shadow: 0 0 0.5em rgba(0,0,0,1) , 0 0 0.75em $diffNeutral , 0 0 0.875em $diffNeutral , 0 0 1em $diffNeutral;
+    }
   }
 
   .mana-cost {
-    [data-diff="added"] {
+    .diff-snippet {
       &::after {
         content: '';
         width: 36.25em;
         height: 39.25em;
         position: absolute;
-        background: url(/assets/img/core/patch_mana-change.png) no-repeat top left / cover;
         font-size: #{$spriteScale * 1px};
         top: 50%;
         left: 50%;
         transform: translate(-50%,-50%);
       }
     }
+
+    [data-diff="added"]::after {
+      background: url(/assets/img/core/patch_mana-change.png) no-repeat top left / cover;
+    }
   }
 
   .rarity {
-    [data-diff="added"] {
+    .diff-snippet {
       font-size: 0;
       &::after {
           display: block;
@@ -2556,42 +2561,100 @@ $diffNeutral: #d9dab4;
           position: absolute;
           top: -6em;
           left: -10.75em;
-          background: url(/assets/img/core/patch_rarity-change.png) no-repeat center center / cover;
       }
+    }
+
+    [data-diff="added"]::after {
+      background: url(/assets/img/core/patch_rarity-change.png) no-repeat center center / cover;
+    }
+  }
+
+  .stat-atk {
+    .diff-snippet::after {
+      content: '';
+      display: block;
+
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%,-50%);
+
+      font-size: #{$spriteScale * 1px};
+      width: 33em;
+      height: 28.5em;
+    }
+
+    [data-diff="added"]::after {
+      background: url(/assets/img/core/patch_atk-change.png) no-repeat center center / cover;
+    }
+  }
+
+  .stat-hp {
+    .diff-snippet::after {
+      content: '';
+      display: block;
+
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%,-50%);
+
+      font-size: #{$spriteScale * 1px};
+      width: 33em;
+      height: 28.5em;
+    }
+
+    [data-diff="added"]::after {
+      background: url(/assets/img/core/patch_hp-change.png) no-repeat center center / cover;
+    }
+  }
+}
+
+.patch-page {
+  .name,
+  .type,
+  .card-description {
+    [data-diff="added"] {
+      text-shadow: 0 0 0.5em rgba(0,0,0,1) , 0 0 0.75em $diffAdd , 0 0 0.875em $diffAdd , 0 0 1em $diffAdd;
+    }
+    [data-diff="removed"] {
+      text-shadow: 0 0 0.5em rgba(0,0,0,1) , 0 0 0.75em $diffRemove , 0 0 0.875em $diffRemove , 0 0 1em $diffRemove;
+    }
+  }
+
+  .mana-cost {
+    [data-diff="added"]::after {
+      background: url(/assets/img/core/patch_mana-add.png) no-repeat top left / cover;
+    }
+    [data-diff="removed"]::after {
+      background: url(/assets/img/core/patch_mana-remove.png) no-repeat top left / cover;
+    }
+  }
+
+  .rarity {
+    [data-diff="added"]::after {
+      background: url(/assets/img/core/patch_rarity-add.png) no-repeat center center / cover;
+    }
+    [data-diff="removed"]::after {
+      background: url(/assets/img/core/patch_rarity-remove.png) no-repeat center center / cover;
     }
   }
 
   .stat-atk {
     [data-diff="added"]::after {
-      content: '';
-      display: block;
-
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%,-50%);
-
-      background: url(/assets/img/core/patch_atk-change.png) no-repeat center center / cover;
-      font-size: #{$spriteScale * 1px};
-      width: 33em;
-      height: 28.5em;
+      background: url(/assets/img/core/patch_atk-add.png) no-repeat center center / cover;
+    }
+    [data-diff="removed"]::after {
+      background: url(/assets/img/core/patch_atk-remove.png) no-repeat center center / cover;
     }
   }
 
   .stat-hp {
     [data-diff="added"]::after {
-      content: '';
-      display: block;
-
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%,-50%);
-
-      background: url(/assets/img/core/patch_hp-change.png) no-repeat center center / cover;
-      font-size: #{$spriteScale * 1px};
-      width: 33em;
-      height: 28.5em;
+      background: url(/assets/img/core/patch_hp-add.png) no-repeat center center / cover;
+    }
+    [data-diff="removed"]::after {
+      background: url(/assets/img/core/patch_hp-remove.png) no-repeat center center / cover;
     }
   }
 }

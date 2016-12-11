@@ -46,3 +46,27 @@ Meteor.publish( 'factionCards', function(faction) {
   check(faction, String);
   return allCards.find({faction: new RegExp( faction, 'gi')});
 })
+
+Meteor.publish( 'patchCards', function(patch) {
+  check(patch, Number);
+  return historicalCards.find({patch: patch});
+})
+
+Meteor.publish( 'patchChanges', function(patch) {
+  check(patch, Number);
+
+  var cards = historicalCards.find({patch: patch}).fetch().reduce(function(a, b) {
+    a.push(b.id);
+    return a;
+  }, [])
+
+  ReactiveAggregate(this, historicalCards, [
+    {$match: {id: {$in: cards}}},
+    {
+      $group: {
+        _id: "$id",
+        patches: { $push: "$$ROOT" }
+      }
+    }
+  ], { clientCollection: 'patch_changes' })
+})

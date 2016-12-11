@@ -1,0 +1,37 @@
+<template name="databasePatchPage">
+  {{#if Template.subscriptionsReady}}
+  {{loadSprites}}
+  <div class="patch-page">
+    <h1>Patch {{patchNumber}}</h1>
+    {{#if patchGenerals}}
+      <div class="patch-generals">
+        <h2>Generals</h2>
+        {{#each patchGenerals}}
+        <div class="patch-changes">
+          {{#each patchChanges}}
+          {{this.patch}}
+          {{> databaseCard info=this layout="historicalCard"}}
+          {{/each}}
+        </div>
+        {{/each}}
+      </div>
+    {{/if}}
+    <div class="patch-cards">
+      <h2>Cards</h2>
+      {{#each expansions}}
+        {{#if patchCards}}
+        <h3>{{this}}</h3>
+        {{#each patchCards}}
+          <div class="patch-changes">
+            {{#each patchChanges}}
+            {{this.patch}}
+            {{> databaseCard info=this layout="historicalCard"}}
+            {{/each}}
+          </div>
+        {{/each}}
+        {{/if}}
+      {{/each}}
+    </div>
+  </div>
+  {{/if}}
+</template>

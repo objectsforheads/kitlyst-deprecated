@@ -93,3 +93,10 @@ database.route( '/faction/:faction', {
     BlazeLayout.render( 'mainLayout', { main: 'databaseFactionPage' } );
   }
 })
+
+database.route( '/patch/:patch', {
+  name: 'patch',
+  action: function(params) {
+    BlazeLayout.render( 'mainLayout', { main: 'databasePatchPage' } );
+  }
+})
