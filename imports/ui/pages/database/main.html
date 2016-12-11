@@ -3,6 +3,9 @@
 </template>
 
 <template name="databaseSearch">
+  {{#if results}}
+  {{loadSprites}}
+  {{/if}}
   <h1>Search</h1>
   <input type="text" name="searchDatabase" class="form-control" placeholder="Search for a card name, race, or description">
   {{#if searching}}

@@ -1,13 +1,18 @@
 <template name="databaseCardPage">
   {{#if Template.subscriptionsReady}}
+  {{loadSprites}}
   <div class="page-content">
     <h1>{{currentCard.name}}</h1>
     {{> databaseCard layout="currentCard" info=currentCard}}
     <h2>Animations</h2>
-    {{#each sprites}}
-    {{this}}
-    <div class="card-sprite group_{{this}} card-id_{{cardId}}"></div>
-    {{/each}}
+    <div class="all-sprites">
+      {{#each sprites}}
+      <div class="a-sprite">
+        <div class="sprite {{this}} id_{{cardId}}" data-playing="true"></div>
+        <div class="sprite-label"><b>{{this}}</b></div>
+      </div>
+      {{/each}}
+    </div>
     <h2>Patch History</h2>
     <div class="patch-cards">
       {{#each patchCards}}
