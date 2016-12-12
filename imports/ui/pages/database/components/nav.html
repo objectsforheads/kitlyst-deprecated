@@ -1,0 +1,31 @@
+<template name="databaseNav">
+  <nav class="database-nav">
+    <div class="nav-options">
+      <a class="nav-option" data-option="cards" href="/database/cards">Cards</a> | <a class="nav-option" data-option="patches" href="">Patch Changes</a> | <a class="nav-option" data-option="" href="">Lore</a>
+    </div>
+    <div class="nav-suboptions">
+      <div class="suboptions-list" data-suboption="cards">
+        <ul>
+          <li class="nav-suboption"><a href="/database/cards">All</a></li>
+          <li class="nav-suboption"><a href="/database/factions/lyonar">Lyonar Kingdoms</a></li>
+          <li class="nav-suboption"><a href="/database/factions/songhai">Songhai Empire</a></li>
+          <li class="nav-suboption"><a href="/database/factions/vetrivian">Vetruvian Imperium</a></li>
+          <li class="nav-suboption"><a href="/database/factions/abyssian">Abyssian Host</a></li>
+          <li class="nav-suboption"><a href="/database/factions/magmar">Magmar Aspects</a></li>
+          <li class="nav-suboption"><a href="/database/factions/vanar">Vanar Kindred</a></li>
+          <li class="nav-suboption"><a href="/database/factions/neutral">Neutral</a></li>
+        </ul>
+      </div>
+      <div class="suboptions-list" data-suboption="patches">
+        {{#each patches}}
+        {{this.phase}}
+        <ul>
+            {{#each this.patches}}
+            <li class="nav-suboption"><a href="/database/patches/{{this}}">{{this}}</a></li>
+            {{/each}}
+        </ul>
+        {{/each}}
+      </div>
+    </div>
+  </nav>
+</template>
