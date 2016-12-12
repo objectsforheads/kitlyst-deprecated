@@ -57,19 +57,34 @@ Template.databaseNav.helpers({
     return Template.instance().searchQuery.get();
   },
   results() {
-    let results = allCards.find();
-    if ( results.count() > 0 ) {
+    let results = JSON.parse(JSON.stringify(allCards.find().fetch()));
+
+    let self = [];
+    if (cardMeta.findOne()) {
+      var card = cardMeta.findOne();
+      self.push(card.id);
+
+      if (card.summons) {
+        self = self.concat(card.summons);
+      }
+
+      if (card.summoned_by) {
+        self = self.concat(card.summoned_by)
+      }
+    }
+
+    self = self.reduce(function(a, b) {
+      a.push(Number(b));
+      return a;
+    }, [])
+
+    for (var i = results.length - 1; i >= 0; i--) {
+      if (self.indexOf(results[i].id) !== -1) {
+        results.splice(i,1)
+      }
+    }
+    if ( results.length > 0 ) {
       return results;
-    }
-    return false;
-  },
-  isSelf() {
-    var self = FlowRouter.getParam('slug');
-    if (self) {
-      self = Number(self);
-    }
-    if (this.id === self) {
-      return true;
     }
     return false;
   }

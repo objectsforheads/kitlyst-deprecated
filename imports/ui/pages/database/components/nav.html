@@ -15,12 +15,10 @@
               {{else}}
                 {{#if results}}
                   {{#each results}}
-                    {{#unless isSelf}}
-                    <li class="nav-result">
-                      <a href="/database/cards/{{this.id}}" class="result-link">{{this.name}}</a>
-                      <div class="result-sprite {{this.type}}"><div class="sprite {{#if this.health}}breathing breathe breath{{else}}passive{{/if}} id_{{this.id}}"></div></div>
-                    </li>
-                    {{/unless}}
+                  <li class="nav-result">
+                    <a href="/database/cards/{{this.id}}" class="result-link">{{this.name}}</a>
+                    <div class="result-sprite {{this.type}}"><div class="sprite {{#if this.health}}breathing breathe breath{{else}}passive{{/if}} id_{{this.id}}"></div></div>
+                  </li>
                   {{/each}}
                 {{else}}
                   No results found for <code>{{query}}</code>
