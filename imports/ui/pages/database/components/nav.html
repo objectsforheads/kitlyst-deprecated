@@ -1,7 +1,41 @@
 <template name="databaseNav">
   <nav class="database-nav">
-    <div class="nav-options">
-      <a class="nav-option" data-option="cards" href="/database/cards">Cards</a> | <a class="nav-option" data-option="patches" href="">Patch Changes</a> | <a class="nav-option" data-option="" href="">Lore</a>
+    <div class="nav-bar">
+      {{#unless searchElsewhere}}
+      <div class="nav-searchbar">
+        <form class="nav-database-search">
+          <div class="form-group">
+            <input type="text" name="searchDatabase" class="form-control" placeholder="a card name, race, or description">
+            <label for="searchDatabase"><i class="fa fa-search"></i></label>
+          </div>
+          <ul class="nav-search-results">
+            {{#if query}}
+              {{#if searching}}
+                <li class="nav-result">searching for <code>{{query}}</code></li>
+              {{else}}
+                {{#if results}}
+                  {{#each results}}
+                    {{#unless isSelf}}
+                    <li class="nav-result">
+                      <a href="/database/cards/{{this.id}}" class="result-link">{{this.name}}</a>
+                      <div class="result-sprite {{this.type}}"><div class="sprite {{#if this.health}}breathing breathe breath{{else}}passive{{/if}} id_{{this.id}}"></div></div>
+                    </li>
+                    {{/unless}}
+                  {{/each}}
+                {{else}}
+                  No results found for <code>{{query}}</code>
+                {{/if}}
+              {{/if}}
+            {{else}}
+                <li class="nav-result">Get started scrub</li>
+            {{/if}}
+          </ul>
+        </form>
+      </div>
+      {{/unless}}
+      <div class="nav-options">
+        <a class="nav-option" data-option="cards" href="/database/cards">Cards</a> | <a class="nav-option" data-option="patches" href="">Patch Changes</a> | <a class="nav-option" data-option="" href="">Lore</a>
+      </div>
     </div>
     <div class="nav-suboptions">
       <div class="suboptions-list" data-suboption="cards">

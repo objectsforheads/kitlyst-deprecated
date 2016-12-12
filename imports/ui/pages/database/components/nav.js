@@ -1,5 +1,22 @@
 import './nav.html';
 
+Template.databaseNav.onCreated(function() {
+  let self = Template.instance();
+
+  self.searchQuery = new ReactiveVar();
+  self.searching   = new ReactiveVar( false );
+  this.debounce = null;
+
+  self.autorun( () => {
+    self.searching.set(true);
+    self.subscribe( 'databaseResults', self.searchQuery.get(), () => {
+     setTimeout( () => {
+       self.searching.set( false );
+     }, 300 );
+    });
+  });
+})
+
 Template.databaseNav.helpers({
   patches() {
     return [
@@ -32,11 +49,35 @@ Template.databaseNav.helpers({
   },
   patch() {
     return Number(this).toFixed(2);
+  },
+  searching() {
+    return Template.instance().searching.get();
+  },
+  query() {
+    return Template.instance().searchQuery.get();
+  },
+  results() {
+    let results = allCards.find();
+    if ( results.count() > 0 ) {
+      return results;
+    }
+    return false;
+  },
+  isSelf() {
+    var self = FlowRouter.getParam('slug');
+    if (self) {
+      self = Number(self);
+    }
+    if (this.id === self) {
+      return true;
+    }
+    return false;
   }
 })
 
 Template.databaseNav.events({
   'mouseenter a[data-option]' (e) {
+    $('.show-results').removeClass('.show-results');
     $('.showing').removeClass('showing');
     var option = $(e.currentTarget).attr('data-option');
 
@@ -46,5 +87,31 @@ Template.databaseNav.events({
   },
   'mouseleave .database-nav' (e) {
     $('.showing').removeClass('showing');
+  },
+  'keydown [name="searchDatabase"]' ( event, template ) {
+    if (template.debounce) {
+      Meteor.clearTimeout(template.debounce);
+    }
+    template.debounce = Meteor.setTimeout(function() {
+      var isWordCharacter = event.key.length === 1;
+      var isBackspaceOrDelete = (event.keyCode == 8 || event.keyCode == 46);
+
+      if (isWordCharacter || isBackspaceOrDelete) {
+        let value = event.target.value.trim();
+        if ( value !== template.searchQuery.get()) {
+          template.searchQuery.set(value)
+        }
+      }
+    }, 200);
+  },
+  'focus [name="searchDatabase"]' (e) {
+    $('.nav-search-results').addClass('show-results');
+  },
+  'click .database-nav' (e) {
+    e.stopPropagation();
   }
 })
+
+$(window).click(function() {
+  $('.nav-search-results').removeClass('show-results');
+});

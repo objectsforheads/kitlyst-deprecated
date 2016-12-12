@@ -24,11 +24,11 @@ Template.databaseSearch.onCreated(function() {
        FlowRouter.setQueryParams({search: self.searchQuery.get()})
      }, 300 );
     });
- });
+  });
 })
 
 Template.databaseSearch.events({
-  'keydown [name="searchDatabase"], submit [name="searchDatabase"]' ( event, template ) {
+  'keydown [name="searchDatabase"]' ( event, template ) {
     if (template.debounce) {
       Meteor.clearTimeout(template.debounce);
     }
