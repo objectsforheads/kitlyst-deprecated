@@ -2,23 +2,41 @@
   {{> databaseNav}}
   {{#if Template.subscriptionsReady}}
   {{loadSprites}}
-  {{#if factionGenerals}}
-  <h1>{{faction}}</h1>
-  <h2>Generals</h2>
-  {{#each factionGenerals}}
-  <a href="/database/card/{{this.id}}">
-  {{> databaseCard layout="currentCard" info=this}}
-  </a>
-  {{/each}}
-  {{/if}}
-  <h2>Cards</h2>
-  {{#each expansions}}
-    <h3>{{this}}</h3>
-    {{#each factionCards}}
-    <a href="/database/card/{{this.id}}">
-    {{> databaseCard layout="currentCard" info=this}}
-    </a>
+  <div class="content-container">
+    {{#if factionGenerals}}
+    <h1>{{faction}}</h1>
+    <h2>Generals</h2>
+    <div class="card-container">
+      {{#each factionGenerals}}
+      <div class="card-wrapper">
+        <a href="/database/card/{{this.id}}">
+        {{> databaseCard layout="currentCard" info=this}}
+        </a>
+      </div>
+      {{/each}}
+      <div class="card-wrapper grid-force"></div>
+      <div class="card-wrapper grid-force"></div>
+      <div class="card-wrapper grid-force"></div>
+      <div class="card-wrapper grid-force"></div>
+    </div>
+    {{/if}}
+    <h2>Cards</h2>
+    {{#each expansions}}
+      <h3>{{this}}</h3>
+      <div class="card-container">
+        {{#each factionCards}}
+        <div class="card-wrapper">
+          <a href="/database/card/{{this.id}}">
+          {{> databaseCard layout="currentCard" info=this}}
+          </a>
+        </div>
+        {{/each}}
+        <div class="card-wrapper grid-force"></div>
+        <div class="card-wrapper grid-force"></div>
+        <div class="card-wrapper grid-force"></div>
+        <div class="card-wrapper grid-force"></div>
+      </div>
     {{/each}}
-  {{/each}}
+  </div>
   {{/if}}
 </template>

@@ -29,6 +29,9 @@ Template.databaseNav.helpers({
         ]
       }
     ].reverse()
+  },
+  patch() {
+    return Number(this).toFixed(2);
   }
 })
 

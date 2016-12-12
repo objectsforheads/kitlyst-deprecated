@@ -12,7 +12,8 @@ Template.databasePatchPage.onCreated(function() {
 })
 Template.databasePatchPage.helpers({
   patchNumber() {
-    return FlowRouter.getParam('patch');
+    var patch = Number(FlowRouter.getParam('patch')).toFixed(2);
+    return patch;
   },
   expansions() {
     return ["Base", "Denizens of Shim'Zar"];
@@ -141,5 +142,8 @@ Template.databasePatchPage.helpers({
 
 
     return cards;
+  },
+  patch() {
+    return Number(this.patch).toFixed(2);
   }
 })

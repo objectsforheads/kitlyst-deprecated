@@ -2,7 +2,7 @@
   {{> databaseNav}}
   {{#if Template.subscriptionsReady}}
   {{loadSprites}}
-  <div class="patch-page">
+  <div class="patch-page content-container">
     <h1>Patch {{patchNumber}}</h1>
     {{#if patchGenerals}}
       <div class="patch-generals">
@@ -25,8 +25,10 @@
         {{#each patchCards}}
           <div class="patch-changes">
             {{#each patchChanges}}
-            {{this.patch}}
-            {{> databaseCard info=this layout="historicalCard"}}
+            <div class="patch-card">
+              <div><p><b>{{patch}}</b></p></div>
+              {{> databaseCard info=this layout="historicalCard"}}
+            </div>
             {{/each}}
           </div>
         {{/each}}

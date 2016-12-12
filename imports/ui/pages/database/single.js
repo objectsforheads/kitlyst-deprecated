@@ -100,5 +100,8 @@ Template.databaseCardPage.helpers({
 
     })
     return cards;
+  },
+  patch() {
+    return Number(this.patch).toFixed(2);
   }
 })
