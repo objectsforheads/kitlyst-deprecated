@@ -1,27 +1,78 @@
 <template name="database">
+  <nav class="database-nav">
+    <div class="nav-options">
+      <a class="nav-option" data-option="cards" href="/database/cards">Cards</a> | <a class="nav-option" data-option="patches" href="">Patch Changes</a> | <a class="nav-option" data-option="" href="">Lore</a>
+    </div>
+    <div class="nav-suboptions">
+      <div class="suboptions-list" data-suboption="cards">
+        <ul>
+          <li class="nav-suboption"><a href="/database/cards">All</a></li>
+          <li class="nav-suboption"><a href="/database/factions/lyonar">Lyonar Kingdoms</a></li>
+          <li class="nav-suboption"><a href="/database/factions/songhai">Songhai Empire</a></li>
+          <li class="nav-suboption"><a href="/database/factions/vetrivian">Vetruvian Imperium</a></li>
+          <li class="nav-suboption"><a href="/database/factions/abyssian">Abyssian Host</a></li>
+          <li class="nav-suboption"><a href="/database/factions/magmar">Magmar Aspects</a></li>
+          <li class="nav-suboption"><a href="/database/factions/vanar">Vanar Kindred</a></li>
+          <li class="nav-suboption"><a href="/database/factions/neutral">Neutral</a></li>
+        </ul>
+      </div>
+      <div class="suboptions-list" data-suboption="patches">
+        {{#each patches}}
+        {{this.phase}}
+        <ul>
+            {{#each this.patches}}
+            <li class="nav-suboption"><a href="/database/patches/{{this}}">{{this}}</a></li>
+            {{/each}}
+        </ul>
+        {{/each}}
+      </div>
+    </div>
+  </nav>
   {{> databaseSearch}}
 </template>
 
 <template name="databaseSearch">
-  {{#if results}}
-  {{loadSprites}}
-  {{/if}}
-  <h1>Search</h1>
-  <input type="text" name="searchDatabase" class="form-control" placeholder="Search for a card name, race, or description">
-  {{#if searching}}
-    <p>searching...</p>
-  {{else}}
-    {{#if results}}
-      <div class="database-results">
-        {{#each results}}
-        {{> databaseCard layout="cardResult" info=this query=query}}
-        {{/each}}
+  {{#if results}}{{loadSprites}}{{/if}}
+  <div class="panel database-homepage {{#if query}}is-searching{{/if}}">
+    <div class="pane database-header">
+      <div class="database-heading">
+        <a class="site-title h3" href="/"><span>kit.</span><span>listlyst</span></a>
+        <h1>Database</h1>
       </div>
+      <form class="database-search">
+        <div class="form-group">
+          <label for="searchDatabase">Search for</label>
+          <input type="text" name="searchDatabase" class="form-control" placeholder="a card name, race, or description">
+        </div>
+      </form>
+    </div>
+  </div>
+  {{#if query}}
+  <div class="content-container">
+    <h2>Results</h2>
+    {{#if searching}}
+      <p>searching for <code>{{query}}</code>...</p>
     {{else}}
-      {{#if query}}
-        <p class="alert alert-warning">Nothing found for <code>{{query}}</code></p>
+      {{#if results}}
+      <p>Found <b>{{resultsCount}}</b> cards matching <code>{{query}}</code></p>
+        <div class="database-results card-container">
+          {{#each results}}
+          <div class="card-wrapper">
+            {{> databaseCard layout="cardResult" info=this query=query}}
+          </div>
+          {{/each}}
+          <div class="card-wrapper grid-force"></div>
+          <div class="card-wrapper grid-force"></div>
+          <div class="card-wrapper grid-force"></div>
+          <div class="card-wrapper grid-force"></div>
+        </div>
+      {{else}}
+        {{#if query}}
+          <p class="alert alert-warning">Nothing found for <code>{{query}}</code></p>
+        {{/if}}
       {{/if}}
     {{/if}}
+  </div>
   {{/if}}
 </template>
 

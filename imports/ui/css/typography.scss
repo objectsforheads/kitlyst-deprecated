@@ -2068,9 +2068,209 @@ $deckbuilderFiltersWidth: 17rem;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
 
-  .site-title {
+.site-title {
+  margin: 0;
+  text-align: center;
+
+  & > span:first-child {
+    color: #eee;
+  }
+
+  & > span:last-child {
+    color: $manaColor;
+  }
+
+  span {
+    transition: color 150ms;
+  }
+}
+
+a.site-title:hover {
+  & > span:first-child {
+    color: $manaColor;
+  }
+
+  & > span:last-child {
+    color: #eee;
+  }
+}
+
+.database-homepage {
+  text-align: center;
+}
+
+.database-heading {
+  display: inline-block;
+  h1,h2,h3,h4,h5,h6,
+  .h1,.h2,.h3,.h4,.h5,.h6 {
     margin: 0;
+    line-height: 1;
+    display: inline-block;
+  }
+  .site-title {
+    display: block;
+    text-align: right;
+    letter-spacing: 1px;
+    padding-right: 0.3em;
+  }
+  .byline {
+    text-transform: uppercase;
+    margin-left: 0.35em;
+    letter-spacing: 1px;
+    display: block;
+    text-align: left;
+  }
+}
+
+.database-search {
+  font-size: 1.5rem;
+  text-align: left;
+
+  .form-group {
+    display: flex;
+    white-space: pre;
+
+    label {
+      padding-right: 0.25em;
+    }
+
+    input {
+      flex: 1;
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.5);
+      color: $duelystGrey;
+      text-align: center;
+      padding: 0 0.25em;
+      min-width: 13.25em;
+    }
+  }
+}
+
+.database-homepage {
+  transition: min-height 150ms;
+}
+.database-homepage.is-searching {
+  min-height: 14rem;
+}
+
+.content-container {
+  max-width: 1280px;
+  padding: 0 1rem;
+  margin: auto;
+}
+
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+
+  .card-wrapper {
+    margin-top: 1.5rem;
+    flex-shrink: 0;
+    flex-grow: 1;
+    min-width: 25%;
+  }
+
+  .grid-force {
+    height: 0;
+    visibility: hidden;
+    margin: 0;
+  }
+}
+
+.database-nav {
+  text-align: right;
+  text-transform: uppercase;
+  position: fixed;
+  z-index: 100;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2rem;
+  line-height: 2rem;
+  background: #161B22;
+
+  .nav-options {
+    display: block;
+    background: #161B22;
+    z-index: 1;
+    padding-right: 1rem;
+  }
+
+  .nav-option {
+    display: inline-block;
+  }
+
+  .nav-option.showing::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+
+    border-bottom: 5px solid $manaColor;
+  }
+
+  .nav-suboptions {
+    padding: 1rem;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    z-index: 0;
+    background: rgba(22,27,34, 0.85);
+    transition: transform 150ms;
+
+    &::before,
+    &::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 1px;
+      background: $manaColor;
+      left: 0;
+    }
+
+    &::before { top: 1px; }
+    &::after{ bottom: 0; }
+
+    &.showing {
+      transform: translateY(100%);
+    }
+  }
+
+  .suboptions-list {
+    display: none;
+
+    &.showing {
+      display: block;
+    }
+
+    ul {
+      margin: 0;
+      padding: 0;
+    }
+  }
+
+  .nav-suboption {
+    display: inline-block;
+    padding-left: 0.5em;
+  }
+}
+
+.panel {
+  min-height: 100vh;
+
+  .pane {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
   }
 }
 
@@ -2272,7 +2472,7 @@ $spriteScale: 2.5;
 .db-card {
   font-size: #{$spriteScale * 1px};
   font-family: 'Lato', sans-serif;
-  margin: 3em 0 0 5em; // mana icon
+  margin: 3em 5em 0 0em; // mana icon
   width: 112em;
   height: 147em;
 
