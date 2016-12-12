@@ -30,6 +30,22 @@
         </div>
         {{/each}}
       </div>
+      {{#if summons}}
+        <h2>Creates</h2>
+        {{#each summons}}
+          {{#each loaded}}
+          {{> databaseCard info=this layout="currentCard"}}
+          {{/each}}
+        {{/each}}
+      {{/if}}
+      {{#if summoned}}
+        <h2>Created By</h2>
+        {{#each summoned}}
+        {{#each loaded}}
+        {{> databaseCard info=this layout="currentCard"}}
+        {{/each}}
+        {{/each}}
+      {{/if}}
     </div>
   </div>
   {{/if}}

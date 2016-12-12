@@ -9,7 +9,7 @@
     <div class="card-container">
       {{#each factionGenerals}}
       <div class="card-wrapper">
-        <a href="/database/card/{{this.id}}">
+        <a href="/database/cards/{{this.id}}">
         {{> databaseCard layout="currentCard" info=this}}
         </a>
       </div>
@@ -26,7 +26,7 @@
       <div class="card-container">
         {{#each factionCards}}
         <div class="card-wrapper">
-          <a href="/database/card/{{this.id}}">
+          <a href="/database/cards/{{this.id}}">
           {{> databaseCard layout="currentCard" info=this}}
           </a>
         </div>

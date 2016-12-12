@@ -32,8 +32,8 @@ Meteor.publish( 'cardHistory', function(cardId) {
 })
 
 Meteor.publish( 'cardPage', function(cardId) {
-  check(cardId, Number);
-  return allCards.find({id: cardId})
+  check(cardId, Array);
+  return allCards.find({id: {$in: cardId}})
 })
 
 Meteor.publish( 'cardMeta', function(cardId) {

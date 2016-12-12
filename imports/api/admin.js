@@ -57,16 +57,19 @@ Meteor.methods({
     var metas = info.updateMeta_meta;
 
     metas.forEach(function(meta) {
-      var add = {
-        id: meta.id,
-        sprites: meta.groups,
-        association: meta.id
+      var add = {}
+
+      for (var field in meta) {
+        add[field] = meta[field];
       }
+
+      console.log(add)
+
       if (cardMeta.find({id: meta.id}).count() === 0) {
         cardMeta.insert(add)
       } else {
         var id = cardMeta.findOne({id: meta.id})._id;
-        cardMeta.update({_id: id}, add)
+        cardMeta.update({_id: id}, {$set: add})
       }
     })
   }

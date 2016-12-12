@@ -1,6 +1,6 @@
 <template name="databaseCard">
   {{#if cardResult}}
-  <a href="/database/card/{{this.info.id}}" class="db-card" data-type="{{this.info.type}}">
+  <a href="/database/cards/{{this.info.id}}" class="db-card" data-type="{{this.info.type}}">
     <div class="mana-cost"><span class="value">{{this.info.manaCost}}</span></div>
     <div class="card-sprite">
       <div class="sprite {{#if this.info.health}}breathing breathe breath{{else}}passive{{/if}} id_{{this.info.id}}" data-playing="true"></div>

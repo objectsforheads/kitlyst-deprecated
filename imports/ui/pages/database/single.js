@@ -6,8 +6,30 @@ import JsDiff from 'diff';
 Template.databaseCardPage.onCreated(function() {
   let self = Template.instance();
   self.subscribe( 'cardHistory', Number(FlowRouter.getParam('slug')))
-  self.subscribe( 'cardPage', Number(FlowRouter.getParam('slug')))
+  self.subscribe( 'cardPage', [Number(FlowRouter.getParam('slug'))] );
   self.subscribe( 'cardMeta', Number(FlowRouter.getParam('slug')))
+
+  self.autorun( () => {
+    if (cardMeta.findOne()) {
+      var cards = [cardMeta.findOne().id];
+      var meta = cardMeta.findOne();
+
+      if (meta.summons) {
+        meta.summons.forEach(function(id) {
+          cards.push(Number(id))
+        })
+
+      }
+
+      if (meta.summoned_by) {
+        meta.summoned_by.forEach(function(id) {
+          cards.push(Number(id))
+        })
+
+      }
+      self.subscribe( 'cardPage', cards );
+    }
+  });
 })
 
 
@@ -103,5 +125,27 @@ Template.databaseCardPage.helpers({
   },
   patch() {
     return Number(this.patch).toFixed(2);
+  },
+  summons() {
+    var meta = cardMeta.findOne();
+    if (meta.summons) {
+      return meta.summons;
+    }
+    return false;
+  },
+  summoned() {
+    var meta = cardMeta.findOne();
+    if (meta.summoned) {
+      return meta.summoned;
+    }
+    return false;
+  },
+  loaded() {
+    var id = Number(this.valueOf());
+    if (allCards.findOne({id: id})) {
+      return [allCards.findOne({id: id})];
+    } else {
+      return false;
+    }
   }
 })
