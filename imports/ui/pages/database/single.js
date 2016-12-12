@@ -135,8 +135,8 @@ Template.databaseCardPage.helpers({
   },
   summoned() {
     var meta = cardMeta.findOne();
-    if (meta.summoned) {
-      return meta.summoned;
+    if (meta.summoned_by) {
+      return meta.summoned_by;
     }
     return false;
   },

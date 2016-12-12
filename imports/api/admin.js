@@ -63,13 +63,12 @@ Meteor.methods({
         add[field] = meta[field];
       }
 
-      console.log(add)
-
       if (cardMeta.find({id: meta.id}).count() === 0) {
         cardMeta.insert(add)
       } else {
         var id = cardMeta.findOne({id: meta.id})._id;
         cardMeta.update({_id: id}, {$set: add})
+        console.log('updated ' + meta.id)
       }
     })
   }

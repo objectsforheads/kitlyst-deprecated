@@ -39,7 +39,7 @@ Meteor.publish( 'cardPage', function(cardId) {
 Meteor.publish( 'cardMeta', function(cardId) {
   check (cardId, Number);
 
-  return cardMeta.find({association: cardId});
+  return cardMeta.find({id: cardId});
 })
 
 Meteor.publish( 'factionCards', function(faction) {
