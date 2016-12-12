@@ -80,21 +80,21 @@ database.route( '/', {
   }
 });
 
-database.route( '/card/:slug', {
+database.route( '/cards/:slug', {
   name: 'singleCard',
   action: function(params) {
     BlazeLayout.render( 'mainLayout', { main: 'databaseCardPage' } );
   }
 });
 
-database.route( '/faction/:faction', {
+database.route( '/factions/:faction', {
   name: 'faction',
   action: function(params) {
     BlazeLayout.render( 'mainLayout', { main: 'databaseFactionPage' } );
   }
 })
 
-database.route( '/patch/:patch', {
+database.route( '/patches/:patch', {
   name: 'patch',
   action: function(params) {
     BlazeLayout.render( 'mainLayout', { main: 'databasePatchPage' } );
