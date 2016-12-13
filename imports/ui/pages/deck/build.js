@@ -621,6 +621,7 @@ Template.addCards.helpers({
       var cardFilter = Session.get('deckbuilderFilters');
       var addFilter = {
         'race': {$ne: 'General'},
+        'rarity': {$ne: 'Token'},
         'faction': Session.get('deckFaction')
       }
       var sortFilter = Session.get('addCardsSort')
@@ -633,7 +634,8 @@ Template.addCards.helpers({
   'availableNeutralCards': function() {
     var cardFilter = Session.get('deckbuilderFilters');
     var addFilter = {
-      'faction': 'Neutral'
+      'faction': 'Neutral',
+      'rarity': {$ne: 'Token'}
     }
     var sortFilter = Session.get('addCardsSort')
     for (var filter in addFilter) {
