@@ -5,6 +5,18 @@
       <div class="site-title-container">
         <a class="site-title h3" href="/"><span>kit.</span><span>listlyst</span></a>
       </div>
+      {{/unless}}
+      <div class="nav-database-settings">
+        <div class="database-setting" data-setting="toggleAnimations" data-state="on">
+          <div class="on">
+            <i class="fa fa-camera-retro"></i>
+          </div>
+          <div class="off">
+            <i class="fa fa-camera-retro"></i>
+          </div>
+        </div>
+      </div>
+      {{#unless searchElsewhere}}
       <div class="nav-searchbar">
         <form class="nav-database-search">
           <div class="form-group">

@@ -2238,6 +2238,73 @@ a.site-title:hover {
     }
   }
 
+  .nav-database-settings {
+
+    .database-setting {
+      display: inline-block;
+      margin-right: 1rem;
+      cursor: pointer;
+
+      width: 1.5rem;
+      height: 1.5rem;
+      border-radius: 0.25em;
+      border: 2px solid $manaColor;
+
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .on, .off {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%,-50%);
+    }
+
+    [data-state="on"] {
+      background: $manaColor;
+      color: #161B22;
+
+      .off {
+        display: none;
+      }
+
+      &:hover {
+        background: transparent;
+        color: $manaColor;
+
+        .on {
+          display: none;
+        }
+        .off {
+          display: initial;
+        }
+      }
+    }
+
+    [data-state="off"] {
+      background: transparent;
+      color: $manaColor;
+
+      .on {
+        display: none;
+      }
+
+      &:hover {
+        border: 2px solid $manaColor;
+        background: $manaColor;
+        color: #161B22;
+
+        .on {
+          display: initial;
+        }
+        .off {
+          display: none;
+        }
+      }
+    }
+  }
+
   .nav-database-search {
     margin: 0;
     padding-right: 1rem;
@@ -3067,6 +3134,10 @@ $diffAdd: #4bc61d;
 [data-playing="true"] {
   animation-iteration-count: infinite !important;
   animation-play-state: running !important;
+}
+
+.animations-off [data-playing="true"]{
+  animation-play-state: paused !important;
 }
 
 

@@ -14,14 +14,6 @@ Template.databaseNav.onCreated(function() {
        self.searching.set( false );
      }, 300 );
     });
-
-    if (allCards.find().count() !== 0) {
-      allCards.find({}).fetch().forEach(function(card) {
-        if ( $('head').find('link[href*="css/sprites/id/' + card.id + '\.min.css"]').length === 0 ) {
-          $('head').append('<link href="/css/sprites/id/' + card.id + '.min.css" rel="stylesheet">')
-        }
-      })
-    }
   });
 })
 
@@ -86,6 +78,15 @@ Template.databaseNav.helpers({
 })
 
 Template.databaseNav.events({
+  'click .database-setting' (e) {
+    var $setting = $(e.currentTarget);
+
+    if ($setting.attr('data-setting') === 'toggleAnimations') {
+      $('body').toggleClass('animations-off');
+
+      $setting.attr('data-state') === 'on' ? $setting.attr('data-state', 'off') : $setting.attr('data-state', 'on')
+    }
+  },
   'mouseenter .nav-option[data-option]' (e) {
     $('.show-results').removeClass('.show-results');
     $('.showing').removeClass('showing');
