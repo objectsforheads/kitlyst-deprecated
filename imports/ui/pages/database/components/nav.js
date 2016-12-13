@@ -59,30 +59,23 @@ Template.databaseNav.helpers({
   results() {
     let results = JSON.parse(JSON.stringify(allCards.find().fetch()));
 
-    let self = [];
-    if (cardMeta.findOne()) {
-      var card = cardMeta.findOne();
-      self.push(card.id);
+    // allCards has, as implied, all the cards this page uses
+    // we want to filter only for the cards that match our result
 
-      if (card.summons) {
-        self = self.concat(card.summons);
-      }
-
-      if (card.summoned_by) {
-        self = self.concat(card.summoned_by)
-      }
-    }
-
-    self = self.reduce(function(a, b) {
-      a.push(Number(b));
-      return a;
-    }, [])
+    var regex = Template.instance().searchQuery.get().replace(/[-[\]{}()*+?.,\\=!<>^$|#]/g, "\\$&");
+    var test = new RegExp(regex, 'gi')
 
     for (var i = results.length - 1; i >= 0; i--) {
-      if (self.indexOf(results[i].id) !== -1) {
+
+      if (
+        !test.test(results[i].name) &&
+        !test.test(results[i].race) &&
+        !test.test(results[i].description)
+      ) {
         results.splice(i,1)
       }
     }
+
     if ( results.length > 0 ) {
       return results;
     }
