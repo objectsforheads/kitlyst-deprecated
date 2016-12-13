@@ -2273,6 +2273,8 @@ a.site-title:hover {
     border-width: 0 1px;
     background: rgba(22,27,34, 0.85);
     min-width: 13.25rem;
+    max-height: calc(100vh - 2rem); // nav height
+    overflow: auto;
 
 
     &.show-results {

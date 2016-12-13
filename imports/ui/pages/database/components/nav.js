@@ -14,6 +14,14 @@ Template.databaseNav.onCreated(function() {
        self.searching.set( false );
      }, 300 );
     });
+
+    if (allCards.find().count() !== 0) {
+      allCards.find({}).fetch().forEach(function(card) {
+        if ( $('head').find('link[href*="css/sprites/id/' + card.id + '\.min.css"]').length === 0 ) {
+          $('head').append('<link href="/css/sprites/id/' + card.id + '.min.css" rel="stylesheet">')
+        }
+      })
+    }
   });
 })
 
