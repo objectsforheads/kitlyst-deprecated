@@ -26,6 +26,12 @@ Meteor.publish( 'databaseResults', function( search ) {
   }
 });
 
+Meteor.publish('someCards', function(filters) {
+  check(filters, Object);
+
+  return allCards.find(filters);
+})
+
 Meteor.publish( 'cardHistory', function(cardId) {
   check(cardId, Number);
   return historicalCards.find({id: cardId})
