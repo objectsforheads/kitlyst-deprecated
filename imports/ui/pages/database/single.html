@@ -24,13 +24,19 @@
     </div>
     <div class="card-info_additional">
       <h2>Patch History</h2>
-      <div class="patch-cards">
+      <div class="patch-cards card-container">
         {{#each patchCards}}
-        <div class="patch-card">
-          <div><p><b>{{patch}}</b></p></div>
+        <div class="patch-card card-wrapper">
+          <div>
+            <a href="/database/patches/{{patch}}">{{patch}}</a>
+          </div>
           {{> databaseCard info=this layout="historicalCard"}}
         </div>
         {{/each}}
+        <div class="card-wrapper grid-force"></div>
+        <div class="card-wrapper grid-force"></div>
+        <div class="card-wrapper grid-force"></div>
+        <div class="card-wrapper grid-force"></div>
       </div>
       {{#if summons}}
         <h2>Creates</h2>

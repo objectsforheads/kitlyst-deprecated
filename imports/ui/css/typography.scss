@@ -2581,6 +2581,17 @@ $spriteScale: 2.5;
   -ms-interpolation-mode: nearest-neighborz;
 }
 
+.new .db-card::before {
+  background: url('/assets/img/backgrounds/card_glow_line_new.png') no-repeat bottom center / contain;
+}
+
+a .db-card,
+a.db-card {
+  &:hover::before {
+    background: url('/assets/img/backgrounds/card_glow_line.png') no-repeat bottom center / contain;
+  }
+}
+
 .db-card {
   font-size: #{$spriteScale * 1px};
   font-family: 'Lato', sans-serif;
@@ -2589,6 +2600,21 @@ $spriteScale: 2.5;
   height: 147em;
 
   display: inline-block;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 126.5em;
+    height: 160em;
+    pointer-events: none;
+  }
+
+  &.new::before {
+    background: url('/assets/img/backgrounds/card_glow_line_new.png') no-repeat bottom center / contain;
+  }
 
   &[data-type="Artifact"] {
     background: url('/assets/img/backgrounds/neutral_artifact.png') no-repeat bottom center / contain;
@@ -2631,11 +2657,15 @@ $spriteScale: 2.5;
     display: block;
     margin: auto;
     top: auto;
-    bottom: -14em;
+    bottom: -6em;
     position: absolute;
     transform-style: preserve-3d;
     backface-visibility: hidden;
     left: 50%;
+  }
+
+  &[data-type="Unit"] .sprite {
+    bottom: -14em;
   }
   .card-sprite {
     top: 5em;
@@ -2811,19 +2841,30 @@ $spriteScale: 2.5;
   }
 }
 
-.patch-card {
-  display: inline-block;
-  text-align: center;
+.patch-page {
+  .patch-change {
+    display: inline-block;
 
-  .patch-number {
-    padding: 0 0.25em;
+    & > *:last-child {
+      .patch-number {
+        visibility: hidden;
+      }
+    }
+
+    &:hover {
+      a .db-card::before {
+        background: url('/assets/img/backgrounds/card_glow_line.png') no-repeat bottom center / contain;
+      }
+    }
   }
 
-  .label-badge {
-    position: absolute;
-    right: 100%;
-    top: 50%;
-    transform: translateY(-50%);
+  .patch-card {
+    display: inline-block;
+    text-align: center;
+
+    .patch-number {
+      text-align: left
+    }
   }
 }
 
