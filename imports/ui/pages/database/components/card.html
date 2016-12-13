@@ -94,6 +94,12 @@
     <p class="card-description"><span class="value">{{parsedDescription}}</span></p>
   </div>
   {{/if}}
+  {{#if aSprite}}
+  <div class="a-sprite">
+    <div class="sprite {{#if this.info.health}}breathing breathe breath{{else}}passive{{/if}} lazyLoad" data-id="{{this.info.id}}" data-playing="true"></div>
+    <div class="sprite-label">{{this.info.name}}</div>
+  </div>
+  {{/if}}
   {{#unless this.layout}}
   <div class="db-card" data-type="{{this.info.type}}">
     <div class="mana-cost"><span class="value">{{this.info.manaCost}}</span></div>

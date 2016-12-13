@@ -19,6 +19,9 @@ Template.databaseCard.helpers({
     if (this.layout === 'historicalCard') { return true; }
     return false;
   },
+  aSprite() {
+    if (this.layout === 'aSprite') { return true; }
+  },
   slugifiedName() {
     return this.info.name.replace(/['"]+/g, "").replace(/[^a-zA-Z0-9]+/g,"-").replace("/--/g", "-").toLowerCase();
   },
