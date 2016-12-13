@@ -1,0 +1,24 @@
+<template name="databaseSetPage">
+  {{>databaseNav}}
+  {{#if Template.subscriptionsReady}}
+  <div class="database-page content-container">
+    <h1>{{setName}}</h1>
+    {{#each factions}}
+      <h2>{{this}}</h2>
+      <div class="card-container">
+        {{#each factionCards}}
+        <div class="card-wrapper">
+          <a href="/database/cards/{{this.id}}">
+          {{> databaseCard layout="currentCard" info=this}}
+          </a>
+        </div>
+        {{/each}}
+        <div class="card-wrapper grid-force"></div>
+        <div class="card-wrapper grid-force"></div>
+        <div class="card-wrapper grid-force"></div>
+        <div class="card-wrapper grid-force"></div>
+      </div>
+    {{/each}}
+  </div>
+  {{/if}}
+</template>

@@ -107,3 +107,10 @@ database.route( '/patches/:patch', {
     BlazeLayout.render( 'mainLayout', { main: 'databasePatchPage' } );
   }
 })
+
+database.route( '/sets/:set', {
+  name: 'set',
+  action: function(params) {
+    BlazeLayout.render( 'mainLayout', { main: 'databaseSetPage' } );
+  }
+})
