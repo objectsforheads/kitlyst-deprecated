@@ -2217,6 +2217,7 @@ a.site-title:hover {
   height: 2rem;
   line-height: 2rem;
   background: #161B22;
+  will-change: transform;
 
   .nav-bar {
     display: flex;
