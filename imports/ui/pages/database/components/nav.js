@@ -57,26 +57,20 @@ Template.databaseNav.helpers({
     return Template.instance().searchQuery.get();
   },
   results() {
-    let results = JSON.parse(JSON.stringify(allCards.find().fetch()));
-
     // allCards has, as implied, all the cards this page uses
     // we want to filter only for the cards that match our result
 
-    var regex = Template.instance().searchQuery.get().replace(/[-[\]{}()*+?.,\\=!<>^$|#]/g, "\\$&");
-    var test = new RegExp(regex, 'gi')
+    let search = Template.instance().searchQuery.get().replace(/[-[\]{}()*+?.,\\=!<>^$|#]/g, "\\$&");
+    let regex = new RegExp( search, 'gi' );
+    let results = allCards.find({
+      $or: [
+        { name: regex },
+        { race: regex },
+        { description: regex }
+      ]
+    }, {sort: ['name', 'asc']});
 
-    for (var i = results.length - 1; i >= 0; i--) {
-
-      if (
-        !test.test(results[i].name) &&
-        !test.test(results[i].race) &&
-        !test.test(results[i].description)
-      ) {
-        results.splice(i,1)
-      }
-    }
-
-    if ( results.length > 0 ) {
+    if ( results.count() > 0 ) {
       return results;
     }
     return false;
