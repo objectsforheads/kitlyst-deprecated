@@ -2,19 +2,44 @@
   {{> databaseNav}}
   {{#if Template.subscriptionsReady}}
   {{loadSprites}}
-  <div class="patch-page content-container">
+  <div class="patch-page database-page content-container">
     <h1>Patch {{patchNumber}}</h1>
     {{#if patchGenerals}}
       <div class="patch-generals">
         <h2>Generals</h2>
-        {{#each patchGenerals}}
         <div class="patch-changes">
-          {{#each patchChanges}}
-          {{this.patch}}
-          {{> databaseCard info=this layout="historicalCard"}}
-          {{/each}}
+          {{#with patchGenerals}}
+          {{#if this.added}}
+          <h4>Added</h4>
+          <div class="card-container">
+            {{#each this.added}}
+            <div class="card-wrapper">
+              <a href="/database/cards/{{this.id}}">{{> databaseCard info=this layout="historicalCard"}}</a>
+            </div>
+            {{/each}}
+            <div class="card-wrapper grid-force"></div>
+            <div class="card-wrapper grid-force"></div>
+            <div class="card-wrapper grid-force"></div>
+            <div class="card-wrapper grid-force"></div>
+          </div>
+          {{/if}}
+          {{#if this.changed}}
+          <h4>Changed</h4>
+          <div class="patch-changes">
+            {{#each this.changed}}
+            <div class="patch-change">
+              {{#each patchChanges}}
+              <div class="patch-card">
+                <div><p><span class="patch-number">{{#if this.added}}<span class="label-badge success">added</span>{{/if}}<a href="/database/patches/{{patch}}">{{patch}}</a></span></p></div>
+                <a href="/database/cards/{{this.id}}">{{> databaseCard info=this layout="historicalCard"}}</a>
+              </div>
+              {{/each}}
+            </div>
+            {{/each}}
+          </div>
+          {{/if}}
+          {{/with}}
         </div>
-        {{/each}}
       </div>
     {{/if}}
     <div class="patch-cards">
@@ -22,16 +47,37 @@
       {{#each expansions}}
         {{#if patchCards}}
         <h3>{{this}}</h3>
-        {{#each patchCards}}
-          <div class="patch-changes">
+        {{#with patchCards}}
+        {{#if this.added}}
+        <h4>Added</h4>
+        <div class="card-container">
+          {{#each this.added}}
+          <div class="card-wrapper">
+            <a href="/database/cards/{{this.id}}">{{> databaseCard info=this layout="historicalCard"}}</a>
+          </div>
+          {{/each}}
+          <div class="card-wrapper grid-force"></div>
+          <div class="card-wrapper grid-force"></div>
+          <div class="card-wrapper grid-force"></div>
+          <div class="card-wrapper grid-force"></div>
+        </div>
+        {{/if}}
+        {{#if this.changed}}
+        <h4>Changed</h4>
+        <div class="patch-changes">
+          {{#each this.changed}}
+          <div class="patch-change">
             {{#each patchChanges}}
             <div class="patch-card">
-              <div><p><b>{{patch}}</b></p></div>
-              {{> databaseCard info=this layout="historicalCard"}}
+              <div><p><span class="patch-number">{{#if this.added}}<span class="label-badge success">added</span>{{/if}}<a href="/database/patches/{{patch}}">{{patch}}</a></span></p></div>
+              <a href="/database/cards/{{this.id}}">{{> databaseCard info=this layout="historicalCard"}}</a>
             </div>
             {{/each}}
           </div>
-        {{/each}}
+          {{/each}}
+        </div>
+        {{/if}}
+        {{/with}}
         {{/if}}
       {{/each}}
     </div>

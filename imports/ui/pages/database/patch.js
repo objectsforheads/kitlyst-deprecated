@@ -7,8 +7,10 @@ patchChanges = new Mongo.Collection('patch_changes');
 Template.databasePatchPage.onCreated(function() {
   var self = Template.instance();
 
-  self.subscribe( 'patchChanges', Number(FlowRouter.getParam('patch')) );
-  self.subscribe( 'patchCards', Number(FlowRouter.getParam('patch')) );
+  self.autorun( () => {
+    self.subscribe( 'patchChanges', Number(FlowRouter.getParam('patch')) );
+    self.subscribe( 'patchCards', Number(FlowRouter.getParam('patch')) );
+  })
 })
 Template.databasePatchPage.helpers({
   patchNumber() {
@@ -19,8 +21,24 @@ Template.databasePatchPage.helpers({
     return ["Base", "Denizens of Shim'Zar"];
   },
   patchGenerals() {
-    var cards = historicalCards.find({race: 'General'}, {sort: [ ["id", "asc"] ] });
-    if (cards.count() !== 0) {
+    var cards = historicalCards.find({race: 'General'}, {sort: [ ["id", "asc"] ] }).fetch();
+    if (cards.length !== 0) {
+      // Split into added and updated cards
+      cards = cards.reduce(function(a,b) {
+        var patches = patchChanges.findOne({_id: b.id}).patches;
+        for (var i = patches.length - 1; i >= 0; i--) {
+          if (patches[i].patch > Number(FlowRouter.getParam('patch'))) {
+            patches.splice(i, 1);
+          }
+        }
+        if (patches.length === 1) {
+          a.added.push(b);
+        } else {
+          a.changed.push(b);
+        }
+        return a;
+      }, {added: [], changed: []})
+
       return cards;
     }
     return false
@@ -30,9 +48,25 @@ Template.databasePatchPage.helpers({
       patch: Number(FlowRouter.getParam('patch')),
       set: this.valueOf(),
       race: {$ne: 'General'}
-    })
+    }).fetch();
 
-    if (cards.count() !== 0) {
+    if (cards.length !== 0) {
+      // Split into added and updated cards
+      cards = cards.reduce(function(a,b) {
+        var patches = patchChanges.findOne({_id: b.id}).patches;
+        for (var i = patches.length - 1; i >= 0; i--) {
+          if (patches[i].patch > Number(FlowRouter.getParam('patch'))) {
+            patches.splice(i, 1);
+          }
+        }
+        if (patches.length === 1) {
+          a.added.push(b);
+        } else {
+          a.changed.push(b);
+        }
+        return a;
+      }, {added: [], changed: []})
+
       return cards;
     }
     return false
@@ -49,6 +83,10 @@ Template.databasePatchPage.helpers({
         return 0;
       }
     })
+
+    // Mark the patch the card was added
+    cards[cards.length - 1].added = true;
+
     for (var i = cards.length - 1; i >= 0; i--) {
       if (cards[i].patch > Number(FlowRouter.getParam('patch'))) {
         cards.splice(i, 1);

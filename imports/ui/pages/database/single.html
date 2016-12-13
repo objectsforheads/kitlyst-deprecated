@@ -2,7 +2,7 @@
   {{> databaseNav}}
   {{#if Template.subscriptionsReady}}
   {{loadSprites}}
-  <div class="card-page">
+  <div class="content-container database-page card-page">
     <h1>{{currentCard.name}}</h1>
     <div class="card-info">
       <div class="current-card">
@@ -11,12 +11,14 @@
       <div class="card-animations">
         <h2>Animations</h2>
         <div class="all-sprites" data-type="{{currentCard.type}}">
+          {{#if sprites}}
           {{#each sprites}}
           <div class="a-sprite">
             <div class="sprite {{this}} id_{{cardId}}" data-playing="true"></div>
             <div class="sprite-label"><b>{{this}}</b></div>
           </div>
           {{/each}}
+          {{/if}}
         </div>
       </div>
     </div>
@@ -32,19 +34,31 @@
       </div>
       {{#if summons}}
         <h2>Creates</h2>
-        {{#each summons}}
-          {{#each loaded}}
-          {{> databaseCard info=this layout="currentCard"}}
+        <div class="card-container">
+          {{#each summons}}
+            {{#each loaded}}
+            <div class="card-wrapper"><a href="/database/cards/{{this.id}}">{{> databaseCard info=this layout="currentCard"}}</a></div>
+            {{/each}}
           {{/each}}
-        {{/each}}
+          <div class="card-wrapper grid-force"></div>
+          <div class="card-wrapper grid-force"></div>
+          <div class="card-wrapper grid-force"></div>
+          <div class="card-wrapper grid-force"></div>
+        </div>
       {{/if}}
       {{#if summoned}}
         <h2>Created By</h2>
-        {{#each summoned}}
-        {{#each loaded}}
-        {{> databaseCard info=this layout="currentCard"}}
-        {{/each}}
-        {{/each}}
+        <div class="card-container">
+          {{#each summoned}}
+            {{#each loaded}}
+            <div class="card-wrapper"><a href="/database/cards/{{this.id}}">{{> databaseCard info=this layout="currentCard"}}</a></div>
+            {{/each}}
+          {{/each}}
+          <div class="card-wrapper grid-force"></div>
+          <div class="card-wrapper grid-force"></div>
+          <div class="card-wrapper grid-force"></div>
+          <div class="card-wrapper grid-force"></div>
+        </div>
       {{/if}}
     </div>
   </div>

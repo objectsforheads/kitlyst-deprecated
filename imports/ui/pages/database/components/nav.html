@@ -2,6 +2,9 @@
   <nav class="database-nav">
     <div class="nav-bar">
       {{#unless searchElsewhere}}
+      <div class="site-title-container">
+        <a class="site-title h3" href="/"><span>kit.</span><span>listlyst</span></a>
+      </div>
       <div class="nav-searchbar">
         <form class="nav-database-search">
           <div class="form-group">
@@ -32,13 +35,16 @@
       </div>
       {{/unless}}
       <div class="nav-options">
-        <a class="nav-option" data-option="cards" href="/database/cards">Cards</a> | <a class="nav-option" data-option="patches" href="">Patch Changes</a> | <a class="nav-option" data-option="" href="">Lore</a>
+        <a href="/database">Main</a> | <a class="nav-option" data-option="cards" href="/database/cards">Cards</a> | <a class="nav-option" data-option="patches" href="">Patch Changes</a> | <a class="nav-option" data-option="" href="">Lore</a>
       </div>
     </div>
     <div class="nav-suboptions">
       <div class="suboptions-list" data-suboption="cards">
         <ul>
           <li class="nav-suboption"><a href="/database/cards">All</a></li>
+        </ul>
+        By Faction
+        <ul>
           <li class="nav-suboption"><a href="/database/factions/lyonar">Lyonar Kingdoms</a></li>
           <li class="nav-suboption"><a href="/database/factions/songhai">Songhai Empire</a></li>
           <li class="nav-suboption"><a href="/database/factions/vetrivian">Vetruvian Imperium</a></li>
@@ -46,6 +52,12 @@
           <li class="nav-suboption"><a href="/database/factions/magmar">Magmar Aspects</a></li>
           <li class="nav-suboption"><a href="/database/factions/vanar">Vanar Kindred</a></li>
           <li class="nav-suboption"><a href="/database/factions/neutral">Neutral</a></li>
+        </ul>
+        by Expansion
+        <ul>
+          <li class="nav-suboption"><a href="/database/expansions/base">Base</a></li>
+          <li class="nav-suboption"><a href="/database/expansions/dos">Denizens of Shim'Zar</a></li>
+          <li class="nav-suboption"><a href="/database/expansions/rotb">Rise of the Bloodborn</a></li>
         </ul>
       </div>
       <div class="suboptions-list" data-suboption="patches">
