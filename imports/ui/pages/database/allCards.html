@@ -1,0 +1,32 @@
+<template name="databaseAllCardsPage">
+  {{> databaseNav}}
+  {{#if Template.subscriptionsReady}}
+  <div class="content-container database-page">
+  <h1>All Cards</h1>
+  {{#each factions}}
+    <h2>{{this}}</h2>
+    {{#each factionCardsByExpansion}}
+
+    {{#if this.cards}}
+      <h3>{{this.expansion}}</h3>
+      <div class="card-container">
+        {{#each this.cards}}
+        <div class="card-wrapper">
+          <a href="/database/cards/{{this.id}}">
+          {{> databaseCard layout="currentCard" info=this}}
+          </a>
+        </div>
+        {{/each}}
+        <div class="card-wrapper grid-force"></div>
+        <div class="card-wrapper grid-force"></div>
+        <div class="card-wrapper grid-force"></div>
+        <div class="card-wrapper grid-force"></div>
+      </div>
+
+    {{/if}}
+
+    {{/each}}
+  {{/each}}
+  </div>
+  {{/if}}
+</template>

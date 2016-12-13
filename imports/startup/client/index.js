@@ -18,6 +18,7 @@ import '../../ui/pages/database/main.js';
 import '../../ui/pages/database/single.js';
 import '../../ui/pages/database/faction.js';
 import '../../ui/pages/database/patch.js';
+import '../../ui/pages/database/allCards.js';
 
 sAlert.config({
   effect: 'jelly',

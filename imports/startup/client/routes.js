@@ -80,6 +80,13 @@ database.route( '/', {
   }
 });
 
+database.route( '/cards', {
+  name: 'singleCard',
+  action: function(params) {
+    BlazeLayout.render( 'mainLayout', { main: 'databaseAllCardsPage' } );
+  }
+});
+
 database.route( '/cards/:slug', {
   name: 'singleCard',
   action: function(params) {
