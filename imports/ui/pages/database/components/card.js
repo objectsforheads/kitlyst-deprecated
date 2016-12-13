@@ -1,5 +1,7 @@
 import './card.html';
 
+import scrollMonitor from 'scrollmonitor';
+
 Template.databaseCard.helpers({
   cardResult() {
     if (this.layout === 'cardResult') { return true; }
@@ -22,6 +24,29 @@ Template.databaseCard.helpers({
   },
   parsedDescription: function() {
     return Spacebars.SafeString(boldKeywords(this.info.description));
+  }
+})
+
+Template.databaseCard.onRendered(function(e) {
+  if ($('.lazyLoad').length > 0) {
+    $('.lazyLoad').each(function(i) {
+      var watcher = scrollMonitor.create($(this)[0], 500);
+      watcher.stateChange(lazyLoad);
+      lazyLoad.call(watcher);
+      $(this).removeClass('lazyLoad');
+    })
+  }
+
+  function lazyLoad() {
+    if (this.isInViewport) {
+      var id = $(this.watchItem).attr('data-id');
+      $(this.watchItem).addClass('id_' + id);
+      if ( $('head').find('link[href*="css/sprites/id/' + id + '\.min.css"]').length === 0 ) {
+        $('head').append('<link href="/css/sprites/id/' + id + '.min.css" rel="stylesheet">')
+      }
+
+      this.destroy();
+    }
   }
 })
 
@@ -62,20 +87,3 @@ boldKeywords = function(str) {
 
   return str;
 }
-
-Template.registerHelper('loadSprites', function() {
-  if (allCards.find().count() !== 0) {
-    allCards.find({}).fetch().forEach(function(card) {
-      if ( $('head').find('link[href*="css/sprites/id/' + card.id + '\.min.css"]').length === 0 ) {
-        $('head').append('<link href="/css/sprites/id/' + card.id + '.min.css" rel="stylesheet">')
-      }
-    })
-  }
-  if (historicalCards.find().count() !== 0) {
-    historicalCards.find({}).fetch().forEach(function(card) {
-      if ( $('head').find('link[href*="css/sprites/id/' + card.id + '\.min.css"]').length === 0 ) {
-        $('head').append('<link href="/css/sprites/id/' + card.id + '.min.css" rel="stylesheet">')
-      }
-    })
-  }
-})

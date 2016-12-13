@@ -1,9 +1,10 @@
 <template name="databaseCard">
+  {{lazyLoad}}
   {{#if cardResult}}
   <a href="/database/cards/{{this.info.id}}" class="db-card" data-type="{{this.info.type}}">
     <div class="mana-cost"><span class="value">{{this.info.manaCost}}</span></div>
     <div class="card-sprite">
-      <div class="sprite {{#if this.info.health}}breathing breathe breath{{else}}passive{{/if}} id_{{this.info.id}}" data-playing="{{#if this.stopped}}false{{else}}true{{/if}}"></div>
+      <div class="sprite {{#if this.info.health}}breathing breathe breath{{else}}passive{{/if}} lazyLoad" data-id="{{this.info.id}}" data-playing="{{#if this.stopped}}false{{else}}true{{/if}}"></div>
     </div>
     <div class="card-caption">
       <div class="name"><span class="value">{{> highlightQuery text=this.info.name query=query}}</span></div>
@@ -29,7 +30,7 @@
   <div class="db-card" data-type="{{this.info.type}}">
     <div class="mana-cost"><span class="value">{{this.info.manaCost}}</span></div>
     <div class="card-sprite">
-      <div class="sprite {{#if this.info.health}}breathing breathe breath{{else}}passive{{/if}} id_{{this.info.id}}" data-playing="{{#if this.stopped}}false{{else}}true{{/if}}"></div>
+      <div class="sprite {{#if this.info.health}}breathing breathe breath{{else}}passive{{/if}} lazyLoad" data-id="{{this.info.id}}" data-playing="{{#if this.stopped}}false{{else}}true{{/if}}"></div>
     </div>
     <div class="card-caption">
       <div class="name"><span class="value">{{this.info.name}}</span></div>
@@ -59,7 +60,7 @@
       <span class="value">{{this.info.manaCost}}</span>
     </div>
     <div class="card-sprite">
-      <div class="sprite {{#if this.info.health}}breathing breathe breath{{else}}passive{{/if}} id_{{this.info.id}}" data-playing="{{#if this.stopped}}false{{else}}true{{/if}}"></div>
+      <div class="sprite {{#if this.info.health}}breathing breathe breath{{else}}passive{{/if}} lazyLoad" data-id="{{this.info.id}}" data-playing="{{#if this.stopped}}false{{else}}true{{/if}}"></div>
     </div>
     <div class="card-caption">
       <div class="name"><span class="value">{{{this.info.nameDiffRemove}}}</span></div>
@@ -97,7 +98,7 @@
   <div class="db-card" data-type="{{this.info.type}}">
     <div class="mana-cost"><span class="value">{{this.info.manaCost}}</span></div>
     <div class="card-sprite">
-      <div class="sprite {{#if this.info.health}}breathing breathe breath{{else}}passive{{/if}} id_{{this.info.id}}" data-playing="{{#if this.stopped}}false{{else}}true{{/if}}"></div>
+      <div class="sprite {{#if this.info.health}}breathing breathe breath{{else}}passive{{/if}} lazyLoad" data-id="{{this.info.id}}" data-playing="{{#if this.stopped}}false{{else}}true{{/if}}"></div>
     </div>
     <div class="card-caption">
       <div class="name"><span class="value">{{this.info.name}}</span></div>

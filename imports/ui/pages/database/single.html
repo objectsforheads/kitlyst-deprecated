@@ -1,7 +1,6 @@
 <template name="databaseCardPage">
   {{> databaseNav}}
   {{#if Template.subscriptionsReady}}
-  {{loadSprites}}
   <div class="content-container database-page card-page">
     <h1>{{currentCard.name}}</h1>
     <div class="card-info">
@@ -14,7 +13,7 @@
           {{#if sprites}}
           {{#each sprites}}
           <div class="a-sprite">
-            <div class="sprite {{this}} id_{{cardId}}" data-playing="true"></div>
+            <div class="sprite {{this}} lazyLoad" data-id="{{cardId}}" data-playing="true"></div>
             <div class="sprite-label"><b>{{this}}</b></div>
           </div>
           {{/each}}

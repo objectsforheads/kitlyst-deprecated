@@ -3,8 +3,6 @@ import './main.html';
 import './components/card.js';
 import './components/nav.js';
 
-import scrollMonitor from 'scrollmonitor';
-
 Template.databaseSearch.onCreated(function() {
   let self = Template.instance();
 

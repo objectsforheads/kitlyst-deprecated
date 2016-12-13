@@ -1,8 +1,6 @@
 import './faction.html';
 import './components/card.js';
 
-import levenshtein from 'fast-levenshtein';
-
 Template.databaseFactionPage.onCreated(function() {
   var self = Template.instance();
 
