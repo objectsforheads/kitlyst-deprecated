@@ -5,12 +5,15 @@ import JsDiff from 'diff';
 
 Template.databaseCardPage.onCreated(function() {
   let self = Template.instance();
-  self.subscribe( 'cardHistory', Number(FlowRouter.getParam('slug')))
-  self.subscribe( 'cardPage', [Number(FlowRouter.getParam('slug'))] );
-  self.subscribe( 'cardMeta', Number(FlowRouter.getParam('slug')))
+
+  self.summons = new ReactiveVar(false);
+  self.summoned_by = new ReactiveVar(false);
 
   self.autorun( () => {
-    if (cardMeta.findOne()) {
+    self.subscribe( 'cardHistory', Number(FlowRouter.getParam('slug')))
+    self.subscribe( 'cardPage', [Number(FlowRouter.getParam('slug'))] );
+    self.subscribe( 'cardMeta', Number(FlowRouter.getParam('slug')))
+    if (cardMeta.findOne({id: Number(FlowRouter.getParam('slug'))})) {
       var cards = [cardMeta.findOne().id];
       var meta = cardMeta.findOne();
 
@@ -18,14 +21,18 @@ Template.databaseCardPage.onCreated(function() {
         meta.summons.forEach(function(id) {
           cards.push(Number(id))
         })
-
+        self.summons.set(meta.summons)
+      } else {
+        self.summons.set(false)
       }
 
       if (meta.summoned_by) {
         meta.summoned_by.forEach(function(id) {
           cards.push(Number(id))
         })
-
+        self.summoned_by.set(meta.summoned_by)
+      } else {
+        self.summoned_by.set(false)
       }
       self.subscribe( 'cardPage', cards );
     }
@@ -35,13 +42,16 @@ Template.databaseCardPage.onCreated(function() {
 
 Template.databaseCardPage.helpers({
   currentCard() {
-    return allCards.findOne();
+    return allCards.findOne({id: Number(FlowRouter.getParam('slug'))});
   },
   cardId() {
     return FlowRouter.getParam('slug');
   },
   sprites() {
-    return cardMeta.findOne({id: Number(FlowRouter.getParam('slug'))}).sprites;
+    if (cardMeta.findOne({id: Number(FlowRouter.getParam('slug'))})) {
+      return cardMeta.findOne({id: Number(FlowRouter.getParam('slug'))}).sprites;
+    }
+    return false;
   },
   patchCards() {
     var cards = JSON.parse(JSON.stringify(historicalCards.find({id: Number(FlowRouter.getParam('slug'))}, {sort: { patch: 1 }}).fetch()));
@@ -127,18 +137,10 @@ Template.databaseCardPage.helpers({
     return Number(this.patch).toFixed(2);
   },
   summons() {
-    var meta = cardMeta.findOne();
-    if (meta.summons) {
-      return meta.summons;
-    }
-    return false;
+    return Template.instance().summons.get();
   },
   summoned() {
-    var meta = cardMeta.findOne();
-    if (meta.summoned_by) {
-      return meta.summoned_by;
-    }
-    return false;
+    return Template.instance().summoned_by.get();
   },
   loaded() {
     var id = Number(this.valueOf());
