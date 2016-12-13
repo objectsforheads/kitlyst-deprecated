@@ -2185,6 +2185,7 @@ a.site-title:hover {
 
 .database-page {
   padding-top: 2rem; // fixed nav size
+  text-align: center;
 }
 
 .card-container {
@@ -2327,9 +2328,11 @@ a.site-title:hover {
 
   .nav-option {
     display: inline-block;
+    font-family: 'Lato', sans-serif;
+    cursor: default;
   }
 
-  .nav-option.showing::after {
+  .nav-option::after {
     content: '';
     position: absolute;
     bottom: 0;

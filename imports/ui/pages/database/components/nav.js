@@ -86,7 +86,7 @@ Template.databaseNav.helpers({
 })
 
 Template.databaseNav.events({
-  'mouseenter a[data-option]' (e) {
+  'mouseenter .nav-option[data-option]' (e) {
     $('.show-results').removeClass('.show-results');
     $('.showing').removeClass('showing');
     var option = $(e.currentTarget).attr('data-option');
