@@ -32,7 +32,7 @@ Template.databaseFactionPage.helpers({
     return 'faction';
   },
   expansions() {
-    return ["Base", "Denizens of Shim'Zar"];
+    return ["Base", "Denizens of Shim'Zar", "Rise of the Bloodborn"];
   },
   factionGenerals() {
     return allCards.find({race: 'General'}, {sort: ["id", "asc"]})

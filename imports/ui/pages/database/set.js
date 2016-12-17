@@ -12,6 +12,10 @@ Template.databaseSetPage.onCreated(function() {
     self.setName = "Denizens of Shim'Zar";
   }
 
+  if (new RegExp('rotb', 'gi').test(self.setName)) {
+    self.setName = "Rise of the Bloodborn";
+  }
+
   self.autorun( () => {
     self.subscribe('someCards', {set: self.setName})
   })

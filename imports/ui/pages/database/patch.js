@@ -18,7 +18,7 @@ Template.databasePatchPage.helpers({
     return patch;
   },
   expansions() {
-    return ["Base", "Denizens of Shim'Zar"];
+    return ["Base", "Denizens of Shim'Zar", "Rise of the Bloodborn"];
   },
   patchGenerals() {
     var cards = historicalCards.find({race: 'General'}, {sort: [ ["id", "asc"] ] }).fetch();

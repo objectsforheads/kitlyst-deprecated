@@ -42,7 +42,7 @@ Template.databaseNav.helpers({
         phase: 'Release',
         patches: [
           1.63,1.64,1.65,1.66,1.67,1.69,
-          1.71,1.73,1.74,1.75,1.76
+          1.71,1.73,1.74,1.75,1.76, 1.78
         ]
       }
     ].reverse()
