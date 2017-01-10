@@ -4,7 +4,7 @@ import './components/card.js';
 import './components/nav.js';
 
 Template.databaseSearch.onCreated(function() {
-  let self = Template.instance();
+  var self = Template.instance();
 
   self.searchQuery = new ReactiveVar();
   self.searching   = new ReactiveVar( false );
@@ -35,7 +35,7 @@ Template.databaseSearch.events({
       var isBackspaceOrDelete = (event.keyCode == 8 || event.keyCode == 46);
 
       if (isWordCharacter || isBackspaceOrDelete) {
-        let value = event.target.value.trim();
+        var value = event.target.value.trim();
         if ( value !== '' && value !== FlowRouter.getQueryParam('search')) {
           FlowRouter.setQueryParams({search: value})
         }
@@ -52,7 +52,7 @@ Template.databaseSearch.helpers({
     return Template.instance().searchQuery.get();
   },
   results() {
-    let results = allCards.find();
+    var results = allCards.find();
     if ( results.count() > 0 ) {
       return results;
     }

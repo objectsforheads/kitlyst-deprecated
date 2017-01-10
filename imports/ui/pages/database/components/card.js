@@ -32,7 +32,7 @@ Template.databaseCard.helpers({
 
 Template.databaseCard.onRendered(function(e) {
   if ($('.lazyLoad').length > 0) {
-    $('.lazyLoad').each(function(i) {
+    $('.lazyLoad').each(function() {
       var watcher = scrollMonitor.create($(this)[0], 500);
       watcher.stateChange(lazyLoad);
       lazyLoad.call(watcher);
@@ -59,11 +59,7 @@ Template.highlightQuery.helpers({
     var text = this.text;
 
     if (this.keywords === true) {
-      var keywords = ['Bloodborn Spell', 'Zeal', 'Provoke', 'Opening Gambit', 'Celerity', 'Airdrop', 'Ranged', 'Backstab', 'Flying', 'Rush', 'Blast', 'Summon Dervish', 'Dying Wish', 'Frenzy', 'Deathwatch', 'Rebirth', 'Infiltrate', 'Forcefield', 'Grow', 'Stunned', 'Stun', 'Strikeback']
-      keywords.forEach(function(keyword) {
-        var regex = new RegExp(keyword, 'g');
-        text = text.replace(regex, "<b>$&</b>");
-      })
+      text = boldKeywords(text);
     }
 
     // Escape the query
