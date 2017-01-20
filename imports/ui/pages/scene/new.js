@@ -100,10 +100,10 @@ Template.scenebuilderNew.events({
       $('head').append('<link href="/css/sprites/id/' + id + '.min.css" rel="stylesheet">')
     }
   },
-  'mouseleave .screen__general-selection .general-hex': (e) => {
+  'mouseleave .screen__general-selection.selection-screen-open .general-hex': (e) => {
     Template.instance().playerSelectionTemporary.set(Template.instance().playerSelection.get())
   },
-  'click .screen__general-selection .general-hex': (e) => {
+  'click .screen__general-selection.selection-screen-open .general-hex': (e) => {
     Template.instance().playerSelection.set($(e.currentTarget).attr('data-general'))
     Template.instance().playerSelectionTemporary.set($(e.currentTarget).attr('data-general'))
   }

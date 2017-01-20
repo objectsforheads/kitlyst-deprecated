@@ -1,5 +1,5 @@
 <template name="scenebuilderNew">
-  <div class="screen__versus">
+  <div class="screen__versus {{#if playerSelecting}}selection-screen-open{{/if}}">
     <div class="player-1 selected-general">
       <div class="general-illustration" data-general="{{player1Selection.id}}">
   			<img src="/assets/img/scene/generals/illustrations/general_1.png" data-general="1" alt="">
@@ -42,8 +42,8 @@
       <span class="btn-text">Build</span>
     </button>
   </div>
-  {{#if playerSelecting}}
-  <div class="screen__general-selection" data-player="{{playerSelecting}}">
+  <div class="screen__general-selection {{#if playerSelecting}}selection-screen-open{{/if}}" data-player="{{playerSelecting}}">
+    {{#if playerSelecting}}
     <div class="current-general">
       <div class="general-illustration" data-general="{{playerSelectionTemporary.id}}">
         <img src="/assets/img/scene/generals/illustrations/general_1.png" data-general="1" alt="">
@@ -83,6 +83,6 @@
         Cancel
       </button>
     </div>
+    {{/if}}
   </div>
-  {{/if}}
 </template>
