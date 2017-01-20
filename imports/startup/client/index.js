@@ -21,6 +21,8 @@ import '../../ui/pages/database/patch.js';
 import '../../ui/pages/database/set.js';
 import '../../ui/pages/database/allCards.js';
 
+import '../../ui/pages/scene/new.js';
+
 sAlert.config({
   effect: 'jelly',
   position: 'top-left',

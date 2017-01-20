@@ -114,3 +114,13 @@ database.route( '/sets/:set', {
     BlazeLayout.render( 'mainLayout', { main: 'databaseSetPage' } );
   }
 })
+
+var scene = FlowRouter.group({
+  prefix: '/scene'
+})
+
+scene.route('/new', {
+  action: function(params) {
+    BlazeLayout.render( 'mainLayout', {main: 'scenebuilderNew'} )
+  }
+})

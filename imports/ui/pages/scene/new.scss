@@ -1,0 +1,183 @@
+.screen__versus {
+  width: 1920px;
+  height: 100vh;
+  // background: url('/assets/screenshots/zirix_cass.jpg') no-repeat top -20px left;
+  background: radial-gradient(ellipse at center, rgba(129,138,214,0.4) 0%, rgba(0,10,30,0.94) 85%, rgba(0,10,30,1) 93%);
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 150%;
+    height: 125%;
+    background:radial-gradient(ellipse at center, rgba(153,218,255,0) 0%,  rgba(7,20,41,1) 75%, rgba(0,10,30,1) 100%);
+    pointer-events: none;
+  }
+}
+
+.selected-general {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+
+  .general-illustration {
+    position: absolute;
+    width: 2560px; // height of image
+    height: 1850px; // height of image
+    top: 0;
+    left: 0;
+
+    [data-general] {
+      position: absolute;
+      top: 0;
+      left: 0;
+      opacity: 0;
+
+      transition: all 150ms;
+    }
+
+    $generals: f1, f2, f3, f4, f5, f6;
+    @each $general in $generals {
+      &[data-general="#{$general}"] > [data-general="#{$general}"],
+      &[data-general="#{$general}-alt"] > [data-general="#{$general}-alt"] {
+        opacity: 1;
+      }
+    }
+  }
+
+  .general-name {
+    text-transform: uppercase;
+    font-family: 'Lato';
+    position: absolute;
+    top: 62.5%;
+    width: 37%;
+    font-weight: 800;
+    text-align: center;
+    font-size: 38px;
+
+    z-index: 1;
+  }
+
+  &.player-1 {
+    top: 0;
+    left: 0;
+
+    .general-illustration {
+      transform: translate(-12%, -10%);
+
+      [data-general] {
+        transform: translateX(-50%);
+      }
+
+      $generals: f1, f2, f3, f4, f5, f6;
+      @each $general in $generals {
+        &[data-general="#{$general}"] > [data-general="#{$general}"],
+        &[data-general="#{$general}-alt"] > [data-general="#{$general}-alt"] {
+          transform: translateX(-25%);
+        }
+      }
+    }
+
+    .general-name {
+      left: 0;
+    }
+  }
+
+  &.player-2 {
+    top: 0;
+    right: 0;
+
+    .general-illustration {
+      transform: translate(-17%, -10%);
+
+      [data-general] {
+        transform: translateX(50%);
+      }
+
+      $generals: f1, f2, f3, f4, f5, f6;
+      @each $general in $generals {
+        &[data-general="#{$general}"] > [data-general="#{$general}"],
+        &[data-general="#{$general}-alt"] > [data-general="#{$general}-alt"] {
+          transform: translateX(25%);
+        }
+      }
+    }
+
+    .general-name {
+      right: 0;
+    }
+  }
+}
+
+$vsIndicatorWidth: 488px;
+$vsIndicatorHeight: 365px;
+
+$vsSelectorWidth: 112px;
+$vsSelectorHeight: 200px;
+
+$vsScale: 1.25;
+.versus-indicator {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: url('/assets/img/scene/vs_crest.png') no-repeat center center / cover;
+  width: #{ $vsIndicatorWidth * $vsScale };
+  height: #{ $vsIndicatorHeight * $vsScale };
+
+  .general-selector {
+    width: #{ $vsSelectorWidth * $vsScale };
+    height: #{ $vsSelectorHeight * $vsScale };
+    font-size: 0;
+    background: transparent;
+    border: 0;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+
+    opacity: 0.75;
+    transition: all 150ms;
+
+    &:hover {
+      opacity: 1;
+      transform: translateY(-50%) scale(1.1);
+    }
+
+    &::before {
+      content: '';
+      background: url('/assets/img/scene/vs_selector.png') no-repeat center center / contain;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    &.player-1 {
+      left: 19%;
+
+      &::before {
+        transform: scale(-1);
+      }
+    }
+
+    &.player-2 {
+      right: 17%;
+    }
+  }
+}
+
+.scene__create {
+  z-index: 1;
+  position: absolute;
+  top: 675px;
+  left: 50%;
+  transform: translateX(-50%);
+}
