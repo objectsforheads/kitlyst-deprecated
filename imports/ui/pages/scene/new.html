@@ -1,81 +1,78 @@
 <template name="scenebuilderNew">
   <div class="screen__versus">
     <div class="player-1 selected-general">
-      <div class="general-illustration" data-general="f3">
-  			<img src="/assets/img/generals/illustrations/general_f1.png" data-general="f1" alt="">
-  			<img src="/assets/img/generals/illustrations/general_f1alt.png" data-general="f1-alt" alt="">
-  			<img src="/assets/img/generals/illustrations/general_f2.png" data-general="f2" alt="">
-  			<img src="/assets/img/generals/illustrations/general_f2alt.png" data-general="f2-alt" alt="">
-  			<img src="/assets/img/generals/illustrations/general_f3.png" data-general="f3" alt="">
-  			<img src="/assets/img/generals/illustrations/general_f3alt.png" data-general="f3-alt" alt="">
-  			<img src="/assets/img/generals/illustrations/general_f4.png" data-general="f4" alt="">
-  			<img src="/assets/img/generals/illustrations/general_f4alt.png" data-general="f4-alt" alt="">
-  			<img src="/assets/img/generals/illustrations/general_f5.png" data-general="f5" alt="">
-  			<img src="/assets/img/generals/illustrations/general_f5alt.png" data-general="f5-alt" alt="">
-  			<img src="/assets/img/generals/illustrations/general_f6.png" data-general="f6" alt="">
-  			<img src="/assets/img/generals/illustrations/general_f6alt.png" data-general="f6-alt" alt="">
+      <div class="general-illustration" data-general="{{player1Selection.id}}">
+  			<img src="/assets/img/scene/generals/illustrations/general_1.png" data-general="1" alt="">
+  			<img src="/assets/img/scene/generals/illustrations/general_23.png" data-general="23" alt="">
+  			<img src="/assets/img/scene/generals/illustrations/general_101.png" data-general="101" alt="">
+  			<img src="/assets/img/scene/generals/illustrations/general_123.png" data-general="123" alt="">
+  			<img src="/assets/img/scene/generals/illustrations/general_201.png" data-general="201" alt="">
+  			<img src="/assets/img/scene/generals/illustrations/general_223.png" data-general="223" alt="">
+  			<img src="/assets/img/scene/generals/illustrations/general_301.png" data-general="301" alt="">
+  			<img src="/assets/img/scene/generals/illustrations/general_323.png" data-general="323" alt="">
+  			<img src="/assets/img/scene/generals/illustrations/general_401.png" data-general="401" alt="">
+  			<img src="/assets/img/scene/generals/illustrations/general_418.png" data-general="418" alt="">
+  			<img src="/assets/img/scene/generals/illustrations/general_501.png" data-general="501" alt="">
+  			<img src="/assets/img/scene/generals/illustrations/general_527.png" data-general="527" alt="">
   		</div>
-      <div class="general-name">Player 1</div>
+      <div class="general-name">{{player1Selection.name}}</div>
     </div>
     <div class="player-2 selected-general">
-      <div class="general-illustration" data-general="f4-alt">
-  			<img src="/assets/img/generals/illustrations/general_f1.png" data-general="f1" alt="">
-  			<img src="/assets/img/generals/illustrations/general_f1alt.png" data-general="f1-alt" alt="">
-  			<img src="/assets/img/generals/illustrations/general_f2.png" data-general="f2" alt="">
-  			<img src="/assets/img/generals/illustrations/general_f2alt.png" data-general="f2-alt" alt="">
-  			<img src="/assets/img/generals/illustrations/general_f3.png" data-general="f3" alt="">
-  			<img src="/assets/img/generals/illustrations/general_f3alt.png" data-general="f3-alt" alt="">
-  			<img src="/assets/img/generals/illustrations/general_f4.png" data-general="f4" alt="">
-  			<img src="/assets/img/generals/illustrations/general_f4alt.png" data-general="f4-alt" alt="">
-  			<img src="/assets/img/generals/illustrations/general_f5.png" data-general="f5" alt="">
-  			<img src="/assets/img/generals/illustrations/general_f5alt.png" data-general="f5-alt" alt="">
-  			<img src="/assets/img/generals/illustrations/general_f6.png" data-general="f6" alt="">
-  			<img src="/assets/img/generals/illustrations/general_f6alt.png" data-general="f6-alt" alt="">
+      <div class="general-illustration" data-general="{{player2Section.id}}">
+        <img src="/assets/img/scene/generals/illustrations/general_1.png" data-general="1" alt="">
+  			<img src="/assets/img/scene/generals/illustrations/general_23.png" data-general="23" alt="">
+  			<img src="/assets/img/scene/generals/illustrations/general_101.png" data-general="101" alt="">
+  			<img src="/assets/img/scene/generals/illustrations/general_123.png" data-general="123" alt="">
+  			<img src="/assets/img/scene/generals/illustrations/general_201.png" data-general="201" alt="">
+  			<img src="/assets/img/scene/generals/illustrations/general_223.png" data-general="223" alt="">
+  			<img src="/assets/img/scene/generals/illustrations/general_301.png" data-general="301" alt="">
+  			<img src="/assets/img/scene/generals/illustrations/general_323.png" data-general="323" alt="">
+  			<img src="/assets/img/scene/generals/illustrations/general_401.png" data-general="401" alt="">
+  			<img src="/assets/img/scene/generals/illustrations/general_418.png" data-general="418" alt="">
+  			<img src="/assets/img/scene/generals/illustrations/general_501.png" data-general="501" alt="">
+  			<img src="/assets/img/scene/generals/illustrations/general_527.png" data-general="527" alt="">
   		</div>
-      <div class="general-name">Player 2</div>
+      <div class="general-name">{{player2Section.name}}</div>
     </div>
     <div class="versus-indicator">
-      <button class="general-selector player-1">select general for player 1</button>
-      <button class="general-selector player-2">select general for player 2</button>
+      <button class="general-selector player-1" data-player="1">select general for player 1</button>
+      <button class="general-selector player-2" data-player="2">select general for player 2</button>
     </div>
     <button class="cta primary scene__create">
       <span class="btn-text">Build</span>
     </button>
   </div>
-  <div class="screen__general-selection" data-player="2">
+  {{#if playerSelecting}}
+  <div class="screen__general-selection" data-player="{{playerSelecting}}">
     <div class="current-general">
-      <div class="general-illustration" data-general="f5">
-  			<img src="/assets/img/generals/illustrations/general_f1.png" data-general="f1" alt="">
-  			<img src="/assets/img/generals/illustrations/general_f1alt.png" data-general="f1-alt" alt="">
-  			<img src="/assets/img/generals/illustrations/general_f2.png" data-general="f2" alt="">
-  			<img src="/assets/img/generals/illustrations/general_f2alt.png" data-general="f2-alt" alt="">
-  			<img src="/assets/img/generals/illustrations/general_f3.png" data-general="f3" alt="">
-  			<img src="/assets/img/generals/illustrations/general_f3alt.png" data-general="f3-alt" alt="">
-  			<img src="/assets/img/generals/illustrations/general_f4.png" data-general="f4" alt="">
-  			<img src="/assets/img/generals/illustrations/general_f4alt.png" data-general="f4-alt" alt="">
-  			<img src="/assets/img/generals/illustrations/general_f5.png" data-general="f5" alt="">
-  			<img src="/assets/img/generals/illustrations/general_f5alt.png" data-general="f5-alt" alt="">
-  			<img src="/assets/img/generals/illustrations/general_f6.png" data-general="f6" alt="">
-  			<img src="/assets/img/generals/illustrations/general_f6alt.png" data-general="f6-alt" alt="">
+      <div class="general-illustration" data-general="{{playerSelectionTemporary.id}}">
+        <img src="/assets/img/scene/generals/illustrations/general_1.png" data-general="1" alt="">
+  			<img src="/assets/img/scene/generals/illustrations/general_23.png" data-general="23" alt="">
+  			<img src="/assets/img/scene/generals/illustrations/general_101.png" data-general="101" alt="">
+  			<img src="/assets/img/scene/generals/illustrations/general_123.png" data-general="123" alt="">
+  			<img src="/assets/img/scene/generals/illustrations/general_201.png" data-general="201" alt="">
+  			<img src="/assets/img/scene/generals/illustrations/general_223.png" data-general="223" alt="">
+  			<img src="/assets/img/scene/generals/illustrations/general_301.png" data-general="301" alt="">
+  			<img src="/assets/img/scene/generals/illustrations/general_323.png" data-general="323" alt="">
+  			<img src="/assets/img/scene/generals/illustrations/general_401.png" data-general="401" alt="">
+  			<img src="/assets/img/scene/generals/illustrations/general_418.png" data-general="418" alt="">
+  			<img src="/assets/img/scene/generals/illustrations/general_501.png" data-general="501" alt="">
+  			<img src="/assets/img/scene/generals/illustrations/general_527.png" data-general="527" alt="">
   		</div>
-      <div class="general-card"></div>
+      <div class="general-card">
+        {{> databaseCard info=playerSelectionTemporary layout="dynamicCard"}}
+      </div>
     </div>
     <div class="general-options">
       <div class="options-left">
-        <div class="general-hex" data-general="f1"></div>
-        <div class="general-hex" data-general="f1-alt"></div>
-        <div class="general-hex" data-general="f2"></div>
-        <div class="general-hex" data-general="f2-alt"></div>
-        <div class="general-hex" data-general="f3"></div>
-        <div class="general-hex" data-general="f3-alt"></div>
+        {{#each generals.left}}
+        <div class="general-hex {{#if generalSelected}}selected{{/if}}" data-general="{{this.id}}"></div>
+        {{/each}}
       </div>
       <div class="options-right">
-        <div class="general-hex" data-general="f4"></div>
-        <div class="general-hex" data-general="f4-alt"></div>
-        <div class="general-hex selected" data-general="f5"></div>
-        <div class="general-hex" data-general="f5-alt"></div>
-        <div class="general-hex" data-general="f6"></div>
-        <div class="general-hex" data-general="f6-alt"></div>
+        {{#each generals.right}}
+        <div class="general-hex {{#if generalSelected}}selected{{/if}}" data-general="{{this.id}}"></div>
+        {{/each}}
       </div>
     </div>
     <div class="general-selection__options">
@@ -87,4 +84,5 @@
       </button>
     </div>
   </div>
+  {{/if}}
 </template>

@@ -71,10 +71,9 @@
         transform: translateX(-50%);
       }
 
-      $generals: f1, f2, f3, f4, f5, f6;
+      $generals: 1, 23, 101, 123, 201, 223, 301, 323, 401, 418, 501, 527;
       @each $general in $generals {
-        &[data-general="#{$general}"] > [data-general="#{$general}"],
-        &[data-general="#{$general}-alt"] > [data-general="#{$general}-alt"] {
+        &[data-general="#{$general}"] > [data-general="#{$general}"] {
           opacity: 1;
           transform: translateX(-25%);
         }
@@ -97,10 +96,9 @@
         transform: translateX(50%);
       }
 
-      $generals: f1, f2, f3, f4, f5, f6;
+      $generals: 1, 23, 101, 123, 201, 223, 301, 323, 401, 418, 501, 527;
       @each $general in $generals {
-        &[data-general="#{$general}"] > [data-general="#{$general}"],
-        &[data-general="#{$general}-alt"] > [data-general="#{$general}-alt"] {
+        &[data-general="#{$general}"] > [data-general="#{$general}"] {
           opacity: 1;
           transform: translateX(25%);
         }
@@ -217,10 +215,9 @@ $vsScale: 1.25;
   &[data-player="1"] {
     .general-illustration {
 
-      $generals: f1, f2, f3, f4, f5, f6;
+      $generals: 1, 23, 101, 123, 201, 223, 301, 323, 401, 418, 501, 527;
       @each $general in $generals {
-        &[data-general="#{$general}"] > [data-general="#{$general}"],
-        &[data-general="#{$general}-alt"] > [data-general="#{$general}-alt"] {
+        &[data-general="#{$general}"] > [data-general="#{$general}"] {
           opacity: 1;
           transform: translateX(-25%);
         }
@@ -231,10 +228,9 @@ $vsScale: 1.25;
   &[data-player="2"] {
     .general-illustration {
 
-      $generals: f1, f2, f3, f4, f5, f6;
+      $generals: 1, 23, 101, 123, 201, 223, 301, 323, 401, 418, 501, 527;
       @each $general in $generals {
-        &[data-general="#{$general}"] > [data-general="#{$general}"],
-        &[data-general="#{$general}-alt"] > [data-general="#{$general}-alt"] {
+        &[data-general="#{$general}"] > [data-general="#{$general}"] {
           opacity: 1;
           transform: translateX(25%);
         }
@@ -269,41 +265,11 @@ $generalHeight: 489px;
     border-radius: 50%;
   }
 
-  &[data-general="f1"] {
-    background: url('/assets/img/scene/generals/hex_f1.png') no-repeat center center / cover;
-  }
-  &[data-general="f1-alt"] {
-    background: url('/assets/img/scene/generals/hex_f1-alt.png') no-repeat center center / cover;
-  }
-  &[data-general="f2"] {
-    background: url('/assets/img/scene/generals/hex_f2.png') no-repeat center center / cover;
-  }
-  &[data-general="f2-alt"] {
-    background: url('/assets/img/scene/generals/hex_f2-alt.png') no-repeat center center / cover;
-  }
-  &[data-general="f3"] {
-    background: url('/assets/img/scene/generals/hex_f3.png') no-repeat center center / cover;
-  }
-  &[data-general="f3-alt"] {
-    background: url('/assets/img/scene/generals/hex_f3-alt.png') no-repeat center center / cover;
-  }
-  &[data-general="f4"] {
-    background: url('/assets/img/scene/generals/hex_f4.png') no-repeat center center / cover;
-  }
-  &[data-general="f4-alt"] {
-    background: url('/assets/img/scene/generals/hex_f4-alt.png') no-repeat center center / cover;
-  }
-  &[data-general="f5"] {
-    background: url('/assets/img/scene/generals/hex_f5.png') no-repeat center center / cover;
-  }
-  &[data-general="f5-alt"] {
-    background: url('/assets/img/scene/generals/hex_f5-alt.png') no-repeat center center / cover;
-  }
-  &[data-general="f6"] {
-    background: url('/assets/img/scene/generals/hex_f6.png') no-repeat center center / cover;
-  }
-  &[data-general="f6-alt"] {
-    background: url('/assets/img/scene/generals/hex_f6-alt.png') no-repeat center center / cover;
+  $generals: 1, 23, 101, 123, 201, 223, 301, 323, 401, 418, 501, 527;
+  @each $general in $generals {
+    &[data-general="#{$general}"] {
+      background: url('/assets/img/scene/generals/hex/hex_#{$general}.png') no-repeat center center / cover;
+    }
   }
 }
 

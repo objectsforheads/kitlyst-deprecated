@@ -100,6 +100,32 @@
     <div class="sprite-label">{{this.info.name}}</div>
   </div>
   {{/if}}
+  {{#if dynamicCard}}
+  <div class="db-card" data-type="{{this.info.type}}">
+    <div class="mana-cost"><span class="value">{{this.info.manaCost}}</span></div>
+    <div class="card-sprite">
+      <div class="sprite {{#if this.info.health}}breathing breathe breath{{else}}passive{{/if}} id_{{this.info.id}}" data-playing="{{#if this.stopped}}false{{else}}true{{/if}}"></div>
+    </div>
+    <div class="card-caption">
+      <div class="name"><span class="value">{{this.info.name}}</span></div>
+      <p class="type">
+        <span class="value">{{this.info.race}}</span>
+      </p>
+      <p class="rarity {{this.info.rarity}}"><span class="value">{{this.info.rarity}}</span></p>
+      {{#if this.info.health}}
+      <ul class="stats">
+          <li class="stat-property stat-atk">
+              <span class="value">{{this.info.attack}}</span>
+          </li>
+          <li class="stat-property stat-hp">
+              <span class="value">{{this.info.health}}</span>
+          </li>
+      </ul>
+      {{/if}}
+    </div>
+    <p class="card-description"><span class="value">{{parsedDescription}}</span></p>
+  </div>
+  {{/if}}
   {{#unless this.layout}}
   <div class="db-card" data-type="{{this.info.type}}">
     <div class="mana-cost"><span class="value">{{this.info.manaCost}}</span></div>
