@@ -1,5 +1,6 @@
 .screen__versus {
-  width: 1920px;
+  width: 100vw;
+  max-width: 1920px;
   height: 100vh;
   // background: url('/assets/screenshots/zirix_cass.jpg') no-repeat top -20px left;
   background: radial-gradient(ellipse at center, rgba(129,138,214,0.4) 0%, rgba(0,10,30,0.94) 85%, rgba(0,10,30,1) 93%);
@@ -15,6 +16,19 @@
     background:radial-gradient(ellipse at center, rgba(153,218,255,0) 0%,  rgba(7,20,41,1) 75%, rgba(0,10,30,1) 100%);
     pointer-events: none;
   }
+
+  font-family: 'Lato';
+}
+
+.general-illustration {
+  width: 2560px; // height of image
+  height: 1850px; // height of image
+
+  [data-general] {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
 }
 
 .selected-general {
@@ -23,34 +37,8 @@
   height: 100%;
   pointer-events: none;
 
-  .general-illustration {
-    position: absolute;
-    width: 2560px; // height of image
-    height: 1850px; // height of image
-    top: 0;
-    left: 0;
-
-    [data-general] {
-      position: absolute;
-      top: 0;
-      left: 0;
-      opacity: 0;
-
-      transition: all 150ms;
-    }
-
-    $generals: f1, f2, f3, f4, f5, f6;
-    @each $general in $generals {
-      &[data-general="#{$general}"] > [data-general="#{$general}"],
-      &[data-general="#{$general}-alt"] > [data-general="#{$general}-alt"] {
-        opacity: 1;
-      }
-    }
-  }
-
   .general-name {
     text-transform: uppercase;
-    font-family: 'Lato';
     position: absolute;
     top: 62.5%;
     width: 37%;
@@ -59,6 +47,17 @@
     font-size: 38px;
 
     z-index: 1;
+  }
+
+  .general-illustration {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    [data-general] {
+      opacity: 0;
+      transition: all 150ms;
+    }
   }
 
   &.player-1 {
@@ -76,6 +75,7 @@
       @each $general in $generals {
         &[data-general="#{$general}"] > [data-general="#{$general}"],
         &[data-general="#{$general}-alt"] > [data-general="#{$general}-alt"] {
+          opacity: 1;
           transform: translateX(-25%);
         }
       }
@@ -101,6 +101,7 @@
       @each $general in $generals {
         &[data-general="#{$general}"] > [data-general="#{$general}"],
         &[data-general="#{$general}-alt"] > [data-general="#{$general}-alt"] {
+          opacity: 1;
           transform: translateX(25%);
         }
       }
@@ -180,4 +181,220 @@ $vsScale: 1.25;
   top: 675px;
   left: 50%;
   transform: translateX(-50%);
+}
+
+.screen__general-selection {
+  font-family: 'Lato';
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  max-width: 1920px;
+  height: 100vh;
+
+  z-index: 1;
+  background: radial-gradient(ellipse at center, rgba(129,138,214,0.4) 0%, rgba(0,10,30,0.94) 85%, rgba(0,10,30,1) 93%);
+
+  .current-general {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .general-illustration {
+    position: absolute;
+    transform: translate(-12.5%, -12.5%);
+
+    [data-general] {
+      transform: translateX(-50%);
+      opacity: 0;
+    }
+  }
+
+  &[data-player="1"] {
+    .general-illustration {
+
+      $generals: f1, f2, f3, f4, f5, f6;
+      @each $general in $generals {
+        &[data-general="#{$general}"] > [data-general="#{$general}"],
+        &[data-general="#{$general}-alt"] > [data-general="#{$general}-alt"] {
+          opacity: 1;
+          transform: translateX(-25%);
+        }
+      }
+    }
+  }
+
+  &[data-player="2"] {
+    .general-illustration {
+
+      $generals: f1, f2, f3, f4, f5, f6;
+      @each $general in $generals {
+        &[data-general="#{$general}"] > [data-general="#{$general}"],
+        &[data-general="#{$general}-alt"] > [data-general="#{$general}-alt"] {
+          opacity: 1;
+          transform: translateX(25%);
+        }
+      }
+    }
+  }
+}
+
+$generalHexagon: 268px;
+$generalWidth: 430px;
+$generalHeight: 489px;
+
+.general-hex {
+  pointer-events: none;
+  width: #{$generalWidth * 0.44};
+  height: #{$generalHeight * 0.44};
+  @media (min-width: 1281px) {
+    width: #{$generalWidth * 0.55};
+    height: #{$generalHeight * 0.55};
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 25%;
+    left: 15%;
+    width: 72%;
+    height: 71%;
+    pointer-events: initial;
+    opacity: 0;
+    cursor: pointer;
+    border-radius: 50%;
+  }
+
+  &[data-general="f1"] {
+    background: url('/assets/img/scene/generals/hex_f1.png') no-repeat center center / cover;
+  }
+  &[data-general="f1-alt"] {
+    background: url('/assets/img/scene/generals/hex_f1-alt.png') no-repeat center center / cover;
+  }
+  &[data-general="f2"] {
+    background: url('/assets/img/scene/generals/hex_f2.png') no-repeat center center / cover;
+  }
+  &[data-general="f2-alt"] {
+    background: url('/assets/img/scene/generals/hex_f2-alt.png') no-repeat center center / cover;
+  }
+  &[data-general="f3"] {
+    background: url('/assets/img/scene/generals/hex_f3.png') no-repeat center center / cover;
+  }
+  &[data-general="f3-alt"] {
+    background: url('/assets/img/scene/generals/hex_f3-alt.png') no-repeat center center / cover;
+  }
+  &[data-general="f4"] {
+    background: url('/assets/img/scene/generals/hex_f4.png') no-repeat center center / cover;
+  }
+  &[data-general="f4-alt"] {
+    background: url('/assets/img/scene/generals/hex_f4-alt.png') no-repeat center center / cover;
+  }
+  &[data-general="f5"] {
+    background: url('/assets/img/scene/generals/hex_f5.png') no-repeat center center / cover;
+  }
+  &[data-general="f5-alt"] {
+    background: url('/assets/img/scene/generals/hex_f5-alt.png') no-repeat center center / cover;
+  }
+  &[data-general="f6"] {
+    background: url('/assets/img/scene/generals/hex_f6.png') no-repeat center center / cover;
+  }
+  &[data-general="f6-alt"] {
+    background: url('/assets/img/scene/generals/hex_f6-alt.png') no-repeat center center / cover;
+  }
+}
+
+.general-options {
+  text-align: right;
+  font-size: 0;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+
+  position: absolute;
+  bottom: 0;
+  left: 0;
+
+  // HACK change positioning when hexagons don't fit
+  justify-content: flex-end;
+  align-items: center;
+  @media (min-width: 1151px) {
+    justify-content: space-around;
+    align-items: flex-end;
+  }
+  @media (min-width: 1281px) {
+    justify-content: flex-end;
+    align-items: center;
+  }
+  @media (min-width: 1438px) {
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+
+  .general-hex {
+    margin: 0 -56px;
+  }
+  .options-left,
+  .options-right {
+    margin-top: -56px; // make up for the top spacing
+    padding: 0 56px 112px 56px;
+  }
+
+  .options-left .general-hex:nth-child(even),
+  .options-right .general-hex:nth-child(odd) {
+  margin-bottom: -112px;
+  z-index: 1;
+  }
+
+  @media (min-width: 1281px) {
+    .general-hex {
+      margin: 0 -70px;
+    }
+    .options-left,
+    .options-right {
+      margin-top: -70px; // make up for the top spacing
+      padding: 0 70px 140px 70px;
+    }
+
+    .options-left .general-hex:nth-child(even),
+    .options-right .general-hex:nth-child(odd) {
+      margin-bottom: -140px;
+      z-index: 1;
+    }
+  }
+
+  .general-hex {
+    filter: grayscale(100);
+    transition: all 150ms;
+    display: inline-block;
+
+    &:hover {
+      filter: grayscale(0);
+    }
+
+    &.selected {
+      filter: grayscale(0);
+    }
+  }
+}
+
+.general-selection__options{
+  position: absolute;
+  bottom: 5rem;
+  left: 50%;
+  transform: translateX(-50%);
+
+  font-size: 0.65rem;
+  text-align: center;
+
+  .general-selection__option:not(.cta) {
+    background: transparent;
+    border: 0;
+    text-transform: uppercase;
+    color: white;
+    font-weight: 800;
+  }
 }
