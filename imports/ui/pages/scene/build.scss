@@ -355,6 +355,77 @@ $cooldownHeight: 86px;
     }
   }
 
+
+
+
+
+  $manaGemWidth: 114px;
+  $manaGemMargin: 0px;
+
+  .player__manabar {
+    position: absolute;
+    font-size: 0;
+    display: flex;
+    top: 134px;
+    cursor: pointer;
+    transition: all 300ms;
+
+    $manaGemScale: 0.275;
+    width: #{ $manaGemWidth * $manaGemScale * 9 };
+    perspective: #{ $manaGemWidth * $manaGemScale * 9 * 3 };
+    @media (min-width: 1281px) {
+      top: 105px;
+
+      $manaGemScale: 0.34;
+      width: #{ $manaGemWidth * $manaGemScale * 9 };
+      perspective: #{ $manaGemWidth * $manaGemScale * 9 * 3 };
+    }
+  }
+
+  .manabar__manaslot {
+    $manaGemScale: 0.275;
+    width: #{ 114px * $manaGemScale }; // scaled from 2x
+    height: #{ 126px * $manaGemScale }; // scaled from 2x
+    @media (min-width: 1281px) {
+      $manaGemScale: 0.34;
+      width: #{ 114px * $manaGemScale }; // scaled from 2x
+      height: #{ 126px * $manaGemScale }; // scaled from 2x
+    }
+
+    display: inline-block;
+    transition: all 300ms;
+
+    &.available .available,
+    &.used .used {
+      opacity: 1 !important;
+    }
+
+    .manaslot__state {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 1;
+      transition: transform 300ms 100ms, opacity 75ms;
+
+      background: url('/assets/img/scene/components/mana_inactive.png') no-repeat center center /contain;
+
+      &.available {
+        background-image: url('/assets/img/scene/components/mana.png');
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      &.used {
+        background-image: url('/assets/img/scene/components/mana.png');
+        filter: grayscale(100);
+        opacity: 0;
+        pointer-events: none;
+      }
+    }
+  }
+
   &[data-player="1"] {
     left: 0;
 
@@ -370,6 +441,18 @@ $cooldownHeight: 86px;
       left: 126px;
       @media (min-width: 1281px) {
         left: 220px;
+      }
+    }
+
+    .player__manabar {
+      transform: rotateZ(-4deg);
+      left: 161px;
+      @media (min-width: 1281px) {
+        left: 267px;
+      }
+
+      &:hover {
+        transform: rotateZ(-4deg) scale(1.1);
       }
     }
   }
@@ -389,6 +472,19 @@ $cooldownHeight: 86px;
       right: 126px;
       @media (min-width: 1281px) {
         right: 220px;
+      }
+    }
+
+    .player__manabar {
+
+      transform: rotateZ(4deg);
+      right: 161px;
+      @media (min-width: 1281px) {
+        right: 267px;
+      }
+
+      &:hover {
+        transform: rotateZ(4deg) scale(1.1);
       }
     }
   }

@@ -16,6 +16,10 @@ Template.scenebuilderBuild.onCreated(function() {
       cost: 1,
       cooldown: 2,
       remaining: 0
+    },
+    manabar: {
+      available: 4,
+      used: 4
     }
   });
 
@@ -31,6 +35,10 @@ Template.scenebuilderBuild.onCreated(function() {
       cost: 1,
       cooldown: 2,
       remaining: 2
+    },
+    manabar: {
+      available: 4,
+      used: 2
     }
   });
 })
@@ -47,5 +55,29 @@ Template.scenebuilderBuild.helpers({
   },
   player2() {
     return Template.instance().player2.get();
+  }
+})
+
+Template.scenebuilderBuild__player.helpers({
+  playerManaslots() {
+    var manaslots = [];
+    var available = this.player.manabar.available;
+    var used = this.player.manabar.used;
+    for (var i = 1; i <= 9; i++) {
+      var manaslot = {active: false, used: false}
+      if (i <= available) {
+        manaslot.active = true;
+      }
+      if (i <= used) {
+        manaslot.used = true;
+      }
+
+      manaslots.push(manaslot);
+    }
+
+    if (this.player.id === 2) {
+      manaslots.reverse();
+    }
+    return manaslots;
   }
 })

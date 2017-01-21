@@ -31,5 +31,14 @@
       <span class="bbs__cooldown" data-remaining="{{player.bbs.remaining}}"></span>
       <div class="sprite {{player.bbs.id}} passive"></div>
     </div>
+    <div class="player__manabar" data-available="{{player.manabar.available}}" data-used="{{player.manabar.used}}">
+      {{#each playerManaslots}}
+      <div class="manabar__manaslot {{#if this.active}}available{{/if}} {{#if this.used}}used{{/if}}">
+  			<div class="manaslot__state inactive"></div>
+  			<div class="manaslot__state available"></div>
+  			<div class="manaslot__state used"></div>
+  		</div>
+      {{/each}}
+    </div>
   </div>
 </template>
