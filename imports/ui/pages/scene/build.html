@@ -73,5 +73,14 @@
       </div>
       {{/each}}
     </div>
+    <div class="player__actionbar">
+      {{#each player.actionbar}}
+      <div class="actionbar__card {{#if this.id}}has-card{{/if}}" data-manacost="{{#if currentCard}}{{currentCard.manaCost}}{{/if}}" data-type="{{#if currentCard}}{{currentCard.type}}{{/if}}">
+        {{#if this.id}}
+        <div class="sprite id_{{this.id}} idle breath breathe breathing passive"></div>
+        {{/if}}
+      </div>
+      {{/each}}
+    </div>
   </div>
 </template>

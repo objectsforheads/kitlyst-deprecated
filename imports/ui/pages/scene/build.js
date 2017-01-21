@@ -34,6 +34,14 @@ Template.scenebuilderBuild.onCreated(function() {
       {id: 30012, durability: 1},
       {id: 30012, durability: 2},
       {id: 30012, durability: 3}
+    ],
+    actionbar: [
+      {id: 30012},
+      {id: 424},
+      {id: 1},
+      {id: 11067},
+      {id: null},
+      {id: null}
     ]
   });
 
@@ -63,6 +71,14 @@ Template.scenebuilderBuild.onCreated(function() {
       {id: 30012, durability: 1},
       {id: 30012, durability: 2},
       {id: false, durability: 3}
+    ],
+    actionbar: [
+      {id: 424},
+      {id: 424},
+      {id: 424},
+      {id: 424},
+      {id: null},
+      {id: null}
     ]
   });
 })
@@ -113,5 +129,15 @@ Template.scenebuilderBuild__player.helpers({
       $('head').append('<link href="/css/sprites/id/' + this.id + '.min.css" rel="stylesheet">')
     }
     return;
+  },
+  currentCard() {
+    // add sprite CSS if not yet added
+    if (this.id) {
+      if ( $('head').find('link[href*="css/sprites/id/' + this.id + '\.min.css"]').length === 0 ) {
+        $('head').append('<link href="/css/sprites/id/' + this.id + '.min.css" rel="stylesheet">')
+      }
+      return allCards.findOne({id: this.id});
+    }
+    return false;
   }
 })
