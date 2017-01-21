@@ -20,6 +20,11 @@ Template.scenebuilderBuild.onCreated(function() {
     manabar: {
       available: 4,
       used: 4
+    },
+    hand: 3,
+    deck: {
+      remaining: 17,
+      total: 40
     }
   });
 
@@ -39,6 +44,11 @@ Template.scenebuilderBuild.onCreated(function() {
     manabar: {
       available: 4,
       used: 2
+    },
+    hand: 3,
+    deck: {
+      remaining: 17,
+      total: 30
     }
   });
 })
@@ -79,5 +89,8 @@ Template.scenebuilderBuild__player.helpers({
       manaslots.reverse();
     }
     return manaslots;
+  },
+  manaRemaining() {
+    return this.player.manabar.available - this.player.manabar.used;
   }
 })

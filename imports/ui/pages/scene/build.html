@@ -41,5 +41,22 @@
   		</div>
       {{/each}}
     </div>
+    <div class="player__summary">
+      <div class="summary__mana">
+        <div class="mana__label"></div>
+        <div class="mana__count">
+          <span class="count--remaining count">{{manaRemaining}}</span>
+          <span class="count--available">/{{player.manabar.available}}</span>
+        </div>
+      </div>
+      <div class="summary__hand">
+        <div class="hand__label">Hand</div>
+        <div class="hand__count"><span class="in-hand count">{{player.hand}}</span>/6</div>
+      </div>
+      <div class="summary__deck">
+        <div class="deck__label">Deck</div>
+        <div class="deck__count"><span class="in-deck count">{{player.deck.remaining}}</span>/<span class="deck-total">{{player.deck.total}}</span></div>
+      </div>
+    </div>
   </div>
 </template>
