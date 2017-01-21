@@ -359,6 +359,27 @@ $cooldownHeight: 86px;
 
 
 
+  .player__name {
+    text-transform: uppercase;
+    position: absolute;
+    text-shadow: 0px 0px 5px black;
+    font-family: 'Open Sans', sans-serif;
+    white-space: nowrap;
+
+    top: 110px;
+    font-size: 23px;
+    letter-spacing: 0.25px;
+    @media (min-width: 1281px) {
+      top: 75px;
+      font-size: 28px;
+      letter-spacing: 1.5px;
+    }
+  }
+
+
+
+
+
   $manaGemWidth: 114px;
   $manaGemMargin: 0px;
 
@@ -444,6 +465,16 @@ $cooldownHeight: 86px;
       }
     }
 
+    .player__name {
+      transform: rotateZ(-4deg);
+      transform-origin: top left;
+
+      left: 167px;
+      @media (min-width: 1281px) {
+        left: 271px;
+      }
+    }
+
     .player__manabar {
       transform: rotateZ(-4deg);
       left: 161px;
@@ -472,6 +503,16 @@ $cooldownHeight: 86px;
       right: 126px;
       @media (min-width: 1281px) {
         right: 220px;
+      }
+    }
+
+    .player__name {
+      transform: rotateZ(4deg);
+      transform-origin: top right;
+
+      right: 167px;
+      @media (min-width: 1281px) {
+        right: 271px;
       }
     }
 
