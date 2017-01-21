@@ -104,7 +104,13 @@ Template.scenebuilderNew.events({
     Template.instance().playerSelectionTemporary.set(Template.instance().playerSelection.get())
   },
   'click .screen__general-selection.selection-screen-open .general-hex': (e) => {
-    Template.instance().playerSelection.set($(e.currentTarget).attr('data-general'))
-    Template.instance().playerSelectionTemporary.set($(e.currentTarget).attr('data-general'))
+    var playerChanges = Template.instance().sceneSetup.get();
+    playerChanges['player' + Template.instance().playerSelecting.get()] = Number($(e.currentTarget).attr('data-general'));
+    Template.instance().sceneSetup.set(playerChanges);
+
+    Template.instance().playerSelecting.set(null);
+    Template.instance().playerSelection.set(null);
+    Template.instance().playerSelectionTemporary.set(null);
+    return;
   }
 })
