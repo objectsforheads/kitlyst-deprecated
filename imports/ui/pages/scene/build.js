@@ -1,8 +1,12 @@
 import './build.html';
 import './build.scss';
 
+import '../database/components/card.js';
+
 Template.scenebuilderBuild.onCreated(function() {
   var self = Template.instance();
+
+  self.subscribe('someCards', {});
 
   self.player1 = new ReactiveVar({
     id: 1,
@@ -25,7 +29,12 @@ Template.scenebuilderBuild.onCreated(function() {
     deck: {
       remaining: 17,
       total: 40
-    }
+    },
+    artifacts: [
+      {id: 30012, durability: 1},
+      {id: 30012, durability: 2},
+      {id: 30012, durability: 3}
+    ]
   });
 
   self.player2 = new ReactiveVar({
@@ -49,7 +58,12 @@ Template.scenebuilderBuild.onCreated(function() {
     deck: {
       remaining: 17,
       total: 30
-    }
+    },
+    artifacts: [
+      {id: 30012, durability: 1},
+      {id: 30012, durability: 2},
+      {id: false, durability: 3}
+    ]
   });
 })
 
@@ -92,5 +106,12 @@ Template.scenebuilderBuild__player.helpers({
   },
   manaRemaining() {
     return this.player.manabar.available - this.player.manabar.used;
+  },
+  loadCurrentArtifact() {
+    // add sprite CSS if not yet added
+    if ( $('head').find('link[href*="css/sprites/id/' + this.id + '\.min.css"]').length === 0 ) {
+      $('head').append('<link href="/css/sprites/id/' + this.id + '.min.css" rel="stylesheet">')
+    }
+    return;
   }
 })

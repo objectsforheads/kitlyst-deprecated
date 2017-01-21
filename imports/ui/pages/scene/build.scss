@@ -540,6 +540,96 @@ $cooldownHeight: 86px;
     }
   }
 
+  .player__general-artifacts {
+    position: absolute;
+    top: 215px;
+    @media (min-width: 1281px) {
+      top: 207px;
+    }
+
+    .general-artifact::before,
+    .sprite {
+      position: absolute;
+      top: 0;
+      // animation-play-state: running !important; HACK ACTIVATE LATER
+
+      transform: scale(2);
+      @media (min-width: 1281px) {
+        transform: scale(2.5);
+      }
+    }
+
+    .general-artifact {
+      position: absolute;
+      pointer-events: none;
+
+      * {
+        pointer-events: none;
+      }
+
+      // default artifact slot indicator
+      &::before {
+        content: '';
+        background: url(/assets/img/scene/generals/components/artifact_slot.png) no-repeat center center;
+        width: 48px;
+        height: 48px;
+
+        image-rendering: optimizeSpeed;
+        image-rendering: -moz-crisp-edges;
+        image-rendering: -o-crisp-edges;
+        image-rendering: -webkit-optimize-contrast;
+        image-rendering: pixelated;
+        image-rendering: optimize-contrast;
+        -ms-interpolation-mode: nearest-neighborz;
+      }
+
+      // Actual interactive area
+      &::after {
+        content: '';
+        pointer-events: initial;
+        position: absolute;
+        top: 15px;
+        width: 65px;
+        height: 65px;
+        @media (min-width: 1281px) {
+          top: 20px;
+          width: 80px;
+          height: 80px;
+        }
+        cursor: pointer;
+      }
+
+      // Artifact durability
+      .general-artifact__durability {
+        position: absolute;
+        font-size: 0;
+
+        top: 33px;
+        width: 16px;
+        @media (min-width: 1281px) {
+          top: 40px;
+          width: 19px;
+        }
+      }
+
+      .durability-indicator {
+        max-width: 100%;
+        margin-top: -8px;
+        opacity: 0;
+      }
+
+      &[data-durability="1"] .durability-indicator:nth-last-child(1) {
+        opacity: 1;
+      }
+      &[data-durability="2"] .durability-indicator:nth-last-child(-n+2) {
+        opacity: 1;
+      }
+      &[data-durability="3"] .durability-indicator:nth-last-child(-n+3) {
+        opacity: 1;
+      }
+    }
+  }
+
   &[data-player="1"] {
     left: 0;
 
@@ -599,6 +689,54 @@ $cooldownHeight: 86px;
       }
       .hand__count {
         margin-right: 16px;
+      }
+    }
+
+    .player__general-artifacts {
+      left: 2px;
+      @media (min-width: 1281px) {
+        left: 67px;
+      }
+
+      .general-artifact::before,
+      .sprite {
+        transform-origin: top left;
+        left: 0;
+      }
+
+      .general-artifact::after {
+        left: 16px;
+        @media (min-width: 1281px) {
+          left: 20px;
+        }
+      }
+
+      .general-artifact:nth-child(1) {
+        top: 0;
+        left: 0;
+      }
+      .general-artifact:nth-child(2) {
+        top: 61px;
+        left: 30px;
+        @media (min-width: 1281px) {
+          top: 76px;
+          left: 37px;
+        }
+      }
+      .general-artifact:nth-child(3) {
+        top: 122px;
+        left: 0;
+        @media (min-width: 1281px) {
+          top: 152px;
+          left: 0;
+        }
+      }
+
+      .general-artifact__durability {
+        left: 84px;
+        @media (min-width: 1281px) {
+          left: 105px;
+        }
       }
     }
   }
@@ -674,6 +812,54 @@ $cooldownHeight: 86px;
       .hand__count {
         margin-left: 16px;
         margin-left: 21px;
+      }
+    }
+
+    .player__general-artifacts {
+      right: 2px;
+      @media (min-width: 1281px) {
+        right: 67px;
+      }
+
+      .general-artifact::before,
+      .sprite {
+        transform-origin: top right;
+        right: 0;
+      }
+
+      .general-artifact::after {
+        right: 16px;
+        @media (min-width: 1281px) {
+          right: 20px;
+        }
+      }
+
+      .general-artifact:nth-child(1) {
+        top: 0;
+        right: 0;
+      }
+      .general-artifact:nth-child(2) {
+        top: 61px;
+        right: 30px;
+        @media (min-width: 1281px) {
+          top: 76px;
+          right: 37px;
+        }
+      }
+      .general-artifact:nth-child(3) {
+        top: 122px;
+        right: 0;
+        @media (min-width: 1281px) {
+          top: 152px;
+          right: 0;
+        }
+      }
+
+      .general-artifact__durability {
+        right: 84px;
+        @media (min-width: 1281px) {
+          right: 105px;
+        }
       }
     }
   }
