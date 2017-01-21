@@ -130,6 +130,9 @@ $generalHexagon: 268px;
 $generalWidth: 430px;
 $generalHeight: 489px;
 
+$generalHealthWidth: 112px;
+$generalHealthHeight: 126px;
+
 $bbsSize: 224px;
 $cooldownWidth: 124px;
 $cooldownHeight: 86px;
@@ -139,6 +142,11 @@ $cooldownHeight: 86px;
   top: 0;
 
   .player__general {
+    top: 15px;
+    @media (min-width: 1281px) {
+      top: -42px;
+    }
+
     pointer-events: none;
     width: #{$generalWidth * 0.44};
     height: #{$generalHeight * 0.44};
@@ -151,6 +159,11 @@ $cooldownHeight: 86px;
     background-position: center center;
     background-size: cover;
 
+    transition: transform 150ms;
+    &:hover {
+      transform: scale(1.05);
+    }
+
     &::before {
       content: '';
       position: absolute;
@@ -161,6 +174,30 @@ $cooldownHeight: 86px;
       pointer-events: initial;
       opacity: 0;
       cursor: pointer;
+    }
+
+    &::after {
+      content: attr(data-health);
+      font-family: 'Open Sans', sans-serif;
+      font-weight: 700;
+      text-align: center;
+
+      position: absolute;
+      top: 145px;
+      left: 62px;
+      width: #{$generalHealthWidth * (70/112)};
+      height: #{$generalHealthHeight * (70/112)};
+      line-height: #{$generalHealthHeight * (70/112)};
+      font-size: 24.5px;
+      @media (min-width: 1281px) {
+        top: 181px;
+        left: 78px;
+        width: #{$generalHealthWidth * 0.775};
+        height: #{$generalHealthHeight * 0.775};
+        line-height: #{$generalHealthHeight * 0.775};
+        font-size: 30px;
+      }
+      background: url('/assets/img/scene/generals/components/health.png') no-repeat center center / contain;
     }
   }
 
@@ -321,6 +358,14 @@ $cooldownHeight: 86px;
   &[data-player="1"] {
     left: 0;
 
+    .player__general {
+      transform-origin: top left;
+      left: -12px;
+      @media (min-width: 1281px) {
+        left: 48px;
+      }
+    }
+
     .player__general-bbs {
       left: 126px;
       @media (min-width: 1281px) {
@@ -331,6 +376,14 @@ $cooldownHeight: 86px;
 
   &[data-player="2"] {
     right: 0;
+
+    .player__general {
+      transform-origin: top right;
+      right: -7px;
+      @media (min-width: 1281px) {
+        right: 55px;
+      }
+    }
 
     .player__general-bbs {
       right: 126px;
