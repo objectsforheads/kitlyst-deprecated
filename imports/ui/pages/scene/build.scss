@@ -121,3 +121,1509 @@ $tileScale: 0.4625;
     }
   }
 }
+
+
+
+
+
+$bbsSize: 224px;
+$cooldownWidth: 124px;
+$cooldownHeight: 86px;
+
+.scenebuilder__player {
+  position: absolute;
+  top: 0;
+
+  .player__general-bbs {
+    // General positioning in scene
+    position: absolute;
+    top: 202px;
+
+    // Sizing the BBS
+    width: #{$bbsSize * (112/224)};
+    height: #{$bbsSize * (112/224)};
+    @media (min-width: 1281px) {
+      top: 190px;
+      width: #{$bbsSize * (142/224)};
+      height: #{$bbsSize * (142/224)};
+    }
+
+    // Styling the BBS container
+    background: url('/assets/img/scene/generals/bbs/container.png') no-repeat center center / contain;
+    transition: all 150ms;
+    filter: grayscale(100);
+
+    // Styling the BBS icon
+    .sprite {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(2);
+      @media (min-width: 1281px) {
+        transform: translate(-50%, -50%) scale(2.5);
+      }
+    }
+
+    // BBS manacost
+    &::after {
+      content: attr(data-manacost);
+      width: #{114px * (37/114)};
+      height: #{126px * (37/114)};
+      line-height: #{126px * (37/114)};
+      bottom: -15px;
+      font-size: 18px; // HACK GET REAL LATER
+      @media (min-width: 1281px) {
+        width: #{114px * (47/114)};
+        height: #{126px * (47/114)};
+        line-height: #{126px * (47/114)};
+        bottom: -18px;
+        font-size: 22px; // HACK GET REAL LATER
+      }
+      position: absolute;
+      left: 50%;
+      transform: translate(-50%, 0);
+      background: url('/assets/img/scene/components/mana.png') no-repeat center center /contain;
+      z-index: 1;
+
+      color: black;
+      text-align: center;
+    }
+
+    // if cooldown has refreshed, show color
+    // fade out cooldown indicator to simulate preview view
+    &[data-remaining="0"] {
+      filter: grayscale(0);
+
+      .bbs__cooldown {
+        opacity: 0.5;
+
+        &::before {
+          opacity: 0;
+        }
+      }
+    }
+
+    // cooldown is also indicated by a circle shaded
+    .bbs__cooldown::before {
+      content: '';
+      position: absolute;
+      background: rgba(0,0,0,0.25);
+      left: 50%;
+      transform: translateX(-50%);
+      border-radius: 50%;
+
+      height: #{$bbsSize * (100/224)};
+      width: #{$bbsSize * (100/224)};
+      top: 22px;
+      @media (min-width: 1281px) {
+        height: #{$bbsSize * (104/224)};
+        width: #{$bbsSize * (104/224)};
+        top: 40px;
+      }
+    }
+
+    // If 2-turn bbs w/1 turn left, half circle
+    &[data-cooldown="2"][data-remaining="1"] .bbs__cooldown::before {
+      width: #{$bbsSize * (100/224)/2};
+      transform: translateX(calc(-50% - #{$bbsSize * (50/224)/2}));
+      border-radius: #{$bbsSize * (100/224)} 0 0 #{$bbsSize * (100/224)};
+      @media (min-width: 1281px) {
+        width: #{$bbsSize * (104/224)/2};
+        border-radius: #{$bbsSize * (104/224)} 0 0 #{$bbsSize * (104/224)};
+      }
+    }
+  }
+
+  // Setting up the BBS cooldown indicator
+  .bbs__cooldown {
+    width: #{$cooldownWidth * (62/124)};
+    height: #{$cooldownHeight * (62/124)};
+    top: -16px;
+    @media (min-width: 1281px) {
+      width: #{$cooldownWidth * (80/124)};
+      height: #{$cooldownHeight * (80/124)};
+      top: -20px;
+    }
+
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+    pointer-events: none;
+
+    &:hover::after {
+      opacity: 1;
+      transform: scale(1.25);
+    }
+
+    // Get the cooldown from the data attribute and style it
+    &::after {
+      content: attr(data-remaining);
+      cursor: pointer;
+      pointer-events: initial;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      color: black; //HACK
+      background: url('/assets/img/scene/generals/bbs/cooldown.png') no-repeat top left / contain;
+      transition: all 150ms;
+
+      line-height: #{$cooldownHeight * (62/124)};
+      font-size: 22px;
+      @media (min-width: 1281px) {
+        line-height: #{$cooldownHeight * (80/124)};
+        font-size: 28px;
+      }
+    }
+  }
+
+  &[data-remaining="0"] .sprite {
+    cursor: pointer;
+
+    &:hover {
+      animation-play-state: running !important;
+    }
+  }
+
+  &[data-player="1"] {
+    left: 0;
+
+    .player__general-bbs {
+      left: 126px;
+      @media (min-width: 1281px) {
+        left: 220px;
+      }
+    }
+  }
+
+  &[data-player="2"] {
+    right: 0;
+
+    .player__general-bbs {
+      right: 126px;
+      @media (min-width: 1281px) {
+        right: 220px;
+      }
+    }
+  }
+}
+
+
+
+
+
+
+
+
+
+.sprite.general-bbs_f1-alt.passive {
+    background: url(/assets/img/scene/generals/bbs/f1-alt.png) -105px 0 no-repeat;
+    width: 34px;
+    height: 34px;
+    animation: f1_afterglow_afterglow steps(1) 1.12s infinite paused
+}
+@keyframes f1_afterglow_afterglow {
+    0% {
+        background-position: -105px 0
+    }
+    6.25% {
+        background-position: -210px 0
+    }
+    12.5% {
+        background-position: -175px -70px
+    }
+    18.75% {
+        background-position: -175px -35px
+    }
+    25% {
+        background-position: -105px 0
+    }
+    31.25% {
+        background-position: -210px 0
+    }
+    37.5% {
+        background-position: -175px -70px
+    }
+    43.75% {
+        background-position: -175px -35px
+    }
+    50% {
+        background-position: -105px 0
+    }
+    56.25% {
+        background-position: -210px 0
+    }
+    62.5% {
+        background-position: -175px -70px
+    }
+    68.75% {
+        background-position: -175px -35px
+    }
+    75% {
+        background-position: -105px 0
+    }
+    81.25% {
+        background-position: -210px 0
+    }
+    87.5% {
+        background-position: -175px -70px
+    }
+    93.75% {
+        background-position: -175px -35px
+    }
+}
+.sprite.general-bbs_f1-alt.active {
+    background: url(/assets/img/scene/generals/bbs/f1-alt.png) -175px 0 no-repeat;
+    width: 34px;
+    height: 34px;
+    animation: f1_afterglow_active steps(1) 1.12s infinite paused
+}
+@keyframes f1_afterglow_active {
+    0% {
+        background-position: -175px 0
+    }
+    6.25% {
+        background-position: -140px -70px
+    }
+    12.5% {
+        background-position: -140px -35px
+    }
+    18.75% {
+        background-position: -140px 0
+    }
+    25% {
+        background-position: -105px -70px
+    }
+    31.25% {
+        background-position: -105px -35px
+    }
+    37.5% {
+        background-position: -210px -35px
+    }
+    43.75% {
+        background-position: -70px -70px
+    }
+    50% {
+        background-position: -70px -35px
+    }
+    56.25% {
+        background-position: -70px 0
+    }
+    62.5% {
+        background-position: -35px -70px
+    }
+    68.75% {
+        background-position: -35px -35px
+    }
+    75% {
+        background-position: -35px 0
+    }
+    81.25% {
+        background-position: 0 -70px
+    }
+    87.5% {
+        background-position: 0 -35px
+    }
+    93.75% {
+        background-position: 0 0
+    }
+}
+.sprite.general-bbs_f1.passive {
+    background: url(/assets/img/scene/generals/bbs/f1.png) -105px 0 no-repeat;
+    width: 34px;
+    height: 34px;
+    animation: f1_roar_roar steps(1) 1.12s infinite paused
+}
+@keyframes f1_roar_roar {
+    0% {
+        background-position: -105px 0
+    }
+    6.25% {
+        background-position: -210px 0
+    }
+    12.5% {
+        background-position: -175px -70px
+    }
+    18.75% {
+        background-position: -175px -35px
+    }
+    25% {
+        background-position: -105px 0
+    }
+    31.25% {
+        background-position: -210px 0
+    }
+    37.5% {
+        background-position: -175px -70px
+    }
+    43.75% {
+        background-position: -175px -35px
+    }
+    50% {
+        background-position: -105px 0
+    }
+    56.25% {
+        background-position: -210px 0
+    }
+    62.5% {
+        background-position: -175px -70px
+    }
+    68.75% {
+        background-position: -175px -35px
+    }
+    75% {
+        background-position: -105px 0
+    }
+    81.25% {
+        background-position: -210px 0
+    }
+    87.5% {
+        background-position: -175px -70px
+    }
+    93.75% {
+        background-position: -175px -35px
+    }
+}
+.sprite.general-bbs_f1.active {
+    background: url(/assets/img/scene/generals/bbs/f1.png) -175px 0 no-repeat;
+    width: 34px;
+    height: 34px;
+    animation: f1_roar_active steps(1) 1.12s infinite paused
+}
+@keyframes f1_roar_active {
+    0% {
+        background-position: -175px 0
+    }
+    6.25% {
+        background-position: -140px -70px
+    }
+    12.5% {
+        background-position: -140px -35px
+    }
+    18.75% {
+        background-position: -140px 0
+    }
+    25% {
+        background-position: -105px -70px
+    }
+    31.25% {
+        background-position: -105px -35px
+    }
+    37.5% {
+        background-position: -210px -35px
+    }
+    43.75% {
+        background-position: -70px -70px
+    }
+    50% {
+        background-position: -70px -35px
+    }
+    56.25% {
+        background-position: -70px 0
+    }
+    62.5% {
+        background-position: -35px -70px
+    }
+    68.75% {
+        background-position: -35px -35px
+    }
+    75% {
+        background-position: -35px 0
+    }
+    81.25% {
+        background-position: 0 -70px
+    }
+    87.5% {
+        background-position: 0 -35px
+    }
+    93.75% {
+        background-position: 0 0
+    }
+}
+.sprite.general-bbs_f2.passive {
+    background: url(/assets/img/scene/generals/bbs/f2.png) -35px -140px no-repeat;
+    width: 34px;
+    height: 34px;
+    animation: f2_blink_blink steps(1) 1.12s infinite paused
+}
+@keyframes f2_blink_blink {
+    0% {
+        background-position: -35px -140px
+    }
+    6.25% {
+        background-position: -105px 0
+    }
+    12.5% {
+        background-position: -70px -210px
+    }
+    18.75% {
+        background-position: -70px -175px
+    }
+    25% {
+        background-position: -70px -140px
+    }
+    31.25% {
+        background-position: -70px -105px
+    }
+    37.5% {
+        background-position: -70px -70px
+    }
+    43.75% {
+        background-position: -70px -35px
+    }
+    50% {
+        background-position: -35px -140px
+    }
+    56.25% {
+        background-position: -105px 0
+    }
+    62.5% {
+        background-position: -70px -210px
+    }
+    68.75% {
+        background-position: -70px -175px
+    }
+    75% {
+        background-position: -70px -140px
+    }
+    81.25% {
+        background-position: -70px -105px
+    }
+    87.5% {
+        background-position: -70px -70px
+    }
+    93.75% {
+        background-position: -70px -35px
+    }
+}
+.sprite.general-bbs_f2.active {
+    background: url(/assets/img/scene/generals/bbs/f2.png) -35px -140px no-repeat;
+    width: 34px;
+    height: 34px;
+    animation: f2_blink_active steps(1) 1.12s infinite paused
+}
+@keyframes f2_blink_active {
+    0% {
+        background-position: -35px -140px
+    }
+    6.25% {
+        background-position: -70px 0
+    }
+    12.5% {
+        background-position: -35px -210px
+    }
+    18.75% {
+        background-position: -35px -175px
+    }
+    25% {
+        background-position: -105px -35px
+    }
+    31.25% {
+        background-position: -35px -105px
+    }
+    37.5% {
+        background-position: -35px -70px
+    }
+    43.75% {
+        background-position: -35px -35px
+    }
+    50% {
+        background-position: -35px 0
+    }
+    56.25% {
+        background-position: 0 -210px
+    }
+    62.5% {
+        background-position: 0 -175px
+    }
+    68.75% {
+        background-position: 0 -140px
+    }
+    75% {
+        background-position: 0 -105px
+    }
+    81.25% {
+        background-position: 0 -70px
+    }
+    87.5% {
+        background-position: 0 -35px
+    }
+    93.75% {
+        background-position: 0 0
+    }
+}
+.sprite.general-bbs_f2-alt.passive {
+    background: url(/assets/img/scene/generals/bbs/f2-alt.png) -35px -140px no-repeat;
+    width: 34px;
+    height: 34px;
+    animation: f2_twilightsurge_twilightsurge steps(1) 1.12s infinite paused
+}
+@keyframes f2_twilightsurge_twilightsurge {
+    0% {
+        background-position: -35px -140px
+    }
+    6.25% {
+        background-position: -105px -35px
+    }
+    12.5% {
+        background-position: -105px 0
+    }
+    18.75% {
+        background-position: -70px -210px
+    }
+    25% {
+        background-position: -70px -175px
+    }
+    31.25% {
+        background-position: -70px -140px
+    }
+    37.5% {
+        background-position: -70px -105px
+    }
+    43.75% {
+        background-position: -70px -70px
+    }
+    50% {
+        background-position: -35px -140px
+    }
+    56.25% {
+        background-position: -105px -35px
+    }
+    62.5% {
+        background-position: -105px 0
+    }
+    68.75% {
+        background-position: -70px -210px
+    }
+    75% {
+        background-position: -70px -175px
+    }
+    81.25% {
+        background-position: -70px -140px
+    }
+    87.5% {
+        background-position: -70px -105px
+    }
+    93.75% {
+        background-position: -70px -70px
+    }
+}
+.sprite.general-bbs_f2-alt.active {
+    background: url(/assets/img/scene/generals/bbs/f2-alt.png) -70px -35px no-repeat;
+    width: 34px;
+    height: 34px;
+    animation: f2_twilightsurge_active steps(1) 1.12s infinite paused
+}
+@keyframes f2_twilightsurge_active {
+    0% {
+        background-position: -70px -35px
+    }
+    6.25% {
+        background-position: -70px 0
+    }
+    12.5% {
+        background-position: -35px -210px
+    }
+    18.75% {
+        background-position: -35px -175px
+    }
+    25% {
+        background-position: -105px -70px
+    }
+    31.25% {
+        background-position: -35px -105px
+    }
+    37.5% {
+        background-position: -35px -70px
+    }
+    43.75% {
+        background-position: -35px -35px
+    }
+    50% {
+        background-position: -35px 0
+    }
+    56.25% {
+        background-position: 0 -210px
+    }
+    62.5% {
+        background-position: 0 -175px
+    }
+    68.75% {
+        background-position: 0 -140px
+    }
+    75% {
+        background-position: 0 -105px
+    }
+    81.25% {
+        background-position: 0 -70px
+    }
+    87.5% {
+        background-position: 0 -35px
+    }
+    93.75% {
+        background-position: 0 0
+    }
+}
+.sprite.general-bbs_f3-alt.passive {
+    background: url(/assets/img/scene/generals/bbs/f3-alt.png) -105px 0 no-repeat;
+    width: 34px;
+    height: 34px;
+    animation: f3_psionicrecall_psionicrecall steps(1) 1.12s infinite paused
+}
+@keyframes f3_psionicrecall_psionicrecall {
+    0% {
+        background-position: -105px 0
+    }
+    6.25% {
+        background-position: -210px 0
+    }
+    12.5% {
+        background-position: -175px -70px
+    }
+    18.75% {
+        background-position: -175px -35px
+    }
+    25% {
+        background-position: -105px 0
+    }
+    31.25% {
+        background-position: -210px 0
+    }
+    37.5% {
+        background-position: -175px -70px
+    }
+    43.75% {
+        background-position: -175px -35px
+    }
+    50% {
+        background-position: -105px 0
+    }
+    56.25% {
+        background-position: -210px 0
+    }
+    62.5% {
+        background-position: -175px -70px
+    }
+    68.75% {
+        background-position: -175px -35px
+    }
+    75% {
+        background-position: -105px 0
+    }
+    81.25% {
+        background-position: -210px 0
+    }
+    87.5% {
+        background-position: -175px -70px
+    }
+    93.75% {
+        background-position: -175px -35px
+    }
+}
+.sprite.general-bbs_f3-alt.active {
+    background: url(/assets/img/scene/generals/bbs/f3-alt.png) -175px 0 no-repeat;
+    width: 34px;
+    height: 34px;
+    animation: f3_psionicrecall_active steps(1) 1.12s infinite paused
+}
+@keyframes f3_psionicrecall_active {
+    0% {
+        background-position: -175px 0
+    }
+    6.25% {
+        background-position: -140px -70px
+    }
+    12.5% {
+        background-position: -140px -35px
+    }
+    18.75% {
+        background-position: -140px 0
+    }
+    25% {
+        background-position: -105px -70px
+    }
+    31.25% {
+        background-position: -105px -35px
+    }
+    37.5% {
+        background-position: -210px -35px
+    }
+    43.75% {
+        background-position: -70px -70px
+    }
+    50% {
+        background-position: -70px -35px
+    }
+    56.25% {
+        background-position: -70px 0
+    }
+    62.5% {
+        background-position: -35px -70px
+    }
+    68.75% {
+        background-position: -35px -35px
+    }
+    75% {
+        background-position: -35px 0
+    }
+    81.25% {
+        background-position: 0 -70px
+    }
+    87.5% {
+        background-position: 0 -35px
+    }
+    93.75% {
+        background-position: 0 0
+    }
+}
+.sprite.general-bbs_f3.passive {
+    background: url(/assets/img/scene/generals/bbs/f3.png) -70px -70px no-repeat;
+    width: 34px;
+    height: 34px;
+    animation: f3_windshroud2_windshroud2 steps(1) 280ms infinite paused
+}
+@keyframes f3_windshroud2_windshroud2 {
+    0% {
+        background-position: -70px -70px
+    }
+    25% {
+        background-position: -175px -35px
+    }
+    50% {
+        background-position: -175px 0
+    }
+    75% {
+        background-position: -140px -70px
+    }
+}
+.sprite.general-bbs_f3.active {
+    background: url(/assets/img/scene/generals/bbs/f3.png) -70px -70px no-repeat;
+    width: 34px;
+    height: 34px;
+    animation: f3_windshroud2_active steps(1) 1.12s infinite paused
+}
+@keyframes f3_windshroud2_active {
+    0% {
+        background-position: -70px -70px
+    }
+    6.25% {
+        background-position: -175px -35px
+    }
+    12.5% {
+        background-position: -140px -35px
+    }
+    18.75% {
+        background-position: -140px 0
+    }
+    25% {
+        background-position: -105px -70px
+    }
+    31.25% {
+        background-position: -105px -35px
+    }
+    37.5% {
+        background-position: -105px 0
+    }
+    43.75% {
+        background-position: -175px -70px
+    }
+    50% {
+        background-position: -70px -35px
+    }
+    56.25% {
+        background-position: -70px 0
+    }
+    62.5% {
+        background-position: -35px -70px
+    }
+    68.75% {
+        background-position: -35px -35px
+    }
+    75% {
+        background-position: -35px 0
+    }
+    81.25% {
+        background-position: 0 -70px
+    }
+    87.5% {
+        background-position: 0 -35px
+    }
+    93.75% {
+        background-position: 0 0
+    }
+}
+.sprite.general-bbs_f4.passive {
+    background: url(/assets/img/scene/generals/bbs/f4.png) -105px 0 no-repeat;
+    width: 34px;
+    height: 34px;
+    animation: f4_shadowspawn_shadowspawn steps(1) 1.12s infinite paused
+}
+@keyframes f4_shadowspawn_shadowspawn {
+    0% {
+        background-position: -105px 0
+    }
+    6.25% {
+        background-position: -175px -70px
+    }
+    12.5% {
+        background-position: -175px -35px
+    }
+    18.75% {
+        background-position: -175px 0
+    }
+    25% {
+        background-position: -105px 0
+    }
+    31.25% {
+        background-position: -175px -70px
+    }
+    37.5% {
+        background-position: -175px -35px
+    }
+    43.75% {
+        background-position: -175px 0
+    }
+    50% {
+        background-position: -105px 0
+    }
+    56.25% {
+        background-position: -175px -70px
+    }
+    62.5% {
+        background-position: -175px -35px
+    }
+    68.75% {
+        background-position: -175px 0
+    }
+    75% {
+        background-position: -105px 0
+    }
+    81.25% {
+        background-position: -175px -70px
+    }
+    87.5% {
+        background-position: -175px -35px
+    }
+    93.75% {
+        background-position: -175px 0
+    }
+}
+.sprite.general-bbs_f4.active {
+    background: url(/assets/img/scene/generals/bbs/f4.png) -105px 0 no-repeat;
+    width: 34px;
+    height: 34px;
+    animation: f4_shadowspawn_active steps(1) 1.12s infinite paused
+}
+@keyframes f4_shadowspawn_active {
+    0% {
+        background-position: -105px 0
+    }
+    6.25% {
+        background-position: -140px -70px
+    }
+    12.5% {
+        background-position: -140px -35px
+    }
+    18.75% {
+        background-position: -140px 0
+    }
+    25% {
+        background-position: -105px -70px
+    }
+    31.25% {
+        background-position: -105px -35px
+    }
+    37.5% {
+        background-position: -210px 0
+    }
+    43.75% {
+        background-position: -70px -70px
+    }
+    50% {
+        background-position: -70px -35px
+    }
+    56.25% {
+        background-position: -70px 0
+    }
+    62.5% {
+        background-position: -35px -70px
+    }
+    68.75% {
+        background-position: -35px -35px
+    }
+    75% {
+        background-position: -35px 0
+    }
+    81.25% {
+        background-position: 0 -70px
+    }
+    87.5% {
+        background-position: 0 -35px
+    }
+    93.75% {
+        background-position: 0 0
+    }
+}
+.sprite.general-bbs_f4-alt.passive {
+    background: url(/assets/img/scene/generals/bbs/f4-alt.png) -105px 0 no-repeat;
+    width: 34px;
+    height: 34px;
+    animation: f4_taint_taint steps(1) 1.12s infinite paused
+}
+@keyframes f4_taint_taint {
+  0% {
+      background-position: -105px 0
+  }
+  6.25% {
+      background-position: -210px 0
+  }
+  12.5% {
+      background-position: -175px -70px
+  }
+  18.75% {
+      background-position: -175px -35px
+  }
+  25% {
+      background-position: -105px 0
+  }
+  31.25% {
+      background-position: -210px 0
+  }
+  37.5% {
+      background-position: -175px -70px
+  }
+  43.75% {
+      background-position: -175px -35px
+  }
+  50% {
+      background-position: -105px 0
+  }
+  56.25% {
+      background-position: -210px 0
+  }
+  62.5% {
+      background-position: -175px -70px
+  }
+  68.75% {
+      background-position: -175px -35px
+  }
+  75% {
+      background-position: -105px 0
+  }
+  81.25% {
+      background-position: -210px 0
+  }
+  87.5% {
+      background-position: -175px -70px
+  }
+  93.75% {
+      background-position: -175px -35px
+  }
+}
+.sprite.general-bbs_f4-alt.active {
+    background: url(/assets/img/scene/generals/bbs/f4-alt.png) -175px 0 no-repeat;
+    width: 34px;
+    height: 34px;
+    animation: f4_taint_active steps(1) 1.12s infinite paused
+}
+@keyframes f4_taint_active {
+    0% {
+        background-position: -175px 0
+    }
+    6.25% {
+        background-position: -140px -70px
+    }
+    12.5% {
+        background-position: -140px -35px
+    }
+    18.75% {
+        background-position: -140px 0
+    }
+    25% {
+        background-position: -105px -70px
+    }
+    31.25% {
+        background-position: -105px -35px
+    }
+    37.5% {
+        background-position: -210px -35px
+    }
+    43.75% {
+        background-position: -70px -70px
+    }
+    50% {
+        background-position: -70px -35px
+    }
+    56.25% {
+        background-position: -70px 0
+    }
+    62.5% {
+        background-position: -35px -70px
+    }
+    68.75% {
+        background-position: -35px -35px
+    }
+    75% {
+        background-position: -35px 0
+    }
+    81.25% {
+        background-position: 0 -70px
+    }
+    87.5% {
+        background-position: 0 -35px
+    }
+    93.75% {
+        background-position: 0 0
+    }
+}
+.sprite.general-bbs_f5.passive {
+    background: url(/assets/img/scene/generals/bbs/f5.png) -105px 0 no-repeat;
+    width: 34px;
+    height: 34px;
+    animation: f5_overload_overload steps(1) 1.12s infinite paused
+}
+@keyframes f5_overload_overload {
+    0% {
+        background-position: -105px 0
+    }
+    6.25% {
+        background-position: -175px -70px
+    }
+    12.5% {
+        background-position: -175px -35px
+    }
+    18.75% {
+        background-position: -175px 0
+    }
+    25% {
+        background-position: -105px 0
+    }
+    31.25% {
+        background-position: -175px -70px
+    }
+    37.5% {
+        background-position: -175px -35px
+    }
+    43.75% {
+        background-position: -175px 0
+    }
+    50% {
+        background-position: -105px 0
+    }
+    56.25% {
+        background-position: -175px -70px
+    }
+    62.5% {
+        background-position: -175px -35px
+    }
+    68.75% {
+        background-position: -175px 0
+    }
+    75% {
+        background-position: -105px 0
+    }
+    81.25% {
+        background-position: -175px -70px
+    }
+    87.5% {
+        background-position: -175px -35px
+    }
+    93.75% {
+        background-position: -175px 0
+    }
+}
+.sprite.general-bbs_f5.active {
+    background: url(/assets/img/scene/generals/bbs/f5.png) -105px 0 no-repeat;
+    width: 34px;
+    height: 34px;
+    animation: f5_overload_active steps(1) 1.12s infinite paused
+}
+@keyframes f5_overload_active {
+    0% {
+        background-position: -105px 0
+    }
+    6.25% {
+        background-position: -140px -70px
+    }
+    12.5% {
+        background-position: -140px -35px
+    }
+    18.75% {
+        background-position: -140px 0
+    }
+    25% {
+        background-position: -105px -70px
+    }
+    31.25% {
+        background-position: -105px -35px
+    }
+    37.5% {
+        background-position: -210px 0
+    }
+    43.75% {
+        background-position: -70px -70px
+    }
+    50% {
+        background-position: -70px -35px
+    }
+    56.25% {
+        background-position: -70px 0
+    }
+    62.5% {
+        background-position: -35px -70px
+    }
+    68.75% {
+        background-position: -35px -35px
+    }
+    75% {
+        background-position: -35px 0
+    }
+    81.25% {
+        background-position: 0 -70px
+    }
+    87.5% {
+        background-position: 0 -35px
+    }
+    93.75% {
+        background-position: 0 0
+    }
+}
+.sprite.general-bbs_f5-alt.passive {
+    background: url(/assets/img/scene/generals/bbs/f5-alt.png) -105px 0 no-repeat;
+    width: 34px;
+    height: 34px;
+    animation: f5_seekingeye_seekingeye steps(1) 1.12s infinite paused
+}
+@keyframes f5_seekingeye_seekingeye {
+    0% {
+        background-position: -105px 0
+    }
+    6.25% {
+        background-position: -175px -70px
+    }
+    12.5% {
+        background-position: -175px -35px
+    }
+    18.75% {
+        background-position: -175px 0
+    }
+    25% {
+        background-position: -105px 0
+    }
+    31.25% {
+        background-position: -175px -70px
+    }
+    37.5% {
+        background-position: -175px -35px
+    }
+    43.75% {
+        background-position: -175px 0
+    }
+    50% {
+        background-position: -105px 0
+    }
+    56.25% {
+        background-position: -175px -70px
+    }
+    62.5% {
+        background-position: -175px -35px
+    }
+    68.75% {
+        background-position: -175px 0
+    }
+    75% {
+        background-position: -105px 0
+    }
+    81.25% {
+        background-position: -175px -70px
+    }
+    87.5% {
+        background-position: -175px -35px
+    }
+    93.75% {
+        background-position: -175px 0
+    }
+}
+.sprite.general-bbs_f5-alt.active {
+    background: url(/assets/img/scene/generals/bbs/f5-alt.png) -105px 0 no-repeat;
+    width: 34px;
+    height: 34px;
+    animation: f5_seekingeye_active steps(1) 1.12s infinite paused
+}
+@keyframes f5_seekingeye_active {
+    0% {
+        background-position: -105px 0
+    }
+    6.25% {
+        background-position: -140px -70px
+    }
+    12.5% {
+        background-position: -140px -35px
+    }
+    18.75% {
+        background-position: -140px 0
+    }
+    25% {
+        background-position: -105px -70px
+    }
+    31.25% {
+        background-position: -105px -35px
+    }
+    37.5% {
+        background-position: -210px 0
+    }
+    43.75% {
+        background-position: -70px -70px
+    }
+    50% {
+        background-position: -70px -35px
+    }
+    56.25% {
+        background-position: -70px 0
+    }
+    62.5% {
+        background-position: -35px -70px
+    }
+    68.75% {
+        background-position: -35px -35px
+    }
+    75% {
+        background-position: -35px 0
+    }
+    81.25% {
+        background-position: 0 -70px
+    }
+    87.5% {
+        background-position: 0 -35px
+    }
+    93.75% {
+        background-position: 0 0
+    }
+}
+.sprite.general-bbs_f6-alt.passive {
+    background: url(/assets/img/scene/generals/bbs/f6-alt.png) -105px 0 no-repeat;
+    width: 34px;
+    height: 34px;
+    animation: f6_kinectcoil_kinectcoil steps(1) 1.12s infinite paused
+}
+@keyframes f6_kinectcoil_kinectcoil {
+    0% {
+        background-position: -105px 0
+    }
+    6.25% {
+        background-position: -175px -70px
+    }
+    12.5% {
+        background-position: -175px -35px
+    }
+    18.75% {
+        background-position: -175px 0
+    }
+    25% {
+        background-position: -105px 0
+    }
+    31.25% {
+        background-position: -175px -70px
+    }
+    37.5% {
+        background-position: -175px -35px
+    }
+    43.75% {
+        background-position: -175px 0
+    }
+    50% {
+        background-position: -105px 0
+    }
+    56.25% {
+        background-position: -175px -70px
+    }
+    62.5% {
+        background-position: -175px -35px
+    }
+    68.75% {
+        background-position: -175px 0
+    }
+    75% {
+        background-position: -105px 0
+    }
+    81.25% {
+        background-position: -175px -70px
+    }
+    87.5% {
+        background-position: -175px -35px
+    }
+    93.75% {
+        background-position: -175px 0
+    }
+}
+.sprite.general-bbs_f6-alt.active {
+    background: url(/assets/img/scene/generals/bbs/f6-alt.png) -105px 0 no-repeat;
+    width: 34px;
+    height: 34px;
+    animation: f6_kinectcoil_active steps(1) 1.12s infinite paused
+}
+@keyframes f6_kinectcoil_active {
+    0% {
+        background-position: -105px 0
+    }
+    6.25% {
+        background-position: -140px -70px
+    }
+    12.5% {
+        background-position: -140px -35px
+    }
+    18.75% {
+        background-position: -140px 0
+    }
+    25% {
+        background-position: -105px -70px
+    }
+    31.25% {
+        background-position: -105px -35px
+    }
+    37.5% {
+        background-position: -210px 0
+    }
+    43.75% {
+        background-position: -70px -70px
+    }
+    50% {
+        background-position: -70px -35px
+    }
+    56.25% {
+        background-position: -70px 0
+    }
+    62.5% {
+        background-position: -35px -70px
+    }
+    68.75% {
+        background-position: -35px -35px
+    }
+    75% {
+        background-position: -35px 0
+    }
+    81.25% {
+        background-position: 0 -70px
+    }
+    87.5% {
+        background-position: 0 -35px
+    }
+    93.75% {
+        background-position: 0 0
+    }
+}
+.sprite.general-bbs_f6.passive {
+    background: url(/assets/img/scene/generals/bbs/f6.png) -105px 0 no-repeat;
+    width: 34px;
+    height: 34px;
+    animation: f6_warbird_warbird steps(1) 1.12s infinite paused
+}
+@keyframes f6_warbird_warbird {
+    0% {
+        background-position: -105px 0
+    }
+    6.25% {
+        background-position: -175px -70px
+    }
+    12.5% {
+        background-position: -175px -35px
+    }
+    18.75% {
+        background-position: -175px 0
+    }
+    25% {
+        background-position: -105px 0
+    }
+    31.25% {
+        background-position: -175px -70px
+    }
+    37.5% {
+        background-position: -175px -35px
+    }
+    43.75% {
+        background-position: -175px 0
+    }
+    50% {
+        background-position: -105px 0
+    }
+    56.25% {
+        background-position: -175px -70px
+    }
+    62.5% {
+        background-position: -175px -35px
+    }
+    68.75% {
+        background-position: -175px 0
+    }
+    75% {
+        background-position: -105px 0
+    }
+    81.25% {
+        background-position: -175px -70px
+    }
+    87.5% {
+        background-position: -175px -35px
+    }
+    93.75% {
+        background-position: -175px 0
+    }
+}
+.sprite.general-bbs_f6.active {
+    background: url(/assets/img/scene/generals/bbs/f6.png) -105px 0 no-repeat;
+    width: 34px;
+    height: 34px;
+    animation: f6_warbird_active steps(1) 1.12s infinite paused
+}
+@keyframes f6_warbird_active {
+    0% {
+        background-position: -105px 0
+    }
+    6.25% {
+        background-position: -140px -70px
+    }
+    12.5% {
+        background-position: -140px -35px
+    }
+    18.75% {
+        background-position: -140px 0
+    }
+    25% {
+        background-position: -105px -70px
+    }
+    31.25% {
+        background-position: -105px -35px
+    }
+    37.5% {
+        background-position: -210px 0
+    }
+    43.75% {
+        background-position: -70px -70px
+    }
+    50% {
+        background-position: -70px -35px
+    }
+    56.25% {
+        background-position: -70px 0
+    }
+    62.5% {
+        background-position: -35px -70px
+    }
+    68.75% {
+        background-position: -35px -35px
+    }
+    75% {
+        background-position: -35px 0
+    }
+    81.25% {
+        background-position: 0 -70px
+    }
+    87.5% {
+        background-position: 0 -35px
+    }
+    93.75% {
+        background-position: 0 0
+    }
+}
