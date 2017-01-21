@@ -231,6 +231,14 @@ $cooldownHeight: 86px;
       }
     }
 
+    &[data-remaining="0"] .sprite {
+      cursor: pointer;
+
+      &:hover {
+        animation-play-state: running !important;
+      }
+    }
+
     // BBS manacost
     &::after {
       content: attr(data-manacost);
@@ -344,14 +352,6 @@ $cooldownHeight: 86px;
         line-height: #{$cooldownHeight * (80/124)};
         font-size: 28px;
       }
-    }
-  }
-
-  &[data-remaining="0"] .sprite {
-    cursor: pointer;
-
-    &:hover {
-      animation-play-state: running !important;
     }
   }
 
