@@ -8,6 +8,26 @@ Template.scenebuilderBuild.onCreated(function() {
 
   self.subscribe('someCards', {});
 
+  self.board = new ReactiveVar({
+    field: [
+      [
+        {}, {}, {}, {}, {}, {}, {}, {}, {}
+      ],
+      [
+        {}, {}, {}, {}, {}, {}, {}, {}, {}
+      ],
+      [
+        {}, {}, {}, {}, {}, {}, {}, {}, {}
+      ],
+      [
+        {}, {}, {}, {}, {}, {}, {}, {}, {}
+      ],
+      [
+        {}, {}, {}, {}, {}, {}, {}, {}, {}
+      ]
+    ]
+  })
+
   self.player1 = new ReactiveVar({
     id: 1,
     name: 'Player 1',
@@ -42,6 +62,23 @@ Template.scenebuilderBuild.onCreated(function() {
       {id: 11067},
       {id: null},
       {id: null}
+    ],
+    units: [
+      [
+        {id: 1}, {}, {}, {}, {}, {}, {}, {}, {}
+      ],
+      [
+        {}, {}, {}, {}, {}, {}, {}, {}, {}
+      ],
+      [
+        {}, {}, {}, {}, {}, {}, {}, {}, {}
+      ],
+      [
+        {}, {}, {}, {}, {}, {}, {}, {}, {}
+      ],
+      [
+        {}, {}, {}, {}, {}, {}, {}, {}, {}
+      ]
     ]
   });
 
@@ -79,16 +116,69 @@ Template.scenebuilderBuild.onCreated(function() {
       {id: 424},
       {id: null},
       {id: null}
+    ],
+    units: [
+      [
+        {}, {}, {}, {}, {}, {}, {}, {}, {}
+      ],
+      [
+        {}, {}, {}, {}, {}, {}, {}, {}, {}
+      ],
+      [
+        {}, {}, {}, {}, {}, {}, {}, {}, {}
+      ],
+      [
+        {}, {}, {}, {}, {}, {}, {}, {id: 1}, {}
+      ],
+      [
+        {}, {}, {}, {}, {}, {}, {}, {}, {}
+      ]
     ]
   });
 })
 
 Template.scenebuilderBuild.helpers({
-  boardRows() {
-    return ['A', 'B', 'C', 'D', 'E'];
+  field() {
+    return Template.instance().board.get().field;
   },
-  boardColumns() {
-    return [1,2,3,4,5,6,7,8,9];
+  units() {
+    var player1 = Template.instance().player1.get().units;
+    var player2 = Template.instance().player2.get().units;
+
+    var units = [
+      [
+        {}, {}, {}, {}, {}, {}, {}, {}, {}
+      ],
+      [
+        {}, {}, {}, {}, {}, {}, {}, {}, {}
+      ],
+      [
+        {}, {}, {}, {}, {}, {}, {}, {}, {}
+      ],
+      [
+        {}, {}, {}, {}, {}, {}, {}, {}, {}
+      ],
+      [
+        {}, {}, {}, {}, {}, {}, {}, {}, {}
+      ]
+    ]
+
+    // For each row
+    units.forEach(function(row, rowNum) {
+      // For each column
+      row.forEach(function(column, colNum) {
+        if ( Object.keys(player1[rowNum][colNum]).length > 0 ) {
+          units[rowNum][colNum] = player1[rowNum][colNum];
+          units[rowNum][colNum].player = 1;
+        }
+        else if ( Object.keys(player2[rowNum][colNum]).length > 0 ) {
+          units[rowNum][colNum] = player2[rowNum][colNum];
+          units[rowNum][colNum].player = 2;
+        }
+      })
+    })
+
+    return units;
   },
   player1() {
     return Template.instance().player1.get();
@@ -132,6 +222,18 @@ Template.scenebuilderBuild__player.helpers({
   },
   currentCard() {
     // add sprite CSS if not yet added
+    if (this.id) {
+      if ( $('head').find('link[href*="css/sprites/id/' + this.id + '\.min.css"]').length === 0 ) {
+        $('head').append('<link href="/css/sprites/id/' + this.id + '.min.css" rel="stylesheet">')
+      }
+      return allCards.findOne({id: this.id});
+    }
+    return false;
+  }
+})
+
+Template.scenebuilderBuild__stage.helpers({
+  currentUnit() {
     if (this.id) {
       if ( $('head').find('link[href*="css/sprites/id/' + this.id + '\.min.css"]').length === 0 ) {
         $('head').append('<link href="/css/sprites/id/' + this.id + '.min.css" rel="stylesheet">')

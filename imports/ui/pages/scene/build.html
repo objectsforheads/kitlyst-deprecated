@@ -8,17 +8,8 @@
         <div class="set__prop set__prop--2"></div>
       </div>
     </div>
-    <div class="scenebuilder__stage">
-      <div class="stage__board">
-        {{#each boardRows }}
-        <div class="board__row" data-row="{{this}}">
-          {{#each boardColumns }}
-          <div class="board__tile" data-column="{{this}}"></div>
-          {{/each}}
-        </div>
-        {{/each}}
-      </div>
-    </div>
+    {{> scenebuilderBuild__stage stage=field units=units}}
+
     {{> scenebuilderBuild__player player=player1}}
     {{> scenebuilderBuild__player player=player2}}
   </div>
@@ -84,6 +75,35 @@
     </div>
     <div class="player__deck">
       <div class="deck--active"></div>
+    </div>
+  </div>
+</template>
+
+<template name="scenebuilderBuild__stage">
+  <div class="scenebuilder__stage">
+    <div class="stage__board">
+      {{#each stage}}
+      <div class="board__row">
+        {{#each this}}
+        <div class="board__tile"></div>
+        {{/each}}
+      </div>
+      {{/each}}
+    </div>
+    <div class="scenebuilder__units">
+      {{#each units}}
+      <div class="units__row">
+        {{#each this}}
+        {{#if this.id}}
+        <div class="unit" data-attack="{{currentUnit.attack}}" data-health="{{currentUnit.health}}" data-player="{{this.player}}">
+          <div class="tile-object sprite id_{{currentUnit.id}} idle"></div>
+        </div>
+        {{else}}
+        <div class="unit"></div>
+        {{/if}}
+        {{/each}}
+      </div>
+      {{/each}}
     </div>
   </div>
 </template>

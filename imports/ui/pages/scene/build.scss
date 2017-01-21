@@ -128,6 +128,117 @@ $tileScale: 0.4625;
 
 
 
+.scenebuilder__units {
+  position: absolute;
+  top: 28px; //HACK magic number guessing at positioning
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+
+  .units__row {
+    left: 50%;
+    transform: translateX(-50%);
+
+    // Each row varies slightly in positioning - set it here
+    &:nth-child(1) {
+      width: #{ $tileContainer * 9 * $tileScale * 0.9375 };
+      z-index: 5;
+
+      .unit {
+        padding-bottom: 100px;
+      }
+    }
+
+    &:nth-child(2) {
+      width: #{ $tileContainer * 9 * $tileScale * .9681 };
+      z-index: 4;
+
+      .unit {
+        padding-bottom: 108px;
+      }
+    }
+
+    &:nth-child(3) {
+      width: #{ $tileContainer * 9 * $tileScale * .9988 };
+      z-index: 3;
+
+      .unit {
+        padding-bottom: 113px;
+      }
+    }
+
+    &:nth-child(4) {
+      width: #{ $tileContainer * 9 * $tileScale * 1.0294 };
+      z-index: 2;
+
+      .unit {
+        padding-bottom: 120px;
+      }
+    }
+
+    &:nth-child(5) {
+      width: #{ $tileContainer * 9 * $tileScale * 1.06 };
+      z-index: 1;
+
+      .unit {
+        padding-bottom: 131px;
+      }
+    }
+  }
+
+  .unit {
+    width: #{(1/9) * 100%};
+    display: inline-block;
+
+    &[data-attack]::before {
+      content: attr(data-attack);
+      position: absolute;
+      width: #{68px * (56/68)};
+      height: #{71px * (56/68)};
+      line-height: #{71px * (56/68)};
+      background: url('/assets/img/scene/components/icon_atk.png') no-repeat center center / contain;
+      left: 0;
+      bottom: 0;
+      z-index: 1;
+
+      font-size: 20px;
+      text-align: center;
+    }
+
+    &[data-health]::after {
+      content: attr(data-health);
+      position: absolute;
+      width: #{68px * (56/68)};
+      height: #{71px * (56/68)};
+      line-height: #{71px * (56/68)};
+      background: url('/assets/img/scene/components/icon_hp.png') no-repeat center center / contain;
+      right: 0;
+      bottom: 0;
+      z-index: 1;
+
+      font-size: 20px;
+      text-align: center;
+    }
+  }
+
+  .tile-object {
+    position: absolute;
+    transform: scale(2.5, 2.5) translateX(-50%);
+    transform-origin: bottom left;
+    left: 50%;
+    bottom: 10px;
+  }
+
+  [data-player="2"] .tile-object {
+    transform: scale(-2.5, 2.5) translateX(-50%);
+  }
+}
+
+
+
+
+
 $manaColor: #01E0FD;
 
 $generalHexagon: 268px;
