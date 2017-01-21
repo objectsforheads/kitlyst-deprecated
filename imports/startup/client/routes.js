@@ -124,3 +124,9 @@ scene.route('/new', {
     BlazeLayout.render( 'mainLayout', {main: 'scenebuilderNew'} )
   }
 })
+
+scene.route('/build', {
+  action: function(params) {
+    BlazeLayout.render( 'mainLayout', {main: 'scenebuilderBuild'} )
+  }
+})
