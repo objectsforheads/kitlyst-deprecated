@@ -26,7 +26,7 @@
 
 <template name="scenebuilderBuild__player">
   <div class="scenebuilder__player" data-player="{{player.id}}">
-    <div class="player__general" data-general="{{player.general.id}}" data-health="{{player.general.health}}"></div>
+    <div class="player__general" data-general="{{player.general.id}}" data-health="{{player.general.health}}" style="background-image: url('/assets/img/scene/generals/hex/hex_{{player.general.id}}.png');"></div>
     <div class="player__general-bbs" data-manacost="{{player.bbs.cost}}" data-cooldown="{{player.bbs.cooldown}}" data-remaining="{{player.bbs.remaining}}">
       <span class="bbs__cooldown" data-remaining="{{player.bbs.remaining}}"></span>
       <div class="sprite {{player.bbs.id}} passive"></div>

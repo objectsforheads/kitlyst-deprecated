@@ -126,6 +126,10 @@ $tileScale: 0.4625;
 
 
 
+$generalHexagon: 268px;
+$generalWidth: 430px;
+$generalHeight: 489px;
+
 $bbsSize: 224px;
 $cooldownWidth: 124px;
 $cooldownHeight: 86px;
@@ -133,6 +137,32 @@ $cooldownHeight: 86px;
 .scenebuilder__player {
   position: absolute;
   top: 0;
+
+  .player__general {
+    pointer-events: none;
+    width: #{$generalWidth * 0.44};
+    height: #{$generalHeight * 0.44};
+    @media (min-width: 1281px) {
+      width: #{$generalWidth * 0.55};
+      height: #{$generalHeight * 0.55};
+    }
+
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 20%;
+      left: 12%;
+      width: 79%;
+      height: 79%;
+      pointer-events: initial;
+      opacity: 0;
+      cursor: pointer;
+    }
+  }
 
   .player__general-bbs {
     // General positioning in scene
