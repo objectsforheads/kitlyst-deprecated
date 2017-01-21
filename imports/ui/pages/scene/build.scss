@@ -1,3 +1,11 @@
+.scenebuilder {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
 .scenebuilder__set {
   position: fixed;
   top: 0;
@@ -56,6 +64,60 @@
       min-width: #{(280/1366) * 1280px};
       min-height: #{(361/768) * 720px};
       background-image: url('/assets/img/scene/battlemaps/01/battlemap_foreright.png');
+    }
+  }
+}
+
+$tileContainer: 256px;
+$tile: 242px;
+$tileScale: 0.4625;
+
+.scenebuilder__stage {
+  font-size: 0;
+  position: absolute;
+  top: calc(50% - 10px);
+  left: 50%;
+  perspective: #{$tileContainer * 9 * $tileScale * 0.5};
+
+  transform: translate(-50%,-50%);
+  width: #{ $tileContainer * 9 * $tileScale };
+  height: #{ $tileContainer * 5 * $tileScale };
+
+  .stage__board {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    font-size: 0;
+    transform: rotateX( 10deg );
+  }
+
+  .board__tile {
+    display: inline-block;
+    width: #{(1/9) * 100%};
+    padding-bottom: #{(1/9) * 100%};
+
+    &::after {
+      content: '';
+      width: #{$tile/$tileContainer * 100%};
+      height: #{$tile/$tileContainer * 100%};
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%,-50%);
+      position: absolute;
+      background: rgba(0,0, 0, 0.1);
+    }
+
+    &:hover::after {
+      background: url('/assets/img/scene/components/tiles_board.png') no-repeat top left;
+      background-size: #{1214px * $tileScale} #{508px * $tileScale};
+      background-position: #{-126px * 2 * $tileScale} #{-2px * 2 * $tileScale};
+      opacity: 0.5;
+    }
+
+    &.opponent::after {
+      background: rgba(255,0,0,0.33);
     }
   }
 }

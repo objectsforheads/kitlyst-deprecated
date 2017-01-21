@@ -7,5 +7,16 @@
         <div class="set__prop set__prop--2"></div>
       </div>
     </div>
+    <div class="scenebuilder__stage">
+      <div class="stage__board">
+        {{#each boardRows }}
+        <div class="board__row" data-row="{{this}}">
+          {{#each boardColumns }}
+          <div class="board__tile" data-column="{{this}}"></div>
+          {{/each}}
+        </div>
+        {{/each}}
+      </div>
+    </div>
   </div>
 </template>
