@@ -262,6 +262,7 @@ $tileScale: 0.4625;
 
   [data-player="2"] .tile-object {
     transform: scale(1.5, 1.5) translateX(-50%);
+    filter: hue-rotate(95deg) saturate(200%) brightness(85%); // HACK: estimated - fix later
   }
 
   .manaspring {
