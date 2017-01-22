@@ -253,7 +253,8 @@ $tileScale: 0.4625;
     transform: scale(-2.5, 2.5) translateX(-50%);
   }
 
-  .shadowcreep {
+  .shadowcreep,
+  .id_scene_shadowcreep {
     width: 69px;
     height: 41px;
     background: url('/assets/img/scene/components/shadowcreep.png') no-repeat center center;
@@ -273,6 +274,13 @@ $tileScale: 0.4625;
     &.depleted {
       background-position: -2px -2px;
     }
+  }
+
+  .id_scene_manaspring {
+    width: 44px;
+    height: 44px;
+    background: url('/assets/img/scene/components/manaspring.png') no-repeat center center / cover;
+    bottom: 60px; // magic number: estimating positioning
   }
 }
 

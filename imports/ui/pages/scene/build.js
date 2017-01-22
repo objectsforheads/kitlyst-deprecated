@@ -149,6 +149,35 @@ Template.scenebuilderBuild.onCreated(function() {
       ]
     ]
   });
+
+  // TODO look into if this collection is persistent across the session
+  // scenebuilder specific units
+  sceneCards = new Mongo.Collection(null);
+  [{
+  	"id": "scene_manaspring",
+  	"faction": "Neutral",
+  	"rarity": "Token",
+  	"name": "Mana Spring",
+  	"description": "Gain +1 Mana this turn.",
+  	"manaCost": 0,
+  	"type": "Unit",
+  	"race": "Tile",
+  	"set": "Base"
+
+  }, {
+  	"id": "scene_shadowcreep",
+  	"faction": "Abyssian Host",
+  	"rarity": "Token",
+  	"name": "Shadow Creep Tile",
+  	"description": "Deals damage to enemy minions and Generals standing on it at the end of owner's turn.",
+  	"manaCost": 0,
+  	"type": "Unit",
+  	"race": "Tile",
+  	"attack": 1,
+  	"set": "Base"
+  }].forEach(function(card) {
+    sceneCards.insert(card);
+  });
 })
 
 Template.scenebuilderBuild.helpers({
@@ -172,6 +201,23 @@ Template.scenebuilderBuild.helpers({
         ],
         [
           {}, {}, {}, {}, {type: 'manaspring'}, {}, {}, {}, {}
+        ]
+      ],
+      units: [
+        [
+          {}, {}, {}, {}, {id: 'scene_manaspring'}, {}, {}, {}, {}
+        ],
+        [
+          {}, {}, {}, {}, {}, {}, {}, {}, {}
+        ],
+        [
+          {}, {}, {}, {}, {}, {id: 'scene_manaspring'}, {}, {}, {}
+        ],
+        [
+          {}, {}, {}, {}, {}, {}, {}, {}, {}
+        ],
+        [
+          {}, {}, {}, {}, {id: 'scene_manaspring'}, {}, {}, {}, {}
         ]
       ]
     }
@@ -219,6 +265,10 @@ Template.scenebuilderBuild.helpers({
         }
 
         // place the units (p2 > p1 > default)
+        if ( Object.keys(defaults.units[rowNum][colNum]).length > 0 ) {
+          tile.unit = {};
+          tile.unit.id = defaults.units[rowNum][colNum].id;
+        }
         if ( Object.keys(player1.units[rowNum][colNum]).length > 0 ) {
           tile.unit = {};
           tile.unit.id = player1.units[rowNum][colNum].id;
@@ -315,7 +365,7 @@ Template.scenebuilderBuild__stage.helpers({
       if ( $('head').find('link[href*="css/sprites/id/' + this.id + '\.min.css"]').length === 0 ) {
         $('head').append('<link href="/css/sprites/id/' + this.id + '.min.css" rel="stylesheet">')
       }
-      return allCards.findOne({id: this.id});
+      return allCards.findOne({id: this.id}) || sceneCards.findOne({id: this.id});
     }
     return false;
   }
