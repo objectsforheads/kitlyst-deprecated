@@ -252,6 +252,27 @@ $tileScale: 0.4625;
   [data-player="2"] .tile-object {
     transform: scale(-2.5, 2.5) translateX(-50%);
   }
+
+  .shadowcreep {
+    width: 69px;
+    height: 41px;
+    background: url('/assets/img/scene/components/shadowcreep.png') no-repeat center center;
+    transform: scale(1.5, 1.5) translateX(-50%);
+  }
+
+  [data-player="2"] .tile-object {
+    transform: scale(1.5, 1.5) translateX(-50%);
+  }
+
+  .manaspring {
+    width: 40px;
+    height: 30px;
+    background: url('/assets/img/scene/components/tile_mana.png') no-repeat -2px -34px;
+
+    &.depleted {
+      background-position: -2px -2px;
+    }
+  }
 }
 
 
