@@ -8,26 +8,6 @@ Template.scenebuilderBuild.onCreated(function() {
 
   self.subscribe('someCards', {});
 
-  self.board = new ReactiveVar({
-    field: [
-      [
-        {}, {}, {}, {}, {}, {}, {}, {}, {}
-      ],
-      [
-        {}, {}, {}, {}, {}, {}, {}, {}, {}
-      ],
-      [
-        {}, {}, {}, {}, {}, {}, {}, {}, {}
-      ],
-      [
-        {}, {}, {}, {}, {}, {}, {}, {}, {}
-      ],
-      [
-        {}, {}, {}, {}, {}, {}, {}, {}, {}
-      ]
-    ]
-  })
-
   self.player1 = new ReactiveVar({
     id: 1,
     name: 'Player 1',
@@ -66,6 +46,23 @@ Template.scenebuilderBuild.onCreated(function() {
     units: [
       [
         {id: 1}, {}, {}, {}, {}, {}, {}, {}, {}
+      ],
+      [
+        {}, {}, {}, {}, {}, {}, {}, {}, {}
+      ],
+      [
+        {}, {}, {}, {}, {}, {}, {}, {}, {}
+      ],
+      [
+        {}, {}, {}, {}, {}, {}, {}, {}, {}
+      ],
+      [
+        {}, {}, {}, {}, {}, {}, {}, {}, {}
+      ]
+    ],
+    floors: [
+      [
+        {type: 'shadowcreep'}, {type: 'shadowcreep'}, {}, {}, {}, {}, {}, {}, {}
       ],
       [
         {}, {}, {}, {}, {}, {}, {}, {}, {}
@@ -133,19 +130,51 @@ Template.scenebuilderBuild.onCreated(function() {
       [
         {}, {}, {}, {}, {}, {}, {}, {}, {}
       ]
+    ],
+    floors: [
+      [
+        {type: 'shadowcreep'}, {}, {}, {}, {}, {}, {}, {}, {}
+      ],
+      [
+        {}, {}, {}, {}, {}, {}, {}, {}, {}
+      ],
+      [
+        {}, {}, {}, {}, {}, {}, {}, {}, {}
+      ],
+      [
+        {}, {}, {}, {}, {}, {}, {}, {}, {}
+      ],
+      [
+        {}, {}, {}, {}, {}, {}, {}, {}, {}
+      ]
     ]
   });
 })
 
 Template.scenebuilderBuild.helpers({
   field() {
-    return Template.instance().board.get().field;
-  },
-  units() {
-    var player1 = Template.instance().player1.get().units;
-    var player2 = Template.instance().player2.get().units;
+    var player1 = Template.instance().player1.get();
+    var player2 = Template.instance().player2.get();
 
-    var units = [
+    var floors = [
+      [
+        {}, {}, {}, {}, {type: 'manaspring'}, {}, {}, {}, {}
+      ],
+      [
+        {}, {}, {}, {}, {}, {}, {}, {}, {}
+      ],
+      [
+        {}, {}, {}, {}, {}, {type: 'manaspring'}, {}, {}, {}
+      ],
+      [
+        {}, {}, {}, {}, {}, {}, {}, {}, {}
+      ],
+      [
+        {}, {}, {}, {}, {type: 'manaspring'}, {}, {}, {}, {}
+      ]
+    ]
+
+    var field = [
       [
         {}, {}, {}, {}, {}, {}, {}, {}, {}
       ],
@@ -162,6 +191,52 @@ Template.scenebuilderBuild.helpers({
         {}, {}, {}, {}, {}, {}, {}, {}, {}
       ]
     ]
+
+    // For each row
+    field.forEach(function(row, rowNum) {
+      // For each column
+      row.forEach(function(tile, colNum) {
+        // set the row and column position
+        tile.row = rowNum.toString();
+        tile.column = colNum.toString();
+
+        // if there's a floor modifier, apply that (p2 > p1 > default)
+        if ( Object.keys(floors[rowNum][colNum]).length > 0 ) {
+          tile.floor = {};
+          tile.floor.type = floors[rowNum][colNum].type;
+        }
+        if ( Object.keys(player1.floors[rowNum][colNum]).length > 0 ) {
+          tile.floor = {};
+          tile.floor.type = player1.floors[rowNum][colNum].type;
+          tile.floor.owner = 1;
+        }
+        if ( Object.keys(player2.floors[rowNum][colNum]).length > 0 ) {
+          tile.floor = {};
+          tile.floor.type = player2.floors[rowNum][colNum].type;
+          tile.floor.owner = 2;
+        }
+
+        // place the units (p2 > p1)
+        if ( Object.keys(player1.units[rowNum][colNum]).length > 0 ) {
+          tile.unit = {};
+          tile.unit.id = player1.units[rowNum][colNum].id;
+          tile.unit.owner = 1;
+        }
+        if ( Object.keys(player2.units[rowNum][colNum]).length > 0 ) {
+          tile.unit = {};
+          tile.unit.id = player2.units[rowNum][colNum].id;
+          tile.unit.owner = 2;
+        }
+
+      })
+    })
+
+    return field;
+  },
+  units() {
+
+
+
 
     // For each row
     units.forEach(function(row, rowNum) {

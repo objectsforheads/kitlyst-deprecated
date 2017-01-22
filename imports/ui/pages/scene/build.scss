@@ -95,7 +95,7 @@ $tileScale: 0.4625;
     transform: rotateX( 10deg );
   }
 
-  .board__tile {
+  .board-square {
     display: inline-block;
     width: #{(1/9) * 100%};
     padding-bottom: #{(1/9) * 100%};
@@ -128,7 +128,7 @@ $tileScale: 0.4625;
 
 
 
-.scenebuilder__units {
+.scenebuilder__tiles {
   position: absolute;
   top: 28px; //HACK magic number guessing at positioning
   left: 0;
@@ -136,6 +136,16 @@ $tileScale: 0.4625;
   height: 100%;
   pointer-events: none;
 
+  .tiles__floors,
+  .tiles__units {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .floors__row,
   .units__row {
     left: 50%;
     transform: translateX(-50%);
@@ -145,6 +155,7 @@ $tileScale: 0.4625;
       width: #{ $tileContainer * 9 * $tileScale * 0.9375 };
       z-index: 5;
 
+      .floor,
       .unit {
         padding-bottom: 100px;
       }
@@ -154,6 +165,7 @@ $tileScale: 0.4625;
       width: #{ $tileContainer * 9 * $tileScale * .9681 };
       z-index: 4;
 
+      .floor,
       .unit {
         padding-bottom: 108px;
       }
@@ -163,6 +175,7 @@ $tileScale: 0.4625;
       width: #{ $tileContainer * 9 * $tileScale * .9988 };
       z-index: 3;
 
+      .floor,
       .unit {
         padding-bottom: 113px;
       }
@@ -172,6 +185,7 @@ $tileScale: 0.4625;
       width: #{ $tileContainer * 9 * $tileScale * 1.0294 };
       z-index: 2;
 
+      .floor,
       .unit {
         padding-bottom: 120px;
       }
@@ -181,12 +195,17 @@ $tileScale: 0.4625;
       width: #{ $tileContainer * 9 * $tileScale * 1.06 };
       z-index: 1;
 
+      .floor,
       .unit {
         padding-bottom: 131px;
       }
     }
   }
 
+  .floor {
+    width: #{(1/9) * 100%};
+    display: inline-block;
+  }
   .unit {
     width: #{(1/9) * 100%};
     display: inline-block;
