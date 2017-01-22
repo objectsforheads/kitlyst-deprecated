@@ -156,23 +156,25 @@ Template.scenebuilderBuild.helpers({
     var player1 = Template.instance().player1.get();
     var player2 = Template.instance().player2.get();
 
-    var floors = [
-      [
-        {}, {}, {}, {}, {type: 'manaspring'}, {}, {}, {}, {}
-      ],
-      [
-        {}, {}, {}, {}, {}, {}, {}, {}, {}
-      ],
-      [
-        {}, {}, {}, {}, {}, {type: 'manaspring'}, {}, {}, {}
-      ],
-      [
-        {}, {}, {}, {}, {}, {}, {}, {}, {}
-      ],
-      [
-        {}, {}, {}, {}, {type: 'manaspring'}, {}, {}, {}, {}
+    var defaults = {
+      floors: [
+        [
+          {}, {}, {}, {}, {type: 'manaspring'}, {}, {}, {}, {}
+        ],
+        [
+          {}, {}, {}, {}, {}, {}, {}, {}, {}
+        ],
+        [
+          {}, {}, {}, {}, {}, {type: 'manaspring'}, {}, {}, {}
+        ],
+        [
+          {}, {}, {}, {}, {}, {}, {}, {}, {}
+        ],
+        [
+          {}, {}, {}, {}, {type: 'manaspring'}, {}, {}, {}, {}
+        ]
       ]
-    ]
+    }
 
     var field = [
       [
@@ -201,9 +203,9 @@ Template.scenebuilderBuild.helpers({
         tile.column = colNum.toString();
 
         // if there's a floor modifier, apply that (p2 > p1 > default)
-        if ( Object.keys(floors[rowNum][colNum]).length > 0 ) {
+        if ( Object.keys(defaults.floors[rowNum][colNum]).length > 0 ) {
           tile.floor = {};
-          tile.floor.type = floors[rowNum][colNum].type;
+          tile.floor.type = defaults.floors[rowNum][colNum].type;
         }
         if ( Object.keys(player1.floors[rowNum][colNum]).length > 0 ) {
           tile.floor = {};
@@ -216,7 +218,7 @@ Template.scenebuilderBuild.helpers({
           tile.floor.owner = 2;
         }
 
-        // place the units (p2 > p1)
+        // place the units (p2 > p1 > default)
         if ( Object.keys(player1.units[rowNum][colNum]).length > 0 ) {
           tile.unit = {};
           tile.unit.id = player1.units[rowNum][colNum].id;
