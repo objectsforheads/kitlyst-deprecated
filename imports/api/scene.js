@@ -1,3 +1,15 @@
+Meteor.publish('buildScene', function(id) {
+  check(id, String);
+
+  return Scenes.find({
+    'id': id
+  }, {
+    fields: {
+      'id': 0
+    }
+  });
+})
+
 Meteor.methods({
   'createScene': function(arg) {
     check(arg, {
