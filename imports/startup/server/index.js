@@ -20,6 +20,7 @@ import '../../api/deck.js';
 import '../../api/account.js';
 import '../../api/admin.js';
 import '../../api/database.js';
+import '../../api/scene.js';
 
 if (allCards.find().count() === 0) {
   var apiKey = 'cf156a2e4b5296b5a184e53ab14dd99f';

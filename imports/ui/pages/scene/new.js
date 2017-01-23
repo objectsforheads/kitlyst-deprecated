@@ -112,5 +112,15 @@ Template.scenebuilderNew.events({
     Template.instance().playerSelection.set(null);
     Template.instance().playerSelectionTemporary.set(null);
     return;
+  },
+  'click .scene__create': () => {
+    Meteor.call('createScene', Template.instance().sceneSetup.get(), function(err, data) {
+      if (err) {
+        sAlert.error(error.reason);
+      }
+      else {
+        FlowRouter.go('/scene/build/' + data);
+      }
+    });
   }
 })

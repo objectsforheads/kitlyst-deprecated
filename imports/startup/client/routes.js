@@ -125,7 +125,7 @@ scene.route('/new', {
   }
 })
 
-scene.route('/build', {
+scene.route('/build/:hash', {
   action: function(params) {
     BlazeLayout.render( 'mainLayout', {main: 'scenebuilderBuild'} )
   }
