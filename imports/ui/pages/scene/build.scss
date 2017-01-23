@@ -261,7 +261,7 @@ $tileScale: 0.4625;
     transform: scale(1.5, 1.5) translateX(-50%);
   }
 
-  [data-player="2"] .tile-object {
+  [data-player="2"].floor .tile-object {
     transform: scale(1.5, 1.5) translateX(-50%);
     filter: hue-rotate(95deg) saturate(200%) brightness(85%); // HACK: estimated - fix later
   }
