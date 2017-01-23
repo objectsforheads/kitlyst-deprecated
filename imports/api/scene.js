@@ -42,7 +42,11 @@ Meteor.methods({
           id: arg.player1,
           health: 25
         },
-        bbs: bbs[arg.player1],
+        bbs: {
+          id: bbs[arg.player1],
+          cooldown: 2,
+          remaining: 1
+        },
         manabar: {
           available: 2,
           used: 0
@@ -85,7 +89,11 @@ Meteor.methods({
           id: arg.player2,
           health: 25
         },
-        bbs: bbs[arg.player2],
+        bbs: {
+          id: bbs[arg.player2],
+          cooldown: 2,
+          remaining: 0
+        },
         manabar: {
           available: 2,
           used: 0
