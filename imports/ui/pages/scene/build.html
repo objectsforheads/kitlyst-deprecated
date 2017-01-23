@@ -116,7 +116,7 @@
           {{#each this}}
           {{#if this.unit}}
           {{#with this.unit}}
-          <div class="unit" data-attack="{{currentUnit.attack}}" data-health="{{currentUnit.health}}" data-player="{{this.player}}">
+          <div class="unit" data-attack="{{currentUnit.attack}}" data-health="{{currentUnit.health}}" data-player="{{this.owner}}">
             <div class="tile-object sprite id_{{currentUnit.id}} idle"></div>
           </div>
           {{/with}}
