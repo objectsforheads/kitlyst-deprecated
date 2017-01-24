@@ -330,7 +330,15 @@ Template.scenebuilderBuild__stage.helpers({
       if ( $('head').find('link[href*="css/sprites/id/' + this.id + '\.min.css"]').length === 0 ) {
         $('head').append('<link href="/css/sprites/id/' + this.id + '.min.css" rel="stylesheet">')
       }
-      return allCards.findOne({id: this.id}) || sceneCards.findOne({id: this.id});
+
+      var card = allCards.findOne({id: this.id}) || sceneCards.findOne({id: this.id});
+      if (this.attack) {
+        card.attack = this.attack;
+      }
+      if (this.health) {
+        card.health = this.health;
+      }
+      return card;
     }
     return false;
   }
