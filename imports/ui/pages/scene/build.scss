@@ -1252,6 +1252,57 @@ $cooldownHeight: 86px;
   }
 }
 
+.editor__contents {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .edit-options {
+    display: block;
+    width: 280px;
+    text-align: right;
+  }
+
+  .edit-form-group {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .form-group__row {
+    display: flex;
+    margin-top: 1rem;
+    border-left: 1px solid #EEE;
+
+    & > * {
+      flex: 1;
+    }
+  }
+
+  .form-group__input {
+
+    label {
+      position: absolute;
+      bottom: 100%;
+      left: 0;
+      text-transform: uppercase;
+      line-height: 1rem;
+      font-family: 'Unica One', sans-serif;
+      font-weight: 400;
+      padding: 0 1rem;
+      width: 100%;
+      text-align: center;
+    }
+
+    input[type="text"] {
+      padding: 0 1rem;
+      background: transparent;
+      border: 1px solid #EEE;
+      border-left: 0;
+      color: #EEE;
+      text-align: center;
+    }
+  }
+}
 
 
 

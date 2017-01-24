@@ -143,8 +143,32 @@
         {{#with context.unit}}
 
         {{#if isGeneral}}
+        <div class="edit-options">
+          <button class="btn left-edge">
+            <span class="btn_text">Change General</span>
+          </button>
+        </div>
         {{> databaseCard info=currentUnit}}
-        <button class="cta"><span class="btn_text">Change General</span></button>
+        <div class="edit-form-group">
+          <div class="form-group__row">
+            <div class="form-group__input">
+              <label for="edit-general__health">Attack</label>
+              <input type="text" id="edit-general__attack" name="edit-general__attack" value="{{currentUnit_attack}}">
+            </div>
+            <div class="form-group__input">
+              <label for="edit-general__health">Health</label>
+              <input type="text" id="edit-general__health" name="edit-general__health" value="{{currentUnit_health}}">
+            </div>
+          </div>
+        </div>
+        <div class="btn-bar">
+          <button class="btn left-edge">
+            <span class="btn_text">Cancel</span>
+          </button>
+          <button class="btn right-edge">
+            <span class="btn_text">Save</span>
+          </button>
+        </div>
         {{else}}
         {{> databaseCard info=currentUnit}}
         {{/if}}

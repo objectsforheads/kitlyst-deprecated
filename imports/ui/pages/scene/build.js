@@ -348,6 +348,15 @@ Template.scenebuilderBuild__stage.helpers({
   }
 })
 
+Template.scenebuilderBuild__editor.onCreated(function() {
+  var self = Template.instance();
+
+  self.currentUnit = {
+    attack: null,
+    health: null
+  }
+})
+
 Template.scenebuilderBuild__editor.helpers({
   editingBoardTile() {
     if (this.editorOpen.type === 'board-tile') {
@@ -366,6 +375,30 @@ Template.scenebuilderBuild__editor.helpers({
     return false;
   },
   currentUnit() {
-    return allCards.findOne({id: this.id}) || null;
+    if (allCards.findOne({id: this.id})) {
+      var card = allCards.findOne({id: this.id});
+      var currentUnit = Template.instance().currentUnit;
+
+      if (this.attack) {
+        card.attack = this.attack;
+      }
+      if (this.health) {
+        card.health = this.health;
+      }
+
+      currentUnit.attack = card.attack || null;
+      currentUnit.health = card.health || null;
+
+      Template.instance().currentUnit = currentUnit;
+
+      return card;
+    }
+    return false;
+  },
+  currentUnit_attack() {
+    return Template.instance().currentUnit.attack;
+  },
+  currentUnit_health() {
+    return Template.instance().currentUnit.health;
   }
 })
