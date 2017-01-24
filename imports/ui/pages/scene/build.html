@@ -135,11 +135,26 @@
 <template name="scenebuilderBuild__editor">
   <div class="scenebuilder__editor-modal {{#if editorOpen}}editor-open{{/if}}">
     {{#if editorOpen}}
-    <div class="scenebuilder__editor">
-      {{#if editingBoardTile}}
-      You are editing a tile
-      {{/if}}
+
+    {{#if editingBoardTile}}
+    <div class="scenebuilder__editor--board-tile">
+      <div class="editor__contents">
+        {{#if context.unit}}
+        {{#with context.unit}}
+
+        {{#if isGeneral}}
+        {{> databaseCard info=currentUnit}}
+        <button class="cta"><span class="btn_text">Change General</span></button>
+        {{else}}
+        {{> databaseCard info=currentUnit}}
+        {{/if}}
+
+        {{/with}}
+        {{/if}}
+      </div>
     </div>
+    {{/if}}
+
     {{/if}}
   </div>
 </template>

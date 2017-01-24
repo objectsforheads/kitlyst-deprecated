@@ -351,8 +351,21 @@ Template.scenebuilderBuild__stage.helpers({
 Template.scenebuilderBuild__editor.helpers({
   editingBoardTile() {
     if (this.editorOpen.type === 'board-tile') {
+      console.log(this)
       return true;
     }
     return false;
+  },
+  context() {
+    return this.editorOpen.context;
+  },
+  isGeneral() {
+    if (allCards.findOne({id: this.id}).race === 'General') {
+      return true;
+    }
+    return false;
+  },
+  currentUnit() {
+    return allCards.findOne({id: this.id}) || null;
   }
 })

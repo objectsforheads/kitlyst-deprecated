@@ -1235,13 +1235,21 @@ $cooldownHeight: 86px;
   }
 }
 
-.scenebuilder__editor {
+.scenebuilder__editor--board-tile {
   position: absolute;
   top: 0;
   left: 0;
-  width: 50%;
+  width: 500px; // card is 280px
   height: 100%;
   background: rgba(0,0,0,0.8);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .db-card {
+    margin: 0;
+  }
 }
 
 
