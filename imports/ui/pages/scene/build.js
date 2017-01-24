@@ -285,6 +285,10 @@ Template.scenebuilderBuild.events({
       context: this
     });
     return;
+  },
+  'click .closes-editor': function(e, template) {
+    template.editorContext.set(null);
+    return;
   }
 })
 
