@@ -364,6 +364,29 @@ Template.scenebuilderBuild__editor.onCreated(function() {
   self.editingTarget = new ReactiveDict();
 })
 
+Template.scenebuilderBuild__editor.events({
+  'keyup [name="edit-general__attack"]': function(e, template) {
+    var newAttack = Number($(e.currentTarget).val());
+    var oldAttack = template.editingTarget.get('attack');
+    console.log(newAttack)
+    console.log(oldAttack)
+    if (newAttack !== oldAttack) {
+      template.editingTarget.set('attack', newAttack);
+      console.log('set new attack')
+    }
+  },
+  'keyup [name="edit-general__health"]': function(e, template) {
+    var newHealth = Number($(e.currentTarget).val());
+    var oldHealth = template.editingTarget.get('health');
+    console.log(newHealth)
+    console.log(oldHealth)
+    if (newHealth !== oldHealth) {
+      template.editingTarget.set('health', newHealth);
+      console.log('set new health')
+    }
+  }
+})
+
 Template.scenebuilderBuild__editor.helpers({
   editingBoardTile() {
     if (this.editorOpen && this.editorOpen.type === 'board-tile') {
