@@ -144,24 +144,14 @@ pre {
   display: flex;
   align-items: center;
   justify-content: center;
-
-  .btn {
-    margin: 0 -5px;
-    margin-top: 0.75rem;
-
-    &.left-edge {
-      margin-left: 0;
-    }
-    &.right-edge {
-      margin-right: 0;
-    }
-  }
 }
 
 .btn {
   width: 174px; // button default (size of image)
   height: 54px; // button default (size of image)
 
+  margin: 0 -5px;
+  margin-top: 0.75rem;
   border: 0;
   padding: 0;
   font-family: 'Lato', sans-serif;
