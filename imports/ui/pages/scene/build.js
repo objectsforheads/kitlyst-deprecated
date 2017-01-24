@@ -251,28 +251,6 @@ Template.scenebuilderBuild.helpers({
   field() {
     return Template.instance().field.get();
   },
-  units() {
-
-
-
-
-    // For each row
-    units.forEach(function(row, rowNum) {
-      // For each column
-      row.forEach(function(column, colNum) {
-        if ( Object.keys(player1[rowNum][colNum]).length > 0 ) {
-          units[rowNum][colNum] = player1[rowNum][colNum];
-          units[rowNum][colNum].player = 1;
-        }
-        else if ( Object.keys(player2[rowNum][colNum]).length > 0 ) {
-          units[rowNum][colNum] = player2[rowNum][colNum];
-          units[rowNum][colNum].player = 2;
-        }
-      })
-    })
-
-    return units;
-  },
   player1() {
     return Template.instance().player1.get();
   },
@@ -368,21 +346,17 @@ Template.scenebuilderBuild__editor.events({
   'keyup [name="edit-general__attack"]': function(e, template) {
     var newAttack = Number($(e.currentTarget).val());
     var oldAttack = template.editingTarget.get('attack');
-    console.log(newAttack)
-    console.log(oldAttack)
+
     if (newAttack !== oldAttack) {
       template.editingTarget.set('attack', newAttack);
-      console.log('set new attack')
     }
   },
   'keyup [name="edit-general__health"]': function(e, template) {
     var newHealth = Number($(e.currentTarget).val());
     var oldHealth = template.editingTarget.get('health');
-    console.log(newHealth)
-    console.log(oldHealth)
+
     if (newHealth !== oldHealth) {
       template.editingTarget.set('health', newHealth);
-      console.log('set new health')
     }
   }
 })
