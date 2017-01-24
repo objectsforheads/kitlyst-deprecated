@@ -134,10 +134,9 @@
 
 <template name="scenebuilderBuild__editor">
   <div class="scenebuilder__editor-modal {{#if editorOpen}}editor-open{{/if}}">
-    {{#if editorOpen}}
 
-    {{#if editingBoardTile}}
     <div class="scenebuilder__editor--board-tile">
+      {{#if editingBoardTile}}
       <div class="editor__contents">
         {{#if context.unit}}
         {{#with context.unit}}
@@ -177,9 +176,7 @@
         {{/if}}
       </div>
       <button class="editor-closer closes-editor"></button>
+      {{/if}}
     </div>
-    {{/if}}
-
-    {{/if}}
   </div>
 </template>

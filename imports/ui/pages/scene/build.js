@@ -363,7 +363,7 @@ Template.scenebuilderBuild__editor.onCreated(function() {
 
 Template.scenebuilderBuild__editor.helpers({
   editingBoardTile() {
-    if (this.editorOpen.type === 'board-tile') {
+    if (this.editorOpen && this.editorOpen.type === 'board-tile') {
       console.log(this)
       return true;
     }

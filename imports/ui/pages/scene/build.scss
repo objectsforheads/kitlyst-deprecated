@@ -6,6 +6,8 @@
   height: 100%;
 
   font-family: 'Lato', sans-serif;
+
+  transition: filter 300ms;
 }
 
 .scenebuilder__set {
@@ -1224,12 +1226,11 @@ $cooldownHeight: 86px;
   height: 100%;
 
   transform: translateX(-50%);
-  opacity: 0;
   pointer-events: none;
-  transition: all 250ms;
+  transition: all 300ms;
 
   &.editor-open {
-    transform: initial;
+    transform: translateX(0);
     opacity: 1;
     pointer-events: initial;
   }
@@ -1246,6 +1247,11 @@ $cooldownHeight: 86px;
   height: 122px;
   background: url('/assets/img/scene/components/button_back_corner.png') no-repeat center center / cover;
   pointer-events: none;
+
+  transition: transform 150ms;
+  &:hover {
+    transform: translateX(-10px);
+  }
 
   // generating the active region
   &::after {
