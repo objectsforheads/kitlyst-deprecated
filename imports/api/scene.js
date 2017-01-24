@@ -130,5 +130,29 @@ Meteor.methods({
 
     Scenes.insert(scene);
     return scene.id;
+  },
+  'editor__general': function(arg) {
+    check(arg, {
+      scene: String,
+      owner: Number,
+      row: String,
+      column: String,
+      unit: {
+        id: Number,
+        attack: Number,
+        health: Number
+      }
+    })
+
+    var scene = Scenes.findOne({id: arg.scene});
+    scene['player'+arg.owner].units[arg.row][arg.column] = arg.unit;
+    var player1 = scene.player1;
+    var player2 = scene.player2;
+
+    Scenes.update({id: arg.scene}, {
+      $set: { player1: player1, player2: player2 }
+    });
+
+    return true;
   }
 })

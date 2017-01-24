@@ -361,6 +361,34 @@ Template.scenebuilderBuild__editor.events({
   }
 })
 
+Template.scenebuilderBuild__editor.events({
+  'click .editor__save-general': function(e, template) {
+    // HACK reconsider if we should keep functions in the editor context
+    // or collate them in the parent scenebuilder context
+    // either way it looks like this needs a refactor to store state in URL
+
+    // TODO: ownership verification
+    var general = {
+      scene: FlowRouter.getParam('hash'),
+      owner: template.data.editorOpen.context.unit.owner,
+      row: template.data.editorOpen.context.row,
+      column: template.data.editorOpen.context.column,
+      unit: {
+        id: template.data.editorOpen.context.unit.id,
+        attack: template.editingTarget.get('attack'),
+        health: template.editingTarget.get('health')
+      }
+    }
+
+    Meteor.call('editor__general', general, function() {
+      // The problem being: here, we want to set the editorContext to null
+      // since we're done with the editing modal, except that information
+      // is in a parent context so now we have to pass data between templates
+      // spoiler alert: it doesn't work
+    })
+  }
+})
+
 Template.scenebuilderBuild__editor.helpers({
   editingBoardTile() {
     if (this.editorOpen && this.editorOpen.type === 'board-tile') {
