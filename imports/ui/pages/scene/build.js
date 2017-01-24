@@ -70,16 +70,22 @@ Template.scenebuilderBuild.onCreated(function() {
           if ( Object.keys(defaults.units[rowNum][colNum]).length > 0 ) {
             tile.unit = {};
             tile.unit.id = defaults.units[rowNum][colNum].id;
+            tile.unit.attack = defaults.units[rowNum][colNum].attack || null;
+            tile.unit.health = defaults.units[rowNum][colNum].health || null;
           }
           if ( Object.keys(self.player1.get().units[rowNum][colNum]).length > 0 ) {
             tile.unit = {};
             tile.unit.id = self.player1.get().units[rowNum][colNum].id;
             tile.unit.owner = 1;
+            tile.unit.attack = self.player1.get().units[rowNum][colNum].attack || null;
+            tile.unit.health = self.player1.get().units[rowNum][colNum].health || null;
           }
           if ( Object.keys(self.player2.get().units[rowNum][colNum]).length > 0 ) {
             tile.unit = {};
             tile.unit.id = self.player2.get().units[rowNum][colNum].id;
             tile.unit.owner = 2;
+            tile.unit.attack = self.player2.get().units[rowNum][colNum].attack || null;
+            tile.unit.health = self.player2.get().units[rowNum][colNum].health || null;
           }
 
         })
@@ -355,16 +361,17 @@ Template.scenebuilderBuild__stage.helpers({
 Template.scenebuilderBuild__editor.onCreated(function() {
   var self = Template.instance();
 
-  self.currentUnit = {
-    attack: null,
-    health: null
-  }
+  self.editingTarget = new ReactiveDict();
 })
 
 Template.scenebuilderBuild__editor.helpers({
   editingBoardTile() {
     if (this.editorOpen && this.editorOpen.type === 'board-tile') {
-      console.log(this)
+      // Set editing target info if there's a unit
+      if (this.editorOpen.context.unit) {
+        Template.instance().editingTarget.set('attack', this.editorOpen.context.unit.attack);
+        Template.instance().editingTarget.set('health', this.editorOpen.context.unit.health);
+      }
       return true;
     }
     return false;
@@ -381,28 +388,18 @@ Template.scenebuilderBuild__editor.helpers({
   currentUnit() {
     if (allCards.findOne({id: this.id})) {
       var card = allCards.findOne({id: this.id});
-      var currentUnit = Template.instance().currentUnit;
 
-      if (this.attack) {
-        card.attack = this.attack;
-      }
-      if (this.health) {
-        card.health = this.health;
-      }
-
-      currentUnit.attack = card.attack || null;
-      currentUnit.health = card.health || null;
-
-      Template.instance().currentUnit = currentUnit;
+      card.attack = Template.instance().editingTarget.get('attack');
+      card.health = Template.instance().editingTarget.get('health');
 
       return card;
     }
     return false;
   },
   currentUnit_attack() {
-    return Template.instance().currentUnit.attack;
+    return Template.instance().editingTarget.get('attack') || null;
   },
   currentUnit_health() {
-    return Template.instance().currentUnit.health;
+    return Template.instance().editingTarget.get('health') || null;
   }
 })
