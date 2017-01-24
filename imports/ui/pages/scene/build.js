@@ -14,8 +14,82 @@ Template.scenebuilderBuild.onCreated(function() {
     } else {
       self.player1 = new ReactiveVar(Scenes.findOne().player1);
       self.player2 = new ReactiveVar(Scenes.findOne().player2);
+
+      self.field = new ReactiveVar()
+
+      var defaults = {
+        floors: [
+          [{}, {}, {}, {}, {type: 'manaspring'}, {}, {}, {}, {}],
+          [{}, {}, {}, {}, {}, {}, {}, {}, {}],
+          [{}, {}, {}, {}, {}, {type: 'manaspring'}, {}, {}, {}],
+          [{}, {}, {}, {}, {}, {}, {}, {}, {}],
+          [{}, {}, {}, {}, {type: 'manaspring'}, {}, {}, {}, {}]
+        ],
+        units: [
+          [{}, {}, {}, {}, {id: 'scene_manaspring'}, {}, {}, {}, {}],
+          [{}, {}, {}, {}, {}, {}, {}, {}, {}],
+          [{}, {}, {}, {}, {}, {id: 'scene_manaspring'}, {}, {}, {}],
+          [{}, {}, {}, {}, {}, {}, {}, {}, {}],
+          [{}, {}, {}, {}, {id: 'scene_manaspring'}, {}, {}, {}, {}]
+        ]
+      }
+
+      var field = [
+        [{}, {}, {}, {}, {}, {}, {}, {}, {}],
+        [{}, {}, {}, {}, {}, {}, {}, {}, {}],
+        [{}, {}, {}, {}, {}, {}, {}, {}, {}],
+        [{}, {}, {}, {}, {}, {}, {}, {}, {}],
+        [{}, {}, {}, {}, {}, {}, {}, {}, {}]
+      ]
+
+      // For each row
+      field.forEach(function(row, rowNum) {
+        // For each column
+        row.forEach(function(tile, colNum) {
+          // set the row and column position
+          tile.row = rowNum.toString();
+          tile.column = colNum.toString();
+
+          // if there's a floor modifier, apply that (p2 > p1 > default)
+          if ( Object.keys(defaults.floors[rowNum][colNum]).length > 0 ) {
+            tile.floor = {};
+            tile.floor.type = defaults.floors[rowNum][colNum].type;
+          }
+          if ( Object.keys(self.player1.get().floors[rowNum][colNum]).length > 0 ) {
+            tile.floor = {};
+            tile.floor.type = self.player1.get().floors[rowNum][colNum].type;
+            tile.floor.owner = 1;
+          }
+          if ( Object.keys(self.player2.get().floors[rowNum][colNum]).length > 0 ) {
+            tile.floor = {};
+            tile.floor.type = self.player2.get().floors[rowNum][colNum].type;
+            tile.floor.owner = 2;
+          }
+
+          // place the units (p2 > p1 > default)
+          if ( Object.keys(defaults.units[rowNum][colNum]).length > 0 ) {
+            tile.unit = {};
+            tile.unit.id = defaults.units[rowNum][colNum].id;
+          }
+          if ( Object.keys(self.player1.get().units[rowNum][colNum]).length > 0 ) {
+            tile.unit = {};
+            tile.unit.id = self.player1.get().units[rowNum][colNum].id;
+            tile.unit.owner = 1;
+          }
+          if ( Object.keys(self.player2.get().units[rowNum][colNum]).length > 0 ) {
+            tile.unit = {};
+            tile.unit.id = self.player2.get().units[rowNum][colNum].id;
+            tile.unit.owner = 2;
+          }
+
+        })
+      })
+
+      self.field.set(field);
     }
   })
+
+  self.editorContext = new ReactiveVar(null);
 
   // TODO look into if this collection is persistent across the session
   // scenebuilder specific units
@@ -169,108 +243,7 @@ Template.scenebuilderBuild.onCreated(function() {
 
 Template.scenebuilderBuild.helpers({
   field() {
-    var player1 = Template.instance().player1.get();
-    var player2 = Template.instance().player2.get();
-
-    var defaults = {
-      floors: [
-        [
-          {}, {}, {}, {}, {type: 'manaspring'}, {}, {}, {}, {}
-        ],
-        [
-          {}, {}, {}, {}, {}, {}, {}, {}, {}
-        ],
-        [
-          {}, {}, {}, {}, {}, {type: 'manaspring'}, {}, {}, {}
-        ],
-        [
-          {}, {}, {}, {}, {}, {}, {}, {}, {}
-        ],
-        [
-          {}, {}, {}, {}, {type: 'manaspring'}, {}, {}, {}, {}
-        ]
-      ],
-      units: [
-        [
-          {}, {}, {}, {}, {id: 'scene_manaspring'}, {}, {}, {}, {}
-        ],
-        [
-          {}, {}, {}, {}, {}, {}, {}, {}, {}
-        ],
-        [
-          {}, {}, {}, {}, {}, {id: 'scene_manaspring'}, {}, {}, {}
-        ],
-        [
-          {}, {}, {}, {}, {}, {}, {}, {}, {}
-        ],
-        [
-          {}, {}, {}, {}, {id: 'scene_manaspring'}, {}, {}, {}, {}
-        ]
-      ]
-    }
-
-    var field = [
-      [
-        {}, {}, {}, {}, {}, {}, {}, {}, {}
-      ],
-      [
-        {}, {}, {}, {}, {}, {}, {}, {}, {}
-      ],
-      [
-        {}, {}, {}, {}, {}, {}, {}, {}, {}
-      ],
-      [
-        {}, {}, {}, {}, {}, {}, {}, {}, {}
-      ],
-      [
-        {}, {}, {}, {}, {}, {}, {}, {}, {}
-      ]
-    ]
-
-    // For each row
-    field.forEach(function(row, rowNum) {
-      // For each column
-      row.forEach(function(tile, colNum) {
-        // set the row and column position
-        tile.row = rowNum.toString();
-        tile.column = colNum.toString();
-
-        // if there's a floor modifier, apply that (p2 > p1 > default)
-        if ( Object.keys(defaults.floors[rowNum][colNum]).length > 0 ) {
-          tile.floor = {};
-          tile.floor.type = defaults.floors[rowNum][colNum].type;
-        }
-        if ( Object.keys(player1.floors[rowNum][colNum]).length > 0 ) {
-          tile.floor = {};
-          tile.floor.type = player1.floors[rowNum][colNum].type;
-          tile.floor.owner = 1;
-        }
-        if ( Object.keys(player2.floors[rowNum][colNum]).length > 0 ) {
-          tile.floor = {};
-          tile.floor.type = player2.floors[rowNum][colNum].type;
-          tile.floor.owner = 2;
-        }
-
-        // place the units (p2 > p1 > default)
-        if ( Object.keys(defaults.units[rowNum][colNum]).length > 0 ) {
-          tile.unit = {};
-          tile.unit.id = defaults.units[rowNum][colNum].id;
-        }
-        if ( Object.keys(player1.units[rowNum][colNum]).length > 0 ) {
-          tile.unit = {};
-          tile.unit.id = player1.units[rowNum][colNum].id;
-          tile.unit.owner = 1;
-        }
-        if ( Object.keys(player2.units[rowNum][colNum]).length > 0 ) {
-          tile.unit = {};
-          tile.unit.id = player2.units[rowNum][colNum].id;
-          tile.unit.owner = 2;
-        }
-
-      })
-    })
-
-    return field;
+    return Template.instance().field.get();
   },
   units() {
 
@@ -299,6 +272,19 @@ Template.scenebuilderBuild.helpers({
   },
   player2() {
     return Template.instance().player2.get();
+  },
+  editorOpen() {
+    return Template.instance().editorContext.get() || null;
+  }
+})
+
+Template.scenebuilderBuild.events({
+  'click .opens-editor': function(e, template) {
+    Template.instance().editorContext.set({
+      type: $(e.currentTarget).attr('data-editor'),
+      context: this
+    });
+    return;
   }
 })
 
@@ -357,6 +343,15 @@ Template.scenebuilderBuild__stage.helpers({
         $('head').append('<link href="/css/sprites/id/' + this.id + '.min.css" rel="stylesheet">')
       }
       return allCards.findOne({id: this.id}) || sceneCards.findOne({id: this.id});
+    }
+    return false;
+  }
+})
+
+Template.scenebuilderBuild__editor.helpers({
+  editingBoardTile() {
+    if (this.editorOpen.type === 'board-tile') {
+      return true;
     }
     return false;
   }

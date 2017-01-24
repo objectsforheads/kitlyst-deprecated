@@ -1212,6 +1212,42 @@ $cooldownHeight: 86px;
 
 
 
+// Modal for editing parts of the scene
+.scenebuilder.editor-open {
+  filter: blur(10px);
+}
+.scenebuilder__editor-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  transform: translateX(-50%);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 250ms;
+
+  &.editor-open {
+    transform: initial;
+    opacity: 1;
+    pointer-events: initial;
+  }
+}
+
+.scenebuilder__editor {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 100%;
+  background: rgba(0,0,0,0.8);
+}
+
+
+
+
+
 
 
 
