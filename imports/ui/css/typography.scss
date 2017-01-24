@@ -183,6 +183,58 @@ pre {
   }
 }
 
+.btn-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn {
+  width: 174px;
+  height: 54px;
+
+  background: url('/assets/img/backgrounds/button_primary_middle.png') no-repeat center center /contain;
+  &:hover {
+    background-image: url('/assets/img/backgrounds/button_primary_middle_glow.png');
+  }
+
+  &.condensed {
+    width: 78px;
+    background-image: url('/assets/img/backgrounds/button_icon_middle.png');
+    &:hover {
+      background-image: url('/assets/img/backgrounds/button_icon_middle_glow.png');
+    }
+  }
+
+  &.left-edge {
+    background-image: url('/assets/img/backgrounds/button_primary_left.png');
+    &:hover {
+      background-image: url('/assets/img/backgrounds/button_primary_left_glow.png');
+    }
+  }
+
+  &.left-edge.condensed {
+    background-image: url('/assets/img/backgrounds/button_icon_left.png');
+    &:hover {
+      background-image: url('/assets/img/backgrounds/button_icon_left_glow.png');
+    }
+  }
+
+  &.right-edge {
+    background-image: url('/assets/img/backgrounds/button_primary_right.png');
+    &:hover {
+      background-image: url('/assets/img/backgrounds/button_primary_right_glow.png');
+    }
+  }
+
+  &.right-edge.condensed {
+    background-image: url('/assets/img/backgrounds/button_icon_right.png');
+    &:hover {
+      background-image: url('/assets/img/backgrounds/button_icon_right_glow.png');
+    }
+  }
+}
+
 
 
 
