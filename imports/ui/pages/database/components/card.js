@@ -25,6 +25,12 @@ Template.databaseCard.helpers({
   dynamicCard() {
     if (this.layout === 'dynamicCard') { return true; }
   },
+  blankCard() {
+    if (this.layout === 'blankCard') { return true; }
+  },
+  blankUnit() {
+    if (this.info === 'Unit') { return true; }
+  },
   slugifiedName() {
     return this.info.name.replace(/['"]+/g, "").replace(/[^a-zA-Z0-9]+/g,"-").replace("/--/g", "-").toLowerCase();
   },

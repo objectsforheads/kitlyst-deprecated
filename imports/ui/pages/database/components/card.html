@@ -126,6 +126,32 @@
     <p class="card-description"><span class="value">{{parsedDescription}}</span></p>
   </div>
   {{/if}}
+  {{#if blankCard}}
+  <div class="db-card" data-type="{{this.info}}">
+    <div class="mana-cost"><span class="value"></span></div>
+    <div class="card-sprite">
+      <div class="sprite"></div>
+    </div>
+    <div class="card-caption">
+      <div class="name"><span class="value"></span></div>
+      <p class="type">
+        <span class="value"></span>
+      </p>
+      <p class="rarity"><span class="value"></span></p>
+      {{#if blankUnit}}
+      <ul class="stats">
+          <li class="stat-property stat-atk">
+              <span class="value">{{this.info.attack}}</span>
+          </li>
+          <li class="stat-property stat-hp">
+              <span class="value">{{this.info.health}}</span>
+          </li>
+      </ul>
+      {{/if}}
+    </div>
+    <p class="card-description"><span class="value"></span></p>
+  </div>
+  {{/if}}
   {{#unless this.layout}}
   <div class="db-card" data-type="{{this.info.type}}">
     <div class="mana-cost"><span class="value">{{this.info.manaCost}}</span></div>
