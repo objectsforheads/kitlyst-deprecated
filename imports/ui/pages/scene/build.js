@@ -12,10 +12,16 @@ Template.scenebuilderBuild.onCreated(function() {
     if (err) {
       sAlert.error(error.reason);
     } else {
-      self.player1 = new ReactiveVar(Scenes.findOne().player1);
-      self.player2 = new ReactiveVar(Scenes.findOne().player2);
+      self.player1 = new ReactiveVar(null);
+      self.player2 = new ReactiveVar(null);
+      self.field = new ReactiveVar(null)
+    }
+  })
 
-      self.field = new ReactiveVar()
+  self.autorun(()=> {
+    if (Scenes.findOne()) {
+      self.player1.set(Scenes.findOne().player1);
+      self.player2.set(Scenes.findOne().player2);
 
       var defaults = {
         floors: [
