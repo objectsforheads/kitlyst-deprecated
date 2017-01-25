@@ -183,7 +183,7 @@
       <div class="card-gallery__contents">
         {{#if galleryContext}}
         {{#each galleryContext}}
-        {{> databaseCard info=this}}
+        <div class="editor__change-card">{{> databaseCard info=this}}</div>
         {{/each}}
         {{/if}}
       </div>

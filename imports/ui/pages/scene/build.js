@@ -401,6 +401,9 @@ Template.scenebuilderBuild__editor.events({
     if (newHealth !== oldHealth) {
       template.editingTarget.set('health', newHealth);
     }
+  },
+  'click .editor__change-card': function(e, template) {
+    return template.editingTarget.set('id', this.id);
   }
 })
 
