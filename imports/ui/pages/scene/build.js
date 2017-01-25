@@ -465,10 +465,11 @@ Template.scenebuilderBuild__editor.helpers({
     return false;
   },
   currentUnit() {
-    if (allCards.findOne({id: this.id})) {
-      var card = allCards.findOne({id: this.id});
+    var id = Template.instance().editingTarget.get('id');
+    if (allCards.findOne({id: id})) {
+      var card = allCards.findOne({id: id});
 
-      for (var key in Template.instance().editingTarget.keys) {
+      for (var key in Template.instance().editingTarget.all()) {
         card[key] = Template.instance().editingTarget.keys[key];
       }
 
