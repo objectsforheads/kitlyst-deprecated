@@ -361,17 +361,15 @@ Template.scenebuilderBuild__player.helpers({
 
 Template.scenebuilderBuild__stage.helpers({
   currentUnit() {
-    if (this.id) {
-      if ( $('head').find('link[href*="css/sprites/id/' + this.id + '\.min.css"]').length === 0 ) {
-        $('head').append('<link href="/css/sprites/id/' + this.id + '.min.css" rel="stylesheet">')
+    var self = this;
+    if (self.id) {
+      if ( $('head').find('link[href*="css/sprites/id/' + self.id + '\.min.css"]').length === 0 ) {
+        $('head').append('<link href="/css/sprites/id/' + self.id + '.min.css" rel="stylesheet">')
       }
 
-      var card = allCards.findOne({id: this.id}) || sceneCards.findOne({id: this.id});
-      if (this.attack) {
-        card.attack = this.attack;
-      }
-      if (this.health) {
-        card.health = this.health;
+      var card = allCards.findOne({id: self.id}) || sceneCards.findOne({id: self.id});
+      for (var key in self) {
+        card[key] = self[key];
       }
       return card;
     }
@@ -446,8 +444,9 @@ Template.scenebuilderBuild__editor.helpers({
     if (this.editorOpen && this.editorOpen.type === 'board-tile') {
       // Set editing target info if there's a unit
       if (this.editorOpen.context.unit) {
-        Template.instance().editingTarget.set('attack', this.editorOpen.context.unit.attack);
-        Template.instance().editingTarget.set('health', this.editorOpen.context.unit.health);
+        for (var key in this.editorOpen.context.unit) {
+          Template.instance().editingTarget.set(key, this.editorOpen.context.unit[key])
+        }
       }
       return true;
     }
@@ -469,8 +468,9 @@ Template.scenebuilderBuild__editor.helpers({
     if (allCards.findOne({id: this.id})) {
       var card = allCards.findOne({id: this.id});
 
-      card.attack = Template.instance().editingTarget.get('attack');
-      card.health = Template.instance().editingTarget.get('health');
+      for (var key in Template.instance().editingTarget.keys) {
+        card[key] = Template.instance().editingTarget.keys[key];
+      }
 
       return card;
     }
