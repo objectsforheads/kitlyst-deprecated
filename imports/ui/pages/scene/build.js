@@ -264,6 +264,9 @@ Template.scenebuilderBuild.helpers({
     return Template.instance().player2.get();
   },
   editorOpen() {
+    return FlowRouter.getQueryParam('editing');
+  },
+  editorContext() {
     return Template.instance().editorContext.get() || null;
   }
 })
@@ -274,10 +277,12 @@ Template.scenebuilderBuild.events({
       type: $(e.currentTarget).attr('data-editor'),
       context: this
     });
+    FlowRouter.setQueryParams({editing: this.row + this.column})
     return;
   },
   'click .closes-editor': function(e, template) {
     template.editorContext.set(null);
+    FlowRouter.setQueryParams({editing: null})
     return;
   }
 })
@@ -379,7 +384,6 @@ Template.scenebuilderBuild__editor.events({
   'click .editor__save-general': function(e, template) {
     // HACK reconsider if we should keep functions in the editor context
     // or collate them in the parent scenebuilder context
-    // either way it looks like this needs a refactor to store state in URL
 
     // TODO: ownership verification
     var general = {
@@ -394,16 +398,20 @@ Template.scenebuilderBuild__editor.events({
       }
     }
 
-    Meteor.call('editor__general', general, function() {
-      // The problem being: here, we want to set the editorContext to null
-      // since we're done with the editing modal, except that information
-      // is in a parent context so now we have to pass data between templates
-      // spoiler alert: it doesn't work
+    Meteor.call('editor__general', general, function(err, data) {
+      if (err) {
+
+      } else {
+        FlowRouter.setQueryParams({editing: null});
+      }
     })
   }
 })
 
 Template.scenebuilderBuild__editor.helpers({
+  editorOpen() {
+    return FlowRouter.getQueryParam('editing');
+  },
   editingBoardTile() {
     if (this.editorOpen && this.editorOpen.type === 'board-tile') {
       // Set editing target info if there's a unit
