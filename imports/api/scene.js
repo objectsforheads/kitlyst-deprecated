@@ -146,6 +146,7 @@ Meteor.methods({
 
     var scene = Scenes.findOne({id: arg.scene});
     scene['player'+arg.owner].units[arg.row][arg.column] = arg.unit;
+    scene['player'+arg.owner].general.health = arg.unit.health;
     var player1 = scene.player1;
     var player2 = scene.player2;
 
