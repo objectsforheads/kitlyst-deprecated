@@ -189,8 +189,24 @@
       {{/if}}
       {{#if editingArtifactSlot}}
       <div class="edit-options">
-        <button class="btn left-edge opens-card-gallery">
-          <span class="btn_text">Change Artifact</span>
+        <button class="btn left-edge condensed">
+          <span class="btn_text"><i class="fa fa-trash"></i></span>
+        </button>
+        <button class="btn">
+          <span class="btn_text opens-card-gallery">Change Artifact</span>
+        </button>
+      </div>
+      {{#if currentUnit}}
+      {{> databaseCard info=currentUnit layout="dynamicCard"}}
+      {{else}}
+      <div>{{> databaseCard layout="blankCard" info="Artifact"}}</div>
+      {{/if}}
+      <div class="btn-bar">
+        <button class="btn left-edge closes-editor">
+          <span class="btn_text">Cancel</span>
+        </button>
+        <button class="btn right-edge editor__save-artifact">
+          <span class="btn_text">Save</span>
         </button>
       </div>
       {{/if}}
