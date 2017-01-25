@@ -1313,7 +1313,18 @@ $cooldownHeight: 86px;
   }
 }
 
-.scenebuilder__editor--board-tile {
+.scenebuilder__editor--board-tile,
+.scenebuilder__editor--artifact-slot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .db-card {
+    margin: 0;
+  }
+}
+
+.editor__contents {
   position: absolute;
   top: 0;
   left: 0;
@@ -1323,16 +1334,6 @@ $cooldownHeight: 86px;
 
   display: flex;
   justify-content: center;
-  align-items: center;
-
-  .db-card {
-    margin: 0;
-  }
-}
-
-.editor__contents {
-  display: flex;
-  flex-direction: column;
   align-items: center;
 
   .edit-options {
