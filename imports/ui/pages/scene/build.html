@@ -1,6 +1,5 @@
 <template name="scenebuilderBuild">
   <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900|Open+Sans:300,400,600,700,800" rel="stylesheet">
-  {{#if Template.subscriptionsReady}}
   <div class="scenebuilder {{#if editorOpen}}editor-open{{/if}}">
     <div class="scenebuilder__set" data-battlemap="1">
       <div class="set__stage"></div>
@@ -9,11 +8,14 @@
         <div class="set__prop set__prop--2"></div>
       </div>
     </div>
+    {{#if Template.subscriptionsReady}}
     {{> scenebuilderBuild__stage field=field}}
 
     {{> scenebuilderBuild__player player=player1}}
     {{> scenebuilderBuild__player player=player2}}
+    {{/if}}
   </div>
+  {{#if Template.subscriptionsReady}}
   {{> scenebuilderBuild__editor editorOpen=editorContext galleryContext=galleryContext}}
   {{/if}}
 </template>
