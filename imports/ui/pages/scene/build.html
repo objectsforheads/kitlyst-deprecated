@@ -14,7 +14,7 @@
     {{> scenebuilderBuild__player player=player1}}
     {{> scenebuilderBuild__player player=player2}}
   </div>
-  {{> scenebuilderBuild__editor editorOpen=editorContext}}
+  {{> scenebuilderBuild__editor editorOpen=editorContext galleryContext=galleryContext}}
   {{/if}}
 </template>
 
@@ -180,7 +180,13 @@
     </div>
 
     <div class="scenebuilder__card-gallery">
-      <div class="card-gallery__contents"></div>
+      <div class="card-gallery__contents">
+        {{#if galleryContext}}
+        {{#each galleryContext}}
+        {{> databaseCard info=this}}
+        {{/each}}
+        {{/if}}
+      </div>
     </div>
   </div>
 </template>

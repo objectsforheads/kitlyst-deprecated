@@ -102,6 +102,7 @@ Template.scenebuilderBuild.onCreated(function() {
   })
 
   self.editorContext = new ReactiveVar(null);
+  self.galleryContext = new ReactiveVar(null);
 
   // TODO look into if this collection is persistent across the session
   // scenebuilder specific units
@@ -268,6 +269,9 @@ Template.scenebuilderBuild.helpers({
   },
   editorContext() {
     return Template.instance().editorContext.get() || null;
+  },
+  galleryContext() {
+    return Template.instance().galleryContext.get() || null;
   }
 })
 
@@ -278,6 +282,17 @@ Template.scenebuilderBuild.events({
       context: this
     });
     FlowRouter.setQueryParams({editing: this.row + this.column})
+
+    // also set the card gallery context here
+    // we could set it somewhere more publically
+    // but that would also make it easier to modify client side
+    // and then weird things can happen
+    // which, while hilarious, is not what we really want
+
+    // HACK this seems a little fragle - look into a better way to organize this
+    if (this.unit && allCards.findOne({id: this.unit.id}).race === 'General') {
+      template.galleryContext.set({race: 'General'});
+    }
     return;
   },
   'click .closes-editor': function(e, template) {
@@ -437,6 +452,9 @@ Template.scenebuilderBuild__editor.helpers({
   },
   context() {
     return this.editorOpen.context;
+  },
+  galleryContext() {
+    return allCards.find(this.galleryContext, {sort: {id: 1}});
   },
   isGeneral() {
     if (allCards.findOne({id: this.id}).race === 'General') {
