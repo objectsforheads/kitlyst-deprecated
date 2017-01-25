@@ -400,7 +400,7 @@ Template.scenebuilderBuild__editor.events({
 
     Meteor.call('editor__general', general, function(err, data) {
       if (err) {
-
+        sAlert.error(error.reason);
       } else {
         FlowRouter.setQueryParams({editing: null});
       }
