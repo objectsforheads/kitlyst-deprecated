@@ -88,7 +88,11 @@
       {{#each field}}
       <div class="board__row">
         {{#each this}}
-        <div class="board-square opens-editor" data-row="{{this.row}}" data-column="{{this.column}}" data-editor="board-tile"></div>
+        <div class="board-square opens-editor" data-row="{{this.row}}" data-column="{{this.column}}" data-editor="board-tile">
+          {{#if this.unit}}
+          <div class="tile-drag-unit"></div>
+          {{/if}}
+        </div>
         {{/each}}
       </div>
       {{/each}}
@@ -118,11 +122,18 @@
           {{#if this.unit}}
           {{#with this.unit}}
           <div class="unit" data-attack="{{currentUnit.attack}}" data-health="{{currentUnit.health}}" data-player="{{this.owner}}">
+            {{#if draggingUnit}}
+            <div class="tile-object sprite id_{{draggingUnit.id}} dragged-unit-sprite idle" data-player="{{draggingUnit.owner}}"></div>
+            {{/if}}
             <div class="tile-object sprite id_{{currentUnit.id}} idle"></div>
           </div>
           {{/with}}
           {{else}}
-          <div class="unit"></div>
+          <div class="unit">
+            {{#if draggingUnit}}
+            <div class="tile-object sprite id_{{draggingUnit.id}} dragged-unit-sprite idle" data-player="{{draggingUnit.owner}}"></div>
+            {{/if}}
+          </div>
           {{/if}}
           {{/each}}
         </div>

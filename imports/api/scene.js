@@ -156,5 +156,32 @@ Meteor.methods({
     });
 
     return true;
+  },
+  'scene__airdropUnit': function(arg) {
+    check(arg, {
+      scene: String,
+      original: {
+        row: String,
+        column: String,
+        unit: {
+          owner: Match.Optional(Number),
+          id: Number,
+          attack: Number,
+          health: Number
+        }
+      },
+      airdrop: {
+        row: String,
+        column: String
+      }
+    })
+
+    var owner = arg.original.unit.owner;
+    var scene = Scenes.findOne({id: arg.scene});
+    scene['player'+owner].units[arg.airdrop.row][arg.airdrop.column] = arg.original.unit; scene['player'+owner].units[arg.original.row][arg.original.column] = {};
+
+    Scenes.update({id: arg.scene}, scene);
+
+    return true;
   }
 })

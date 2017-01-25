@@ -124,6 +124,15 @@ $tileScale: 0.4625;
       background: rgba(255,0,0,0.33);
     }
   }
+
+  .tile-drag-unit {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10000;
+  }
 }
 
 
@@ -283,6 +292,41 @@ $tileScale: 0.4625;
     height: 44px;
     background: url('/assets/img/scene/components/manaspring.png') no-repeat center center / cover;
     bottom: 60px; // magic number: estimating positioning
+  }
+
+
+
+
+
+  .dragged-unit-sprite {
+    opacity: 0;
+
+    &[data-player="2"] {
+      transform: scale(-2.5, 2.5) translateX(-50%);
+    }
+  }
+
+  .drag-origin {
+    .dragged-unit-sprite {
+      opacity: 1;
+    }
+    .dragged-unit-sprite ~ * {
+      opacity: 0;
+    }
+  }
+  .drag-end {
+    .dragged-unit-sprite {
+      opacity: 0.75;
+    }
+    .dragged-unit-sprite ~ * {
+      opacity: 0;
+    }
+  }
+
+  .drag-origin.drag-end {
+    .dragged-unit-sprite {
+      opacity: 1;
+    }
   }
 }
 

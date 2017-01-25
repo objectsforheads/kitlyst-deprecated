@@ -3,6 +3,9 @@ import './build.scss';
 
 import '../database/components/card.js';
 
+import dragula from 'dragula';
+import '/node_modules/dragula/dist/dragula.min.css';
+
 Template.scenebuilderBuild.onCreated(function() {
   var self = Template.instance();
 
@@ -359,6 +362,76 @@ Template.scenebuilderBuild__player.helpers({
   }
 })
 
+Template.scenebuilderBuild__stage.onCreated(function() {
+  var self = Template.instance();
+  self.draggingUnit = new ReactiveVar(null);
+})
+
+Template.scenebuilderBuild__stage.onRendered(function() {
+  var self = Template.instance();
+  this.drake = dragula($('.board-square').toArray());
+
+  this.drake.on("drag", (el, target, source, sibling) => {
+    // We're starting a unit dragging interaction
+    // this means that the user should be able to:
+    // a. click on the unit and drag it to another tile
+    // b. there should be a indicator of where the unit will drop
+    // c. if there's another unit on the board, replace it
+
+    // Get the unit we're dragging
+    self.draggingUnit.set(Blaze.getData(el).unit);
+
+    // Set the tile as the drag-origin
+    $(source).addClass('drag-origin');
+  });
+
+  this.drake.on("over", (el, container, source) => {
+    // this.drake.cancel(true);
+    // Set tile as potential drag-end
+    // But only if the player has space to drop
+
+    // Units are in a different container
+    // so use row and column to target appropriately
+    var row = $(container).attr('data-row');
+    var column = $(container).attr('data-column');
+    var unitOwner = Blaze.getData(container)
+    if (!Blaze.getData(container).unit || !Blaze.getData(container).unit.owner || Blaze.getData(container).unit.owner === Blaze.getData(source).unit.owner) {
+      $('.units__row:eq('+row+')').find('.unit:eq('+column+')').addClass('drag-end');
+    }
+  });
+
+  this.drake.on("out", (el, container, source) => {
+    // Tile is not drag end, remove class
+    $('.drag-end').removeClass('drag-end');
+  });
+
+  this.drake.on("dragend", (el, target, source, sibling) => {
+    this.drake.cancel(true);
+    self.draggingUnit.set(null);
+
+    // reset all drag states
+    $('.drag-origin').removeClass('drag-origin');
+    $('.drag-end').removeClass('drag-end');
+  });
+
+  this.drake.on("drop", (el, target, source, sibling) => {
+    this.drake.cancel(true);
+    // Dropping the unit on a different tile,
+    // Send the unit origin data and airdop point to server
+    var coordinates = {
+      scene: FlowRouter.getParam('hash'),
+      original: Blaze.getData(source),
+      airdrop: {
+        row: $(target).attr('data-row'),
+        column: $(target).attr('data-column')
+      }
+    }
+    // We don't need floor data to airdrop
+    delete coordinates.original.floor;
+    Meteor.call('scene__airdropUnit', coordinates)
+  });
+})
+
 Template.scenebuilderBuild__stage.helpers({
   currentUnit() {
     var self = this;
@@ -371,6 +444,16 @@ Template.scenebuilderBuild__stage.helpers({
       for (var key in self) {
         card[key] = self[key];
       }
+      return card;
+    }
+    return false;
+  },
+  draggingUnit() {
+    // HACK this might be running too many times - check it
+    var unit = Template.instance().draggingUnit.get();
+    if (unit && unit.id) {
+      var card = allCards.findOne({id: unit.id});
+      card.owner = unit.owner;
       return card;
     }
     return false;
