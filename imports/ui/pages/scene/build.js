@@ -497,6 +497,9 @@ Template.scenebuilderBuild__editor.events({
   },
   'click .editor__change-card': function(e, template) {
     return template.editingTarget.set('id', this.id);
+  },
+  'click .closes-editor': function(e, template) {
+    return template.editingTarget.clear()
   }
 })
 
