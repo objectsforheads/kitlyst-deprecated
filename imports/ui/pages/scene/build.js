@@ -283,6 +283,15 @@ Template.scenebuilderBuild.events({
   'click .closes-editor': function(e, template) {
     template.editorContext.set(null);
     FlowRouter.setQueryParams({editing: null})
+    FlowRouter.setQueryParams({gallery: null})
+    return;
+  },
+  'click .opens-card-gallery': function(e, template) {
+    FlowRouter.setQueryParams({gallery: true})
+    return;
+  },
+  'click .closes-card-gallery': function(e, template) {
+    FlowRouter.setQueryParams({gallery: null})
     return;
   }
 })
@@ -411,6 +420,9 @@ Template.scenebuilderBuild__editor.events({
 Template.scenebuilderBuild__editor.helpers({
   editorOpen() {
     return FlowRouter.getQueryParam('editing');
+  },
+  cardGalleryOpen() {
+    return FlowRouter.getQueryParam('gallery')
   },
   editingBoardTile() {
     if (this.editorOpen && this.editorOpen.type === 'board-tile') {

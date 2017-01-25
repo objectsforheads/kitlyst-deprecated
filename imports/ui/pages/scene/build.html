@@ -133,7 +133,7 @@
 </template>
 
 <template name="scenebuilderBuild__editor">
-  <div class="scenebuilder__editor-modal {{#if editorOpen}}editor-open{{/if}}">
+  <div class="scenebuilder__editor-modal {{#if editorOpen}}editor-open{{/if}} {{#if cardGalleryOpen}}card-gallery-open{{/if}}">
 
     <div class="scenebuilder__editor--board-tile">
       {{#if editingBoardTile}}
@@ -143,7 +143,7 @@
 
         {{#if isGeneral}}
         <div class="edit-options">
-          <button class="btn left-edge">
+          <button class="btn left-edge opens-card-gallery">
             <span class="btn_text">Change General</span>
           </button>
         </div>
@@ -177,6 +177,10 @@
       </div>
       <button class="editor-closer closes-editor"></button>
       {{/if}}
+    </div>
+
+    <div class="scenebuilder__card-gallery">
+      <div class="card-gallery__contents"></div>
     </div>
   </div>
 </template>
