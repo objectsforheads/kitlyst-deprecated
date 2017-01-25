@@ -307,6 +307,9 @@ Template.scenebuilderBuild.events({
     }
     return;
   },
+  'click [data-editor="artifact-slot"]': function(e, template) {
+    template.galleryContext.set({type: 'Artifact'});
+  },
   'click .closes-editor': function(e, template) {
     template.editorContext.set(null);
     FlowRouter.setQueryParams({editing: null})
@@ -545,11 +548,17 @@ Template.scenebuilderBuild__editor.helpers({
     }
     return false;
   },
+  editingArtifactSlot() {
+    if (this.editorOpen && this.editorOpen.type === 'artifact-slot') {
+      return true;
+    }
+    return false;
+  },
   context() {
     return this.editorOpen.context;
   },
   galleryContext() {
-    return allCards.find(this.galleryContext, {sort: {id: 1}});
+    return allCards.find(this.galleryContext, {sort: {faction: 1, set:1, id: 1}});
   },
   isGeneral() {
     if (allCards.findOne({id: this.id}).race === 'General') {

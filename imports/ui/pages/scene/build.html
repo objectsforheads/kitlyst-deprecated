@@ -54,7 +54,7 @@
     </div>
     <div class="player__general-artifacts">
       {{#each player.artifacts}}
-      <div class="general-artifact" data-durability="{{this.durability}}">
+      <div class="general-artifact opens-editor" data-editor="artifact-slot" data-durability="{{this.durability}}">
         {{#if this.id}}
         {{loadCurrentArtifact}}
         <div class="sprite id_{{this.id}} passive"></div>
@@ -185,6 +185,13 @@
 
         {{/with}}
         {{/if}}
+      </div>
+      {{/if}}
+      {{#if editingArtifactSlot}}
+      <div class="edit-options">
+        <button class="btn left-edge opens-card-gallery">
+          <span class="btn_text">Change Artifact</span>
+        </button>
       </div>
       {{/if}}
       <button class="editor-closer closes-editor"></button>
