@@ -9,7 +9,7 @@ import '/node_modules/dragula/dist/dragula.min.css';
 Template.scenebuilderBuild.onCreated(function() {
   var self = Template.instance();
 
-  self.subscribe('someCards', {});
+  self.subscribe('someCards', { race: 'General' })
 
   self.subscribe('buildScene', FlowRouter.getParam('hash'), function(err, data) {
     if (err) {
@@ -25,6 +25,15 @@ Template.scenebuilderBuild.onCreated(function() {
     if (Scenes.findOne()) {
       self.player1.set(Scenes.findOne().player1);
       self.player2.set(Scenes.findOne().player2);
+
+      self.subscribe('someCards', { $or: [
+        { faction: { $in: [
+          allCards.findOne({id: self.player1.get().general.id}).faction,
+          allCards.findOne({id: self.player2.get().general.id}).faction,
+          'Neutral'
+        ] } },
+        { race: 'General' }
+      ] });
 
       var defaults = {
         floors: [
