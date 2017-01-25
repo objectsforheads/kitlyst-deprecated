@@ -417,7 +417,7 @@ Template.scenebuilderBuild__editor.events({
       row: template.data.editorOpen.context.row,
       column: template.data.editorOpen.context.column,
       unit: {
-        id: template.data.editorOpen.context.unit.id,
+        id: template.editingTarget.get('id'),
         attack: template.editingTarget.get('attack'),
         health: template.editingTarget.get('health')
       }
@@ -428,6 +428,7 @@ Template.scenebuilderBuild__editor.events({
         sAlert.error(error.reason);
       } else {
         FlowRouter.setQueryParams({editing: null});
+        FlowRouter.setQueryParams({gallery: null});
       }
     })
   }
