@@ -157,6 +157,24 @@ Meteor.methods({
 
     return true;
   },
+  'editor__artifact': function(arg) {
+    check(arg, {
+      scene: String,
+      owner: Number,
+      slot: Number,
+      id: Number,
+      durability: Number
+    })
+
+    var scene = Scenes.findOne({id: arg.scene});
+    scene['player'+arg.owner].artifacts[arg.slot] = {
+      id: arg.id,
+      durability: arg.durability
+    }
+
+    Scenes.update({id: arg.scene}, scene);
+    return true;
+  },
   'scene__airdropUnit': function(arg) {
     check(arg, {
       scene: String,

@@ -115,6 +115,7 @@ Template.scenebuilderBuild.onCreated(function() {
 
   self.editorContext = new ReactiveVar(null);
   self.galleryContext = new ReactiveVar(null);
+  self.locationContext = new ReactiveVar(null);
 
   // TODO look into if this collection is persistent across the session
   // scenebuilder specific units
@@ -284,6 +285,9 @@ Template.scenebuilderBuild.helpers({
   },
   galleryContext() {
     return Template.instance().galleryContext.get() || null;
+  },
+  locationContext() {
+    return Template.instance().locationContext.get() || null;
   }
 })
 
@@ -309,6 +313,13 @@ Template.scenebuilderBuild.events({
   },
   'click [data-editor="artifact-slot"]': function(e, template) {
     template.galleryContext.set({type: 'Artifact'});
+    // HACK probably a better way to do this than check DOM location
+    // so when refactoring, also remove the data-player and
+    // data-index attributes from .general-artifact
+    template.locationContext.set({
+      owner: Number($(e.currentTarget).attr('data-player')),
+      slot: Number($(e.currentTarget).attr('data-index'))
+    })
   },
   'click .closes-editor': function(e, template) {
     template.editorContext.set(null);
@@ -529,6 +540,24 @@ Template.scenebuilderBuild__editor.events({
         FlowRouter.setQueryParams({gallery: null});
       }
     })
+  },
+  'click .editor__save-artifact': function(e, template) {
+    var artifact = {
+      scene: FlowRouter.getParam('hash'),
+      owner: template.data.locationContext.owner,
+      slot: template.data.locationContext.slot,
+      id: template.editingTarget.get('id'),
+      durability: template.editingTarget.get('durability')
+    }
+    console.log(artifact)
+    Meteor.call('editor__artifact', artifact, function(err, data) {
+      if (err) {
+        sAlert.error(err.reason);
+      } else {
+        FlowRouter.setQueryParams({editing: null});
+        FlowRouter.setQueryParams({gallery: null});
+      }
+    })
   }
 })
 
@@ -553,6 +582,11 @@ Template.scenebuilderBuild__editor.helpers({
   },
   editingArtifactSlot() {
     if (this.editorOpen && this.editorOpen.type === 'artifact-slot') {
+      for (var key in this.editorOpen.context) {
+        if (key !== 'owner') {
+          Template.instance().editingTarget.set(key, this.editorOpen.context[key])
+        }
+      }
       return true;
     }
     return false;

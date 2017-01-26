@@ -16,7 +16,7 @@
     {{/if}}
   </div>
   {{#if Template.subscriptionsReady}}
-  {{> scenebuilderBuild__editor editorOpen=editorContext galleryContext=galleryContext}}
+  {{> scenebuilderBuild__editor editorOpen=editorContext galleryContext=galleryContext locationContext=locationContext}}
   {{/if}}
 </template>
 
@@ -55,8 +55,9 @@
       </div>
     </div>
     <div class="player__general-artifacts">
+      {{#let owner=player.id}}
       {{#each player.artifacts}}
-      <div class="general-artifact opens-editor" data-editor="artifact-slot" data-durability="{{this.durability}}">
+      <div class="general-artifact opens-editor" data-editor="artifact-slot" data-durability="{{this.durability}}" data-player="{{owner}}" data-index="{{@index}}">
         {{#if this.id}}
         {{loadCurrentArtifact}}
         <div class="sprite id_{{this.id}} passive"></div>
@@ -68,6 +69,7 @@
         {{/if}}
       </div>
       {{/each}}
+      {{/let}}
     </div>
     <div class="player__actionbar">
       {{#each player.actionbar}}
