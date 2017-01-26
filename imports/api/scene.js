@@ -57,9 +57,9 @@ Meteor.methods({
           total: 40
         },
         artifacts: [
-          {id: false, durability: 3},
-          {id: false, durability: 3},
-          {id: false, durability: 3}
+          {id: null, durability: 3},
+          {id: null, durability: 3},
+          {id: null, durability: 3}
         ],
         actionbar: [{}, {}, {}, {}, {}, {} ],
         units: [
@@ -104,9 +104,9 @@ Meteor.methods({
           total: 40
         },
         artifacts: [
-          {id: false, durability: 3},
-          {id: false, durability: 3},
-          {id: false, durability: 3}
+          {id: null, durability: 3},
+          {id: null, durability: 3},
+          {id: null, durability: 3}
         ],
         actionbar: [{}, {}, {}, {}, {}, {} ],
         units: [
