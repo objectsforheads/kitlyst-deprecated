@@ -506,6 +506,9 @@ Template.scenebuilderBuild__editor.events({
       template.editingTarget.set('health', newHealth);
     }
   },
+  'click .editor__destroy-artifact': function(e, template) {
+    template.editingTarget.set('id', null);
+  },
   'click .editor__change-card': function(e, template) {
     return template.editingTarget.set('id', this.id);
   },

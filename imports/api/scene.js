@@ -162,7 +162,7 @@ Meteor.methods({
       scene: String,
       owner: Number,
       slot: Number,
-      id: Number,
+      id: Match.OneOf(Number, null),
       durability: Number
     })
 
@@ -171,6 +171,11 @@ Meteor.methods({
       id: arg.id,
       durability: arg.durability
     }
+    scene['player'+arg.owner].artifacts.sort(function(a,b) {
+      if (a.id === null) {
+        return 1;
+      }
+    })
 
     Scenes.update({id: arg.scene}, scene);
     return true;
