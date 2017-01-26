@@ -552,7 +552,6 @@ Template.scenebuilderBuild__editor.events({
       id: template.editingTarget.get('id'),
       durability: template.editingTarget.get('durability')
     }
-    console.log(artifact)
     Meteor.call('editor__artifact', artifact, function(err, data) {
       if (err) {
         sAlert.error(err.reason);
@@ -595,7 +594,6 @@ Template.scenebuilderBuild__editor.helpers({
     return false;
   },
   context() {
-    console.log(this)
     return this.editorOpen.context;
   },
   galleryContext() {
