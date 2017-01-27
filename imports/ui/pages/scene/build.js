@@ -321,6 +321,12 @@ Template.scenebuilderBuild.events({
       slot: Number($(e.currentTarget).attr('data-index'))
     })
   },
+  'click [data-editor="actionbar"]': function(e, template) {
+    template.galleryContext.set({'race': {$ne: 'General'}});
+  },
+  'click [data-location]': function(e, template) {
+    template.locationContext.set(Number($(e.currentTarget).attr('data-location')))
+  },
   'click .closes-editor': function(e, template) {
     template.editorContext.set(null);
     FlowRouter.setQueryParams({editing: null})
@@ -589,6 +595,12 @@ Template.scenebuilderBuild__editor.helpers({
           Template.instance().editingTarget.set(key, this.editorOpen.context[key])
         }
       }
+      return true;
+    }
+    return false;
+  },
+  editingActionBar() {
+    if (this.editorOpen && this.editorOpen.type === 'actionbar') {
       return true;
     }
     return false;

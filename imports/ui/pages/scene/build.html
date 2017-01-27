@@ -71,15 +71,17 @@
       {{/each}}
       {{/let}}
     </div>
-    <div class="player__actionbar">
-      {{#each player.actionbar}}
-      <div class="actionbar__card {{#if this.id}}has-card{{/if}}" data-manacost="{{#if currentCard}}{{currentCard.manaCost}}{{/if}}" data-type="{{#if currentCard}}{{currentCard.type}}{{/if}}">
+    {{#with player.actionbar}}
+    <div class="player__actionbar opens-editor" data-editor="actionbar">
+      {{#each this}}
+      <div class="actionbar__card {{#if this.id}}has-card{{/if}}" data-manacost="{{#if currentCard}}{{currentCard.manaCost}}{{/if}}" data-type="{{#if currentCard}}{{currentCard.type}}{{/if}}" data-location="{{@index}}">
         {{#if this.id}}
         <div class="sprite id_{{this.id}} idle breath breathe breathing passive"></div>
         {{/if}}
       </div>
       {{/each}}
     </div>
+    {{/with}}
     <div class="player__deck">
       <div class="deck--active"></div>
     </div>
@@ -165,6 +167,32 @@
         {{> databaseCard info=currentUnit layout="dynamicCard"}}
         {{else}}
         <div>{{> databaseCard layout="blankCard" info="Artifact"}}</div>
+        {{/if}}
+        <div class="btn-bar">
+          <button class="btn left-edge closes-editor">
+            <span class="btn_text">Cancel</span>
+          </button>
+          <button class="btn right-edge editor__save-artifact">
+            <span class="btn_text">Save</span>
+          </button>
+        </div>
+      </div>
+      {{/if}}
+
+      {{#if editingActionBar}}
+      <div class="scenebuilder__editor--actionbar">
+        <div class="edit-options">
+          <button class="btn left-edge condensed editor__destroy-actionbar-card">
+            <span class="btn_text"><i class="fa fa-trash"></i></span>
+          </button>
+          <button class="btn opens-card-gallery">
+            <span class="btn_text">Change Card</span>
+          </button>
+        </div>
+        {{#if currentUnit}}
+        {{> databaseCard info=currentUnit layout="dynamicCard"}}
+        {{else}}
+        <div>{{> databaseCard layout="blankCard" info="Unit"}}</div>
         {{/if}}
         <div class="btn-bar">
           <button class="btn left-edge closes-editor">
