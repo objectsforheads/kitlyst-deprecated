@@ -494,6 +494,9 @@ Template.scenebuilderBuild__editor.onCreated(function() {
 
   self.editingTarget = new ReactiveDict();
   self.viewingSingle = new ReactiveVar(false);
+  self.locationContext = new ReactiveVar(false);
+
+  self.actionBarTemp = new ReactiveVar(null);
 })
 
 Template.scenebuilderBuild__editor.events({
@@ -516,11 +519,38 @@ Template.scenebuilderBuild__editor.events({
   'click .editor__destroy-artifact': function(e, template) {
     template.editingTarget.set('id', null);
   },
+  'click .editor__set-to-update-actionbar-card': function(e, template) {
+    template.locationContext.set($(e.currentTarget).attr('data-location'));
+    if (this.id) {
+      template.editingTarget.set('id', this.id);
+    }
+  },
   'click .editor__update-actionbar-card': function(e, template) {
-    return;
+    var actionBar = template.actionBarTemp.get();
+    var toChange = template.locationContext.get();
+    actionBar[toChange].id = template.editingTarget.get('id');
+
+    // unset the editing target now that we've saved it
+    template.editingTarget.clear();
+
+    return template.actionBarTemp.set(actionBar);
   },
   'click .editor__change-card': function(e, template) {
-    return template.editingTarget.set('id', this.id);
+    // HACK this may be a hack - it depends on if
+    // there are alternative use cases in which viewingSingle's
+    // functional purpose goes beyond "actionbar or actionbar card"
+    if (template.viewingSingle.get() === false) {
+      var actionbar = template.actionBarTemp.get();
+      for (var i = 0; i < actionbar.length; i++) {
+        if (!actionbar[i].id) {
+          actionbar[i].id = this.id;
+          template.actionBarTemp.set(actionbar);
+          break;
+        }
+      }
+    } else {
+      return template.editingTarget.set('id', this.id);
+    }
   },
   'click .closes-editor': function(e, template) {
     return template.editingTarget.clear()
@@ -649,6 +679,12 @@ Template.scenebuilderBuild__editor.helpers({
   },
   viewingSingle() {
     return Template.instance().viewingSingle.get()
+  },
+  actionBarTemp() {
+    if (Template.instance().actionBarTemp.get() === null) {
+      Template.instance().actionBarTemp.set(Template.instance().data.editorOpen.context)
+    }
+    return Template.instance().actionBarTemp.get();
   }
 })
 

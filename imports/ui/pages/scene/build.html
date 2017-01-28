@@ -183,8 +183,8 @@
       <div class="scenebuilder__editor--actionbar">
         {{#unless viewingSingle}}
         <div class="editor__actionbar-preview">
-          {{#each this.editorOpen.context}}
-          <div class="actionbar__card opens-card-gallery opens-single-card-view {{#if this.id}}has-card{{/if}}" data-manacost="{{#if currentCard}}{{currentCard.manaCost}}{{/if}}" data-type="{{#if currentCard}}{{currentCard.type}}{{/if}}" data-location="{{@index}}">
+          {{#each actionBarTemp}}
+          <div class="actionbar__card opens-card-gallery opens-single-card-view  editor__set-to-update-actionbar-card {{#if this.id}}has-card{{/if}}" data-manacost="{{#if currentCard}}{{currentCard.manaCost}}{{/if}}" data-type="{{#if currentCard}}{{currentCard.type}}{{/if}}" data-location="{{@index}}">
             {{#if this.id}}
             <div class="sprite id_{{this.id}} idle breath breathe breathing passive"></div>
             {{/if}}
@@ -196,7 +196,7 @@
           <button class="btn left-edge condensed editor__destroy-actionbar-card">
             <span class="btn_text"><i class="fa fa-trash"></i></span>
           </button>
-          <button class="btn exits-single-card-view">
+          <button class="btn exits-single-card-view editor__update-actionbar-card">
             <span class="btn_text">Change Card</span>
           </button>
         </div>
