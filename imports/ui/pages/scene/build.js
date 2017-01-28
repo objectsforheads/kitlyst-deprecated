@@ -298,6 +298,7 @@ Template.scenebuilderBuild.events({
       context: this
     });
     FlowRouter.setQueryParams({editing: this.row + this.column})
+    FlowRouter.setQueryParams({gallery: true})
 
     // also set the card gallery context here
     // we could set it somewhere more publically
@@ -553,6 +554,7 @@ Template.scenebuilderBuild__editor.events({
     }
   },
   'click .closes-editor': function(e, template) {
+    template.viewingSingle.set(false);
     return template.editingTarget.clear()
   },
   'click .opens-single-card-view': function(e, template) {
@@ -641,6 +643,17 @@ Template.scenebuilderBuild__editor.helpers({
   },
   editingActionBar() {
     if (this.editorOpen && this.editorOpen.type === 'actionbar') {
+      var actionbar = [];
+      var original = Template.instance().data.editorOpen.context;
+      // duplicating the original actionbaor for use in temporary situations
+      // TODO see if this is the most efficient way of duplicating
+      // TODO this may be a bug involving object references vs duplication
+      // it may exist in the other data types, although not so prominently
+      // check them later in the refactor
+      for (var i = 0; i < original.length; i++) {
+        actionbar[i] = {id: original[i].id || null};
+      }
+      Template.instance().actionBarTemp.set(actionbar);
       return true;
     }
     return false;
@@ -681,9 +694,6 @@ Template.scenebuilderBuild__editor.helpers({
     return Template.instance().viewingSingle.get()
   },
   actionBarTemp() {
-    if (Template.instance().actionBarTemp.get() === null) {
-      Template.instance().actionBarTemp.set(Template.instance().data.editorOpen.context)
-    }
     return Template.instance().actionBarTemp.get();
   }
 })
