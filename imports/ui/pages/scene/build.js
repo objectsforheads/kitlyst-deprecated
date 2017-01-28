@@ -325,7 +325,7 @@ Template.scenebuilderBuild.events({
   'click [data-editor="actionbar"]': function(e, template) {
     template.galleryContext.set({'race': {$ne: 'General'}});
   },
-  'click [data-location]': function(e, template) {
+  'click [data-player]': function(e, template) {
     template.locationContext.set({
       owner: Number($(e.currentTarget).attr('data-player'))
     })
@@ -531,7 +531,6 @@ Template.scenebuilderBuild__editor.events({
   'click .editor__update-actionbar-card': function(e, template) {
     var actionBar = template.actionBarTemp.get();
     var toChange = template.locationContext.get();
-    console.log(toChange)
     actionBar[toChange].id = template.editingTarget.get('id');
 
     // unset the editing target now that we've saved it
@@ -661,17 +660,20 @@ Template.scenebuilderBuild__editor.helpers({
   },
   editingActionBar() {
     if (this.editorOpen && this.editorOpen.type === 'actionbar') {
-      var actionbar = [];
-      var original = Template.instance().data.editorOpen.context;
-      // duplicating the original actionbaor for use in temporary situations
-      // TODO see if this is the most efficient way of duplicating
-      // TODO this may be a bug involving object references vs duplication
-      // it may exist in the other data types, although not so prominently
-      // check them later in the refactor
-      for (var i = 0; i < original.length; i++) {
-        actionbar[i] = {id: original[i].id || null};
+      var temp = Template.instance().actionBarTemp;
+      if (temp.get() === null) {
+        var actionbar = [];
+        var original = Template.instance().data.editorOpen.context;
+        // duplicating the original actionbaor for use in temporary situations
+        // TODO see if this is the most efficient way of duplicating
+        // TODO this may be a bug involving object references vs duplication
+        // it may exist in the other data types, although not so prominently
+        // check them later in the refactor
+        for (var i = 0; i < original.length; i++) {
+          actionbar[i] = {id: original[i].id || null};
+        }
+        temp.set(actionbar);
       }
-      Template.instance().actionBarTemp.set(actionbar);
       return true;
     }
     return false;
