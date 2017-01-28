@@ -180,6 +180,19 @@ Meteor.methods({
     Scenes.update({id: arg.scene}, scene);
     return true;
   },
+  'editor__actionbar': function(arg) {
+    check(arg, {
+      scene: String,
+      owner: Number,
+      actionbar: Array
+    })
+
+    var scene = Scenes.findOne({id: arg.scene});
+    scene['player'+arg.owner].actionbar = arg.actionbar;
+
+    Scenes.update({id: arg.scene}, scene);
+    return true;
+  },
   'scene__airdropUnit': function(arg) {
     check(arg, {
       scene: String,

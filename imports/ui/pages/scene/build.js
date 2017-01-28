@@ -326,7 +326,9 @@ Template.scenebuilderBuild.events({
     template.galleryContext.set({'race': {$ne: 'General'}});
   },
   'click [data-location]': function(e, template) {
-    template.locationContext.set(Number($(e.currentTarget).attr('data-location')))
+    template.locationContext.set({
+      owner: Number($(e.currentTarget).attr('data-player'))
+    })
   },
   'click .closes-editor': function(e, template) {
     template.editorContext.set(null);
@@ -495,7 +497,7 @@ Template.scenebuilderBuild__editor.onCreated(function() {
 
   self.editingTarget = new ReactiveDict();
   self.viewingSingle = new ReactiveVar(false);
-  self.locationContext = new ReactiveVar(false);
+  self.locationContext = new ReactiveVar(null);
 
   self.actionBarTemp = new ReactiveVar(null);
 })
@@ -529,6 +531,7 @@ Template.scenebuilderBuild__editor.events({
   'click .editor__update-actionbar-card': function(e, template) {
     var actionBar = template.actionBarTemp.get();
     var toChange = template.locationContext.get();
+    console.log(toChange)
     actionBar[toChange].id = template.editingTarget.get('id');
 
     // unset the editing target now that we've saved it
@@ -601,6 +604,21 @@ Template.scenebuilderBuild__editor.events({
       durability: template.editingTarget.get('durability')
     }
     Meteor.call('editor__artifact', artifact, function(err, data) {
+      if (err) {
+        sAlert.error(err.reason);
+      } else {
+        FlowRouter.setQueryParams({editing: null});
+        FlowRouter.setQueryParams({gallery: null});
+      }
+    })
+  },
+  'click .editor__save-actionbar': function(e, template) {
+    var actionbar = {
+      scene: FlowRouter.getParam('hash'),
+      owner: template.data.locationContext.owner,
+      actionbar: template.actionBarTemp.get()
+    }
+    Meteor.call('editor__actionbar', actionbar, function(err, data) {
       if (err) {
         sAlert.error(err.reason);
       } else {

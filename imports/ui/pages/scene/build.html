@@ -71,10 +71,11 @@
       {{/each}}
       {{/let}}
     </div>
+    {{#let owner=player.id}}
     {{#with player.actionbar}}
     <div class="player__actionbar opens-editor" data-editor="actionbar">
       {{#each this}}
-      <div class="actionbar__card {{#if this.id}}has-card{{/if}}" data-manacost="{{#if currentCard}}{{currentCard.manaCost}}{{/if}}" data-type="{{#if currentCard}}{{currentCard.type}}{{/if}}" data-location="{{@index}}">
+      <div class="actionbar__card {{#if this.id}}has-card{{/if}}" data-manacost="{{#if currentCard}}{{currentCard.manaCost}}{{/if}}" data-type="{{#if currentCard}}{{currentCard.type}}{{/if}}" data-location="{{@index}}" data-player="{{owner}}">
         {{#if this.id}}
         <div class="sprite id_{{this.id}} idle breath breathe breathing passive"></div>
         {{/if}}
@@ -82,6 +83,7 @@
       {{/each}}
     </div>
     {{/with}}
+    {{/let}}
     <div class="player__deck">
       <div class="deck--active"></div>
     </div>
@@ -210,7 +212,7 @@
           <button class="btn left-edge closes-editor">
             <span class="btn_text">Cancel</span>
           </button>
-          <button class="btn right-edge editor__save-artifact">
+          <button class="btn right-edge editor__save-actionbar">
             <span class="btn_text">Save</span>
           </button>
         </div>
