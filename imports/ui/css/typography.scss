@@ -175,6 +175,12 @@ pre {
     background-image: url('/assets/img/backgrounds/button_primary_middle_glow.png');
   }
 
+  &.disabled {
+    filter: grayscale(100);
+    pointer-events: none;
+    cursor: default;
+  }
+
   &.condensed {
     width: 78px;
     background-image: url('/assets/img/backgrounds/button_icon_middle.png');
