@@ -609,7 +609,7 @@ Template.scenebuilderBuild__editor.helpers({
     return this.editorOpen.context;
   },
   galleryContext() {
-    return allCards.find(this.galleryContext, {sort: {faction: 1, set:1, id: 1}});
+    return allCards.find(this.galleryContext, {sort: {faction: 1, set:1, id: 1}}).fetch();
   },
   isGeneral() {
     if (allCards.findOne({id: this.id}).race === 'General') {
@@ -636,5 +636,107 @@ Template.scenebuilderBuild__editor.helpers({
   },
   currentUnit_health() {
     return Template.instance().editingTarget.get('health') || null;
+  }
+})
+
+Template.cardGallery.onCreated(function() {
+  let self = Template.instance();
+
+  // How many items per page
+  self.perPage = new ReactiveVar(Number(self.data.perPage));
+  // The current page rendered
+  self.currentPage = new ReactiveVar(1);
+  // The total number of pages (dynamic)
+  self.pageCount = new ReactiveVar();
+  self.cardCount = new ReactiveVar(0);
+})
+
+var updatePages = function (dataLength, perPage) {
+    //this function is responsible for
+    //updating the pageCount variable
+    //based on the data length
+    let totalPgs = parseInt(dataLength / perPage);
+    if (dataLength % perPage !== 0) totalPgs += 1;
+    return totalPgs;
+}
+
+Template.cardGallery.events({
+  'click .navigate-to-gallery-page': function(e, template) {
+    let newPage = $(e.currentTarget).attr('data-page');
+    template.currentPage.set(Number(newPage));
+  }
+})
+
+Template.cardGallery.helpers({
+  minusOne(num) {
+    return num--;
+  },
+  plusOne(num) {
+    return num++;
+  },
+  currentPage() {
+    // HACK maybe - set to 1 if we're swapping contexts
+    // in which the prior context had more pages
+    // we can't access .closes-editor, since it exists outside
+    // the scope of the cardGallery template
+    let current = Template.instance().currentPage.get();
+    let total = Template.instance().pageCount.get();
+    if (current > total) {
+      Template.instance().currentPage.set(1);
+    }
+    return Template.instance().currentPage.get();
+  },
+  pageCount() {
+    return Template.instance().pageCount.get();
+  },
+  galleryPage() {
+    let template = Template.instance();
+
+    let pageNumber = template.currentPage.get();
+    let itemsPerPage = template.perPage.get();
+
+    let from = (pageNumber -1) * itemsPerPage;
+    let to = from + itemsPerPage;
+
+    let data = template.data.galleryContext;
+
+    function baseSlice(array, start, end) {
+      var index = -1,
+          length = array.length;
+
+      if (start < 0) {
+        start = -start > length ? 0 : (length + start);
+      }
+      end = end > length ? length : end;
+      if (end < 0) {
+        end += length;
+      }
+      length = start > end ? 0 : ((end - start) >>> 0);
+      start >>>= 0;
+
+      var result = Array(length);
+      while (++index < length) {
+        result[index] = array[index + start];
+      }
+      return result;
+    }
+
+    let dataLength = data.length,
+    perPage = template.perPage.get();
+    template.pageCount.set(updatePages(dataLength, perPage));
+
+    return baseSlice(data, from, to);
+  },
+  canGoBackTo() {
+    if (Template.instance().currentPage.get() !== 1) {
+      return Template.instance().currentPage.get() - 1;
+    }
+    return false;
+  },
+  canGoForwardTo() {
+    if (Template.instance().currentPage.get() < Template.instance().pageCount.get()) {
+      return Template.instance().currentPage.get() + 1;
+    }
+    return false;
   }
 })
