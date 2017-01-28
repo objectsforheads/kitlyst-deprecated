@@ -326,9 +326,9 @@ Template.scenebuilderBuild.events({
     template.galleryContext.set({'race': {$ne: 'General'}});
   },
   'click [data-player]': function(e, template) {
-    template.locationContext.set({
-      owner: Number($(e.currentTarget).attr('data-player'))
-    })
+    var locationContext = template.locationContext.get();
+    locationContext.owner = Number($(e.currentTarget).attr('data-player'));
+    template.locationContext.set(locationContext);
   },
   'click .closes-editor': function(e, template) {
     template.editorContext.set(null);
@@ -643,6 +643,7 @@ Template.scenebuilderBuild__editor.helpers({
           Template.instance().editingTarget.set(key, this.editorOpen.context.unit[key])
         }
       }
+      Template.instance().viewingSingle.set(true);
       return true;
     }
     return false;
@@ -654,6 +655,7 @@ Template.scenebuilderBuild__editor.helpers({
           Template.instance().editingTarget.set(key, this.editorOpen.context[key])
         }
       }
+      Template.instance().viewingSingle.set(true);
       return true;
     }
     return false;
