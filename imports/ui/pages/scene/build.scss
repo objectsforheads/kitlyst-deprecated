@@ -1314,7 +1314,8 @@ $cooldownHeight: 86px;
 }
 
 .scenebuilder__editor--board-tile,
-.scenebuilder__editor--artifact-slot {
+.scenebuilder__editor--artifact-slot,
+.scenebuilder__editor--actionbar {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1328,7 +1329,7 @@ $cooldownHeight: 86px;
   position: absolute;
   top: 0;
   left: 0;
-  width: 500px; // card is 280px
+  width: 375px; // card is 280px
   height: 100%;
   background: rgba(22,27,34,0.8);
 
@@ -1354,6 +1355,7 @@ $cooldownHeight: 86px;
 
     & > * {
       flex: 1;
+      width: 140px; // half of card width
     }
   }
 
@@ -1379,6 +1381,7 @@ $cooldownHeight: 86px;
       border-left: 0;
       color: #EEE;
       text-align: center;
+      max-width: 100%;
     }
   }
 }
@@ -1386,37 +1389,48 @@ $cooldownHeight: 86px;
 .scenebuilder__card-gallery {
   position: absolute;
   top: 0;
-  left: 500px;
+  left: 375px;
   right: 0;
   height: 100%;
   overflow: hidden;
+
+  display: flex;
+  align-items: center;
 }
 
 .card-gallery__contents {
-  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
-
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
+  max-height: 100%;
   padding: 1rem;
 
   opacity: 0;
   transform: translateX(-50%);
   pointer-events: none;
   transition: all 300ms;
+
+  .db-card {
+    font-size: 2px;
+
+    .sprite {
+      transform: scale(2) translateX(-50%);
+    }
+  }
 }
 
 .card-gallery-open {
   .card-gallery__contents {
-    overflow: auto;
     opacity: 1;
     transform: translateX(0);
     pointer-events: initial;
   }
+}
+
+.card-gallery__cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 

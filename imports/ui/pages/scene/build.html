@@ -249,7 +249,7 @@
       <button class="editor-closer closes-editor"></button>
     </div>
 
-    {{#cardGallery galleryContext=galleryContext perPage=10}}
+    {{#cardGallery galleryContext=galleryContext perPage=12}}
       <div class="editor__change-card">{{> databaseCard info=this}}</div>
     {{/cardGallery}}
   </div>
@@ -259,9 +259,11 @@
   <div class="scenebuilder__card-gallery">
     <div class="card-gallery__contents">
       {{#if galleryContext}}
-      {{#each galleryPage}}
-      {{> Template.contentBlock this}}
-      {{/each}}
+      <div class="card-gallery__cards">
+        {{#each galleryPage}}
+        {{> Template.contentBlock this}}
+        {{/each}}
+      </div>
       <div class="btn-bar">
         <button class="btn left-edge condensed {{#if canGoBackTo}}navigate-to-gallery-page{{else}}disabled{{/if}}" data-page="{{#if canGoBackTo}}{{canGoBackTo}}{{/if}}">
           <span class="btn_text"><i class="fa fa-chevron-left"></i></span>
