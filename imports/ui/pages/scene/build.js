@@ -493,6 +493,7 @@ Template.scenebuilderBuild__editor.onCreated(function() {
   var self = Template.instance();
 
   self.editingTarget = new ReactiveDict();
+  self.viewingSingle = new ReactiveVar(false);
 })
 
 Template.scenebuilderBuild__editor.events({
@@ -515,11 +516,20 @@ Template.scenebuilderBuild__editor.events({
   'click .editor__destroy-artifact': function(e, template) {
     template.editingTarget.set('id', null);
   },
+  'click .editor__update-actionbar-card': function(e, template) {
+    return;
+  },
   'click .editor__change-card': function(e, template) {
     return template.editingTarget.set('id', this.id);
   },
   'click .closes-editor': function(e, template) {
     return template.editingTarget.clear()
+  },
+  'click .opens-single-card-view': function(e, template) {
+    return template.viewingSingle.set(true);
+  },
+  'click .exits-single-card-view': function(e, template) {
+    return template.viewingSingle.set(false);
   }
 })
 
@@ -636,6 +646,9 @@ Template.scenebuilderBuild__editor.helpers({
   },
   currentUnit_health() {
     return Template.instance().editingTarget.get('health') || null;
+  },
+  viewingSingle() {
+    return Template.instance().viewingSingle.get()
   }
 })
 

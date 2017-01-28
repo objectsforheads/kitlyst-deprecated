@@ -836,10 +836,6 @@ $cooldownHeight: 86px;
     }
   }
 
-
-  $actionbarCard: 280px;
-  $actionbarMargin: 3px;
-
   .player__actionbar {
 
     position: absolute;
@@ -850,89 +846,6 @@ $cooldownHeight: 86px;
     @media (min-width: 1281px) {
       top: 550px;
       width: 340px; // MAGIC NUMBER: eh roughly the width from edge to grid
-    }
-  }
-
-  .actionbar__card::after {
-    content: attr(data-manacost);
-    width: 71.25px; // scaled 0.625 of 2x
-    height: 78.75px; // scaled 0.625 of 2x
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translate(-50%, 0);
-    background: url('/assets/img/scene/components/mana.png') no-repeat center center /contain;
-    filter: grayscale(100);
-
-    font-size: 35px; //HACK GET REAL LATER
-    color: black;
-    text-align: center;
-    line-height: 78.75px;
-  }
-
-  $playerHandScale: 0.4;
-  .actionbar__card {
-    width: #{($playerHandScale * $actionbarCard)};
-    height: #{($playerHandScale * $actionbarCard)};
-    &::after {
-      width: #{71.25px * $playerHandScale};
-      height: #{78.75px * $playerHandScale};
-      line-height: #{78.75px * $playerHandScale};
-      font-size: 17.5px; //HACK GET REAL LATER
-    }
-
-    $playerHandScale: 0.5;
-    @media (min-width: 1281px) {
-      width: #{($playerHandScale * $actionbarCard)};
-      height: #{($playerHandScale * $actionbarCard)};
-      &::after {
-        width: #{71.25px * $playerHandScale};
-        height: #{78.75px * $playerHandScale};
-        line-height: #{78.75px * $playerHandScale};
-        font-size: 17.5px; //HACK GET REAL LATER
-      }
-    }
-
-    $actionbarMargin: -5.5px;
-    margin: 0 $actionbarMargin;
-    @media (min-width: 1281px) {
-      $actionbarMargin: 3px;
-      margin: 0 $actionbarMargin;
-    }
-    width: $actionbarCard;
-    height: $actionbarCard;
-    display: inline-block;
-    background: url('/assets/img/scene/components/actionbar/card_background_disabled.png') no-repeat center center / contain;
-
-    &.has-card {
-      cursor: pointer;
-      background-image: url('/assets/img/scene/components/actionbar/card_background.png');
-      &:hover {
-        background-image: url('/assets/img/scene/components/actionbar/card_background_highlight.png');
-      }
-    }
-
-    &.has-card::after {
-      filter: grayscale(0);
-    }
-
-    .sprite {
-      position: absolute;
-      bottom: 10px;
-      left: 50%;
-      transform-origin: left bottom;
-
-      transform: scale(2) translateX(-50%);
-      @media (min-width: 1281px) {
-        transform: scale(2.5) translateX(-50%);
-      }
-
-      pointer-events: none;
-      animation-play-state: running !important;
-    }
-
-    &[data-type="Unit"] .sprite {
-      bottom: 0;
     }
   }
 
@@ -1431,6 +1344,98 @@ $cooldownHeight: 86px;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+}
+
+
+
+
+
+// COMPONENTS
+
+$actionbarCard: 280px;
+$actionbarMargin: 3px;
+
+.actionbar__card::after {
+  content: attr(data-manacost);
+  width: 71.25px; // scaled 0.625 of 2x
+  height: 78.75px; // scaled 0.625 of 2x
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, 0);
+  background: url('/assets/img/scene/components/mana.png') no-repeat center center /contain;
+  filter: grayscale(100);
+
+  font-size: 35px; //HACK GET REAL LATER
+  color: black;
+  text-align: center;
+  line-height: 78.75px;
+}
+
+$playerHandScale: 0.4;
+.actionbar__card {
+  width: #{($playerHandScale * $actionbarCard)};
+  height: #{($playerHandScale * $actionbarCard)};
+  &::after {
+    width: #{71.25px * $playerHandScale};
+    height: #{78.75px * $playerHandScale};
+    line-height: #{78.75px * $playerHandScale};
+    font-size: 17.5px; //HACK GET REAL LATER
+  }
+
+  $playerHandScale: 0.5;
+  @media (min-width: 1281px) {
+    width: #{($playerHandScale * $actionbarCard)};
+    height: #{($playerHandScale * $actionbarCard)};
+    &::after {
+      width: #{71.25px * $playerHandScale};
+      height: #{78.75px * $playerHandScale};
+      line-height: #{78.75px * $playerHandScale};
+      font-size: 17.5px; //HACK GET REAL LATER
+    }
+  }
+
+  $actionbarMargin: -5.5px;
+  margin: 0 $actionbarMargin;
+  @media (min-width: 1281px) {
+    $actionbarMargin: 3px;
+    margin: 0 $actionbarMargin;
+  }
+  width: $actionbarCard;
+  height: $actionbarCard;
+  display: inline-block;
+  background: url('/assets/img/scene/components/actionbar/card_background_disabled.png') no-repeat center center / contain;
+
+  &.has-card {
+    cursor: pointer;
+    background-image: url('/assets/img/scene/components/actionbar/card_background.png');
+    &:hover {
+      background-image: url('/assets/img/scene/components/actionbar/card_background_highlight.png');
+    }
+  }
+
+  &.has-card::after {
+    filter: grayscale(0);
+  }
+
+  .sprite {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform-origin: left bottom;
+
+    transform: scale(2) translateX(-50%);
+    @media (min-width: 1281px) {
+      transform: scale(2.5) translateX(-50%);
+    }
+
+    pointer-events: none;
+    animation-play-state: running !important;
+  }
+
+  &[data-type="Unit"] .sprite {
+    bottom: 0;
+  }
 }
 
 

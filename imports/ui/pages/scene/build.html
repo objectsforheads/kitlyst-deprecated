@@ -181,11 +181,22 @@
 
       {{#if editingActionBar}}
       <div class="scenebuilder__editor--actionbar">
+        {{#unless viewingSingle}}
+        <div class="editor__actionbar-preview">
+          {{#each this.editorOpen.context}}
+          <div class="actionbar__card opens-card-gallery opens-single-card-view {{#if this.id}}has-card{{/if}}" data-manacost="{{#if currentCard}}{{currentCard.manaCost}}{{/if}}" data-type="{{#if currentCard}}{{currentCard.type}}{{/if}}" data-location="{{@index}}">
+            {{#if this.id}}
+            <div class="sprite id_{{this.id}} idle breath breathe breathing passive"></div>
+            {{/if}}
+          </div>
+          {{/each}}
+        </div>
+        {{else}}
         <div class="edit-options">
           <button class="btn left-edge condensed editor__destroy-actionbar-card">
             <span class="btn_text"><i class="fa fa-trash"></i></span>
           </button>
-          <button class="btn opens-card-gallery">
+          <button class="btn exits-single-card-view">
             <span class="btn_text">Change Card</span>
           </button>
         </div>
@@ -194,6 +205,7 @@
         {{else}}
         <div>{{> databaseCard layout="blankCard" info="Unit"}}</div>
         {{/if}}
+        {{/unless}}
         <div class="btn-bar">
           <button class="btn left-edge closes-editor">
             <span class="btn_text">Cancel</span>
