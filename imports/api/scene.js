@@ -261,6 +261,9 @@ Meteor.methods({
     //   attack: Number,
     //   health: Number
     // }
+      scene.player1.units[arg.airdrop.row][arg.airdrop.column] = {};
+      scene.player2.units[arg.airdrop.row][arg.airdrop.column] = {};
+
       var owner = arg.original.unit.owner;
       scene['player'+owner].units[arg.airdrop.row][arg.airdrop.column] = arg.original.unit; scene['player'+owner].units[arg.original.row][arg.original.column] = {};
     } else {
@@ -302,6 +305,9 @@ Meteor.methods({
 
       // If the card is a unit, airdrop it!
       if (card.type === 'Unit') {
+        scene.player1.units[arg.airdrop.row][arg.airdrop.column] = {};
+        scene.player2.units[arg.airdrop.row][arg.airdrop.column] = {};
+
         player.units[arg.airdrop.row][arg.airdrop.column] = {
           id: arg.original.id,
           owner: arg.original.owner,

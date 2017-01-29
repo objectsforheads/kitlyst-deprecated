@@ -442,18 +442,13 @@ Template.scenebuilderBuild__stage.onRendered(function() {
   });
 
   this.drake.on("over", (el, container, source) => {
-    // this.drake.cancel(true);
-    // Set tile as potential drag-end
-    // But only if the player has space to drop
-
     // Units are in a different container
     // so use row and column to target appropriately
     var row = $(container).attr('data-row');
     var column = $(container).attr('data-column');
-    var unitOwner = Blaze.getData(container)
-    if (!Blaze.getData(container).unit || !Blaze.getData(container).unit.owner || Blaze.getData(container).unit.owner === Blaze.getData(source).unit.owner) {
-      $('.units__row:eq('+row+')').find('.unit:eq('+column+')').addClass('drag-end');
-    }
+
+    // Set tile as potential drag-end
+    $('.units__row:eq('+row+')').find('.unit:eq('+column+')').addClass('drag-end');
   });
 
   this.drake.on("out", (el, container, source) => {
