@@ -301,6 +301,10 @@ $tileScale: 0.4625;
   .dragged-unit-sprite {
     opacity: 0;
 
+    &[data-player="1"] {
+      transform: scale(2.5, 2.5) translateX(-50%);
+    }
+
     &[data-player="2"] {
       transform: scale(-2.5, 2.5) translateX(-50%);
     }
