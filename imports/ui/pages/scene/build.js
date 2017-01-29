@@ -297,6 +297,7 @@ Template.scenebuilderBuild.events({
       type: $(e.currentTarget).attr('data-editor'),
       context: this
     });
+    console.log(Template.instance().editorContext.get())
     FlowRouter.setQueryParams({editing: this.row + this.column})
     FlowRouter.setQueryParams({gallery: true})
 
@@ -326,7 +327,7 @@ Template.scenebuilderBuild.events({
     template.galleryContext.set({'race': {$ne: 'General'}});
   },
   'click [data-player]': function(e, template) {
-    var locationContext = template.locationContext.get();
+    var locationContext = template.locationContext.get() || {};
     locationContext.owner = Number($(e.currentTarget).attr('data-player'));
     template.locationContext.set(locationContext);
   },
@@ -557,6 +558,8 @@ Template.scenebuilderBuild__editor.events({
   },
   'click .closes-editor': function(e, template) {
     template.viewingSingle.set(false);
+    template.actionBarTemp.set(null);
+    template.editingTarget.set('id', null)
     return template.editingTarget.clear()
   },
   'click .opens-single-card-view': function(e, template) {
@@ -589,8 +592,15 @@ Template.scenebuilderBuild__editor.events({
       if (err) {
         sAlert.error(error.reason);
       } else {
-        FlowRouter.setQueryParams({editing: null});
-        FlowRouter.setQueryParams({gallery: null});
+        template.viewingSingle.set(false);
+        template.editingTarget.clear();
+        // HACK accessing parent event
+        // because for some reason, contexts are being
+        // consistent throughout view swaps
+        // although arguably it is better to maintain
+        // one function which we would pull right now,
+        // were the parent context not necessary
+        $('.closes-editor').click();
       }
     })
   },
@@ -606,8 +616,10 @@ Template.scenebuilderBuild__editor.events({
       if (err) {
         sAlert.error(err.reason);
       } else {
-        FlowRouter.setQueryParams({editing: null});
-        FlowRouter.setQueryParams({gallery: null});
+        template.viewingSingle.set(false);
+        template.editingTarget.clear();
+        // HACK accessing parent event
+        $('.closes-editor').click();
       }
     })
   },
@@ -621,8 +633,11 @@ Template.scenebuilderBuild__editor.events({
       if (err) {
         sAlert.error(err.reason);
       } else {
-        FlowRouter.setQueryParams({editing: null});
-        FlowRouter.setQueryParams({gallery: null});
+        template.viewingSingle.set(false);
+        template.actionBarTemp.set(null);
+        return template.editingTarget.clear();
+        // HACK accessing parent event
+        $('.closes-editor').click();
       }
     })
   }
@@ -663,9 +678,9 @@ Template.scenebuilderBuild__editor.helpers({
   editingActionBar() {
     if (this.editorOpen && this.editorOpen.type === 'actionbar') {
       var temp = Template.instance().actionBarTemp;
+      var original = Template.instance().data.editorOpen.context;
       if (temp.get() === null) {
         var actionbar = [];
-        var original = Template.instance().data.editorOpen.context;
         // duplicating the original actionbaor for use in temporary situations
         // TODO see if this is the most efficient way of duplicating
         // TODO this may be a bug involving object references vs duplication
