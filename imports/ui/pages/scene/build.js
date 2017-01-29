@@ -635,7 +635,7 @@ Template.scenebuilderBuild__editor.events({
       } else {
         template.viewingSingle.set(false);
         template.actionBarTemp.set(null);
-        return template.editingTarget.clear();
+        template.editingTarget.clear();
         // HACK accessing parent event
         $('.closes-editor').click();
       }
