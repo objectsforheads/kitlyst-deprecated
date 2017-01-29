@@ -293,11 +293,6 @@ Template.scenebuilderBuild.helpers({
 
 Template.scenebuilderBuild.events({
   'click .opens-editor': function(e, template) {
-    Template.instance().editorContext.set({
-      type: $(e.currentTarget).attr('data-editor'),
-      context: this
-    });
-
     FlowRouter.setQueryParams({editing: this.row + this.column})
     FlowRouter.setQueryParams({gallery: true})
 
@@ -313,6 +308,12 @@ Template.scenebuilderBuild.events({
     }
     return;
   },
+  'click [data-editor="board-tile"]': function(e, template) {
+    template.editorContext.set({
+      type: $(e.currentTarget).attr('data-editor'),
+      context: this
+    });
+  },
   'click [data-editor="artifact-slot"]': function(e, template) {
     template.galleryContext.set({type: 'Artifact'});
     // HACK probably a better way to do this than check DOM location
@@ -322,9 +323,17 @@ Template.scenebuilderBuild.events({
       owner: Number($(e.currentTarget).attr('data-player')),
       slot: Number($(e.currentTarget).attr('data-index'))
     })
+    template.editorContext.set({
+      type: $(e.currentTarget).attr('data-editor'),
+      context: this
+    });
   },
   'click [data-editor="actionbar"]': function(e, template) {
     template.galleryContext.set({'race': {$ne: 'General'}});
+    template.editorContext.set({
+      type: $(e.currentTarget).attr('data-editor'),
+      context: this.player.actionbar
+    });
   },
   'click [data-player]': function(e, template) {
     var locationContext = template.locationContext.get() || {};
@@ -489,10 +498,12 @@ Template.scenebuilderBuild__stage.helpers({
       }
 
       var card = allCards.findOne({id: self.id}) || sceneCards.findOne({id: self.id});
-      for (var key in self) {
-        card[key] = self[key];
+      if (card) {
+        for (var key in self) {
+          card[key] = self[key];
+        }
+        return card;
       }
-      return card;
     }
     return false;
   },
