@@ -72,17 +72,16 @@
       {{/let}}
     </div>
     {{#let owner=player.id}}
-    {{#with player.actionbar}}
     <div class="player__actionbar opens-editor" data-editor="actionbar">
-      {{#each this}}
-      <div class="actionbar__card {{#if this.id}}has-card{{/if}}" data-manacost="{{#if currentCard}}{{currentCard.manaCost}}{{/if}}" data-type="{{#if currentCard}}{{currentCard.type}}{{/if}}" data-location="{{@index}}" data-player="{{owner}}">
+      {{#each playerActionbar}}
+      <div class="actionbar__card draggable {{#if this.id}}has-card{{/if}}" data-manacost="{{#if currentCard}}{{currentCard.manaCost}}{{/if}}" data-type="{{#if currentCard}}{{currentCard.type}}{{/if}}" data-location="{{this.index}}" data-player="{{this.owner}}">
         {{#if this.id}}
         <div class="sprite id_{{this.id}} idle breath breathe breathing passive"></div>
+        <div class="tile-drag-unit"></div>
         {{/if}}
       </div>
       {{/each}}
     </div>
-    {{/with}}
     {{/let}}
     <div class="player__deck">
       <div class="deck--active"></div>
@@ -96,7 +95,7 @@
       {{#each field}}
       <div class="board__row">
         {{#each this}}
-        <div class="board-square opens-editor" data-row="{{this.row}}" data-column="{{this.column}}" data-editor="board-tile">
+        <div class="board-square draggable opens-editor" data-row="{{this.row}}" data-column="{{this.column}}" data-editor="board-tile">
           {{#if this.unit}}
           <div class="tile-drag-unit"></div>
           {{/if}}

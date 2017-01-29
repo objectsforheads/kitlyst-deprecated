@@ -242,25 +242,76 @@ Meteor.methods({
   'scene__airdropUnit': function(arg) {
     check(arg, {
       scene: String,
-      original: {
-        row: String,
-        column: String,
-        unit: {
-          owner: Match.Optional(Number),
-          id: Number,
-          attack: Number,
-          health: Number
-        }
-      },
+      original: Object,
       airdrop: {
         row: String,
         column: String
       }
     })
 
-    var owner = arg.original.unit.owner;
+
     var scene = Scenes.findOne({id: arg.scene});
-    scene['player'+owner].units[arg.airdrop.row][arg.airdrop.column] = arg.original.unit; scene['player'+owner].units[arg.original.row][arg.original.column] = {};
+
+    if (arg.original.unit) {
+    // row: String,
+    // column: String,
+    // unit: {
+    //   owner: Match.Optional(Number),
+    //   id: Number,
+    //   attack: Number,
+    //   health: Number
+    // }
+      var owner = arg.original.unit.owner;
+      scene['player'+owner].units[arg.airdrop.row][arg.airdrop.column] = arg.original.unit; scene['player'+owner].units[arg.original.row][arg.original.column] = {};
+    } else {
+    // id: Number,
+    // owner: Number,
+    // index: Number
+
+      var player = scene['player'+arg.original.owner];
+      var card = allCards.findOne({id: arg.original.id});
+      // Remove the actionbar card
+      player.actionbar[arg.original.index] = {};
+
+      // If the card is an artifact, equip it
+      if (card.type === 'Artifact') {
+        // equipping artifacts through other means will
+        // organize them and set null id's to the end
+        // so check if an artifact is equipped in the last slot
+        if (player.artifacts[2].id) {
+          // if there is, bump the first one
+          player.artifacts.shift();
+          // then add this new one
+          player.artifacts.push({
+            id: arg.original.id,
+            durability: 3
+          })
+        } else {
+          // there's space, go ahead and find the first null id
+          // then equip the artifact in that slot
+          for (var i = 0; i < player.artifacts.length; i++) {
+            var artifact = player.artifacts[i];
+            if (artifact.id === null) {
+              artifact.id = arg.original.id;
+              artifact.durability = 3;
+              break;
+            }
+          }
+        }
+      }
+
+      // If the card is a unit, airdrop it!
+      if (card.type === 'Unit') {
+        player.units[arg.airdrop.row][arg.airdrop.column] = {
+          id: arg.original.id,
+          owner: arg.original.owner,
+          attack: card.attack,
+          health: card.health
+        }
+      }
+
+      // Do nothing if it's a spell
+    }
 
     Scenes.update({id: arg.scene}, scene);
 

@@ -392,6 +392,17 @@ Template.scenebuilderBuild__player.helpers({
       return allCards.findOne({id: this.id});
     }
     return false;
+  },
+  playerActionbar() {
+    var player = this.player;
+    var actionbar = player.actionbar;
+
+    actionbar.forEach(function(card, index) {
+      card.owner = player.id;
+      card.index = index;
+    })
+
+    return actionbar;
   }
 })
 
@@ -402,7 +413,10 @@ Template.scenebuilderBuild__stage.onCreated(function() {
 
 Template.scenebuilderBuild__stage.onRendered(function() {
   var self = Template.instance();
-  this.drake = dragula($('.board-square').toArray());
+  this.drake = dragula(
+    $('.draggable').toArray(),
+    $('.board-square').toArray()
+  );
 
   this.drake.on("drag", (el, target, source, sibling) => {
     // We're starting a unit dragging interaction
@@ -412,7 +426,7 @@ Template.scenebuilderBuild__stage.onRendered(function() {
     // c. if there's another unit on the board, replace it
 
     // Get the unit we're dragging
-    self.draggingUnit.set(Blaze.getData(el).unit);
+    self.draggingUnit.set(Blaze.getData(el).unit || Blaze.getData(el));
 
     // Set the tile as the drag-origin
     $(source).addClass('drag-origin');
@@ -459,6 +473,7 @@ Template.scenebuilderBuild__stage.onRendered(function() {
         column: $(target).attr('data-column')
       }
     }
+    console.log(coordinates)
     // We don't need floor data to airdrop
     delete coordinates.original.floor;
     Meteor.call('scene__airdropUnit', coordinates)
