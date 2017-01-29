@@ -297,7 +297,7 @@ Template.scenebuilderBuild.events({
       type: $(e.currentTarget).attr('data-editor'),
       context: this
     });
-    console.log(Template.instance().editorContext.get())
+
     FlowRouter.setQueryParams({editing: this.row + this.column})
     FlowRouter.setQueryParams({gallery: true})
 

@@ -145,16 +145,62 @@ Meteor.methods({
     })
 
     var scene = Scenes.findOne({id: arg.scene});
+
+    // store current factions to check against
+    var currentFactions = [
+      allCards.findOne({id: scene.player1.general.id}).faction,
+      allCards.findOne({id: scene.player2.general.id}).faction
+    ];
+
+    var newFaction = allCards.findOne({id: arg.unit.id}).faction;
+
     scene['player'+arg.owner].units[arg.row][arg.column] = arg.unit;
     scene['player'+arg.owner].general.health = arg.unit.health;
     scene['player'+arg.owner].general.id = arg.unit.id;
-    var player1 = scene.player1;
-    var player2 = scene.player2;
 
-    Scenes.update({id: arg.scene}, {
-      $set: { player1: player1, player2: player2 }
-    });
+    // new factions to check against for the reset
+    var newFactions = [
+      allCards.findOne({id: scene.player1.general.id}).faction,
+      allCards.findOne({id: scene.player2.general.id}).faction
+    ];
 
+    // If the factions on field changed,
+    // purge non-faction cards from entire field
+    if (currentFactions.indexOf(newFaction) === -1) {
+    [1,2].forEach(function(player) {
+      scene['player'+player].actionbar.forEach(function(card) {
+        if (card.id
+        && newFactions.indexOf(allCards.findOne({id:card.id}).faction) === -1) {
+          delete card.id;
+        }
+      })
+
+      scene['player'+player].artifacts.forEach(function(artifact) {
+        if (artifact.id
+        && newFactions.indexOf(allCards.findOne({id:artifact.id}).faction) === -1) {
+          artifact.id = null;
+          artifact.durability = 3;
+        }
+      })
+
+      scene['player'+player].artifacts.sort(function(a,b) {
+        if (a.id === null) {
+          return 1;
+        }
+      })
+
+      scene['player'+player].units.forEach(function(row) {
+        row.forEach(function(unit) {
+          if (unit.id &&
+          newFactions.indexOf(allCards.findOne({id:unit.id}).faction) === -1) {
+            unit = {};
+          }
+        })
+      })
+    })
+    }
+
+    Scenes.update({id: arg.scene}, scene);
     return true;
   },
   'editor__artifact': function(arg) {
