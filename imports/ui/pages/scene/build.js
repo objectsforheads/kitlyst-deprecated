@@ -467,20 +467,23 @@ Template.scenebuilderBuild__stage.onRendered(function() {
 
   this.drake.on("drop", (el, target, source, sibling) => {
     this.drake.cancel(true);
-    // Dropping the unit on a different tile,
-    // Send the unit origin data and airdop point to server
-    var coordinates = {
-      scene: FlowRouter.getParam('hash'),
-      original: Blaze.getData(source),
-      airdrop: {
-        row: $(target).attr('data-row'),
-        column: $(target).attr('data-column')
+    // Make sure generals are immune to replacement
+    var tile = Blaze.getData(target);
+    if (!tile.unit || allCards.findOne({id:tile.unit.id}).race !== 'General') {
+      // Dropping the unit on a different tile,
+      // Send the unit origin data and airdop point to server
+      var coordinates = {
+        scene: FlowRouter.getParam('hash'),
+        original: Blaze.getData(source),
+        airdrop: {
+          row: $(target).attr('data-row'),
+          column: $(target).attr('data-column')
+        }
       }
+      // We don't need floor data to airdrop
+      delete coordinates.original.floor;
+      Meteor.call('scene__airdropUnit', coordinates)
     }
-    console.log(coordinates)
-    // We don't need floor data to airdrop
-    delete coordinates.original.floor;
-    Meteor.call('scene__airdropUnit', coordinates)
   });
 })
 
