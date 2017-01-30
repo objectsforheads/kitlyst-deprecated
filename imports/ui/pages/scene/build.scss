@@ -168,7 +168,7 @@ $tileScale: 0.4625;
     // Each row varies slightly in positioning - set it here
     &:nth-child(1) {
       width: #{ $tileContainer * 9 * $tileScale * 0.9375 };
-      z-index: 5;
+      z-index: 1;
 
       .floor,
       .unit {
@@ -178,7 +178,7 @@ $tileScale: 0.4625;
 
     &:nth-child(2) {
       width: #{ $tileContainer * 9 * $tileScale * .9681 };
-      z-index: 4;
+      z-index: 2;
 
       .floor,
       .unit {
@@ -198,7 +198,7 @@ $tileScale: 0.4625;
 
     &:nth-child(4) {
       width: #{ $tileContainer * 9 * $tileScale * 1.0294 };
-      z-index: 2;
+      z-index: 4;
 
       .floor,
       .unit {
@@ -208,7 +208,7 @@ $tileScale: 0.4625;
 
     &:nth-child(5) {
       width: #{ $tileContainer * 9 * $tileScale * 1.06 };
-      z-index: 1;
+      z-index: 5;
 
       .floor,
       .unit {
