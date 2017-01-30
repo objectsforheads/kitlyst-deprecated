@@ -411,6 +411,17 @@ Template.scenebuilderBuild__player.events({
     }, function(err) {
       if (err) { sAlert.error(err.reason); }
     })
+  },
+  'click .bbs__cooldown': function(e, template) {
+    var player = this.player;
+    Meteor.call('editor__bbs-cooldown', {
+      scene: FlowRouter.getParam('hash'),
+      owner: player.id,
+      cooldown: player.bbs.cooldown,
+      remaining: player.bbs.remaining
+    }, function(err) {
+      if (err) { sAlert.error(err.reason); }
+    })
   }
 })
 

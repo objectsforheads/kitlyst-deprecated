@@ -170,6 +170,25 @@ Meteor.methods({
 
     Scenes.update({id: arg.scene}, scene);
   },
+  'editor__bbs-cooldown': function(arg) {
+    check(arg, {
+      scene: String,
+      owner: Number,
+      cooldown: Number,
+      remaining: Number
+    })
+
+    var scene = Scenes.findOne({id: arg.scene});
+
+    if (arg.remaining === 0) {
+      arg.remaining = arg.cooldown;
+    } else {
+      arg.remaining--;
+    }
+    scene['player'+arg.owner].bbs.remaining = arg.remaining;
+
+    Scenes.update({id: arg.scene}, scene);
+  },
   'editor__general': function(arg) {
     check(arg, {
       scene: String,
@@ -426,6 +445,18 @@ Meteor.methods({
         if (turnState.player === 1) { return 1 + turnState.turn; }
         return turnState.turn + player;
       }(arg.turnState);
+
+      // if it's past turn 7, the bbs cd is 1
+      if (arg.turnState.turn >= 7) {
+        scene['player'+player].bbs.cooldown = 1;
+      } else {
+        scene['player'+player].bbs.cooldown = 2;
+      }
+
+      // bbs cd should always be less than total cd
+      if (scene['player'+player].bbs.remaining > scene['player'+player].bbs.cooldown) {
+        scene['player'+player].bbs.remaining = scene['player'+player].bbs.cooldown
+      }
     })
 
     Scenes.update({id: arg.scene}, scene);
