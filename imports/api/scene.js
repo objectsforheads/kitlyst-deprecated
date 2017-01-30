@@ -54,7 +54,7 @@ Meteor.methods({
       "401": 20182,
       "418": 20183,
       "501": 20184,
-      "527": 80185
+      "527": 20185
     }
 
     if ( allCards.findOne({id: arg.player1}).race === 'General' ) {
@@ -68,7 +68,7 @@ Meteor.methods({
         bbs: {
           id: bbs[arg.player1],
           cooldown: 2,
-          remaining: 1
+          remaining: 2
         },
         manabar: {
           available: 2,
@@ -116,7 +116,7 @@ Meteor.methods({
         bbs: {
           id: bbs[arg.player2],
           cooldown: 2,
-          remaining: 0
+          remaining: 2
         },
         manabar: {
           available: 3,
