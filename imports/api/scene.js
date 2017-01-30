@@ -19,6 +19,13 @@ Meteor.methods({
 
     var scene = {id: Random.id()};
 
+    scene.meta = {
+      turnState: {
+        turn: 1,
+        player: 1
+      }
+    }
+
     var bbs = {
       "1": 20174,
       "23": 20175,
@@ -342,6 +349,22 @@ Meteor.methods({
 
       // Do nothing if it's a spell
     }
+
+    Scenes.update({id: arg.scene}, scene);
+
+    return true;
+  },
+  'editor__metaTurn': function(arg) {
+    check(arg, {
+      scene: String,
+      turnState: {
+        turn: Number,
+        player: Number
+      }
+    })
+
+    var scene = Scenes.findOne({id: arg.scene});
+    scene.meta.turnState = arg.turnState;
 
     Scenes.update({id: arg.scene}, scene);
 

@@ -897,3 +897,77 @@ Template.cardGallery.helpers({
     return false;
   }
 })
+
+Template.scenebuilderBuild__metaEditor.onCreated(function() {
+  var self = Template.instance();
+
+  self.settingTurn = new ReactiveVar(false);
+})
+
+Template.scenebuilderBuild__metaEditor.onRendered(function() {
+  var template = Template.instance();
+
+  var meta__turn = document.getElementById('meta__turn');
+  var metaTurnStart = function() {
+    var turnState = Scenes.findOne().meta.turnState;
+    if (turnState.player === 1) {
+      return (turnState.turn * 2) - 1;
+    } else {
+      return (turnState.turn * 2)
+    }
+  }();
+
+  noUiSlider.create(meta__turn, {
+    start: [metaTurnStart],
+    margin: 1,
+    step: 1,
+    range: {
+      'min': 1,
+      'max': 15
+    }
+  });
+
+  meta__turn.noUiSlider.on('start', function() {
+    template.settingTurn.set(calculateTurn(meta__turn.noUiSlider.get()))
+  })
+  meta__turn.noUiSlider.on('update', function() {
+    template.settingTurn.set(calculateTurn(meta__turn.noUiSlider.get()))
+  })
+  meta__turn.noUiSlider.on('change', function() {
+    template.settingTurn.set(false)
+    var turnState = {
+      scene: FlowRouter.getParam('hash'),
+      turnState: calculateTurn(meta__turn.noUiSlider.get())
+    }
+    Meteor.call('editor__metaTurn', turnState, function(err,data) {
+      if (err) { sAlert.error(err.reason); }
+    })
+  })
+
+  template.settingTurn.set(false)
+
+  function calculateTurn(turn) {
+    var player = turn % 2 === 1 ? 1 : 2;
+    turn = Math.ceil(turn/2);
+    return {player:player, turn:turn};
+  }
+})
+
+Template.scenebuilderBuild__metaEditor.helpers({
+  settingTurn() {
+    if (Template.instance().settingTurn.get()) {
+      var set = Template.instance().settingTurn.get();
+      if (set.turn === 7 && set.player === 2) {
+        set.turn = '7+'
+      }
+      if (set.turn === 8 && set.player === 1) {
+        set.turn = '8+'
+      }
+      return set;
+    }
+    return false;
+  },
+  metaTurn() {
+    return Scenes.findOne().meta.turnState;
+  }
+})
