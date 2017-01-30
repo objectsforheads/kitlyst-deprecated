@@ -375,6 +375,15 @@ Template.scenebuilderBuild__player.helpers({
   manaRemaining() {
     return this.player.manabar.available - this.player.manabar.used;
   },
+  handCount() {
+    var count = 0;
+    this.player.actionbar.forEach(function(card) {
+      if (card.id) {
+        count++;
+      }
+    })
+    return count;
+  },
   generalBBS() {
     var id = this.player.bbs.id;
     return sceneCards.findOne({id: id});
