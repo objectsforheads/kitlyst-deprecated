@@ -135,6 +135,10 @@ $tileScale: 0.4625;
   z-index: 10000;
 }
 
+.can-edit-shadowcreep .tile-drag-unit {
+  pointer-events: none;
+}
+
 
 
 
@@ -1448,6 +1452,25 @@ $playerHandScale: 0.4;
   left: 50%;
   transform: translate(-50%, calc(-50% + 350px));
   width: 500px;
+}
+
+.meta-editor__shadowcreep {
+  input {
+    display: none;
+  }
+  .fa {
+    color: #656565;
+  }
+  input:checked + label .fa {
+    color: #95fe95;
+  }
+
+  .edit-shadowcreep__owner-selection {
+    display: none;
+  }
+  .meta-editor__can-edit-shadowcreep:checked ~ .edit-shadowcreep__owner-selection {
+    display: initial;
+  }
 }
 
 

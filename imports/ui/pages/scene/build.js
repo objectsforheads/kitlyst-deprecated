@@ -253,6 +253,11 @@ Template.scenebuilderBuild.onCreated(function() {
   }].forEach(function(card) {
     sceneCards.insert(card);
   });
+
+  // meta editor variables
+  self.canEditShadowCreep = new ReactiveVar(false);
+  self.shadowCreepOwner = new ReactiveVar(1);
+  self.addingShadowCreep = new ReactiveVar(false);
 })
 
 Template.scenebuilderBuild.helpers({
@@ -276,6 +281,12 @@ Template.scenebuilderBuild.helpers({
   },
   locationContext() {
     return Template.instance().locationContext.get() || null;
+  },
+  canEditShadowCreep() {
+    if (Template.instance().canEditShadowCreep.get() && typeof Template.instance().shadowCreepOwner.get() === 'number') {
+      return true;
+    }
+    return false;
   }
 })
 
@@ -335,6 +346,50 @@ Template.scenebuilderBuild.events({
   'click .closes-card-gallery': function(e, template) {
     FlowRouter.setQueryParams({gallery: null})
     return;
+  },
+  'click #meta-editor__can-edit-shadowcreep': function(e, template) {
+    template.canEditShadowCreep.set(e.currentTarget.checked);
+  },
+  'click [name="shadowcreep-owner"]': function(e, template) {
+    template.shadowCreepOwner.set(Number(document.querySelector('input[name="shadowcreep-owner"]:checked').value));
+  },
+  'mousedown .can-edit-shadowcreep .board-square': function(e, template) {
+    template.addingShadowCreep.set(true);
+    if (template.addingShadowCreep.get()) {
+      Meteor.call('metaEditor__shadowcreep', {
+        scene: FlowRouter.getParam('hash'),
+        edit: 'add',
+        owner: template.shadowCreepOwner.get(),
+        tile: Blaze.getData(e.currentTarget)
+      }, function(err, data) {
+        if (err) {
+          template.addingShadowCreep.set(false);
+          sAlert.error(err.reason);
+        }
+      })
+    }
+    return false;
+  },
+  'mouseenter .can-edit-shadowcreep .board-square': function(e, template) {
+    if (template.addingShadowCreep.get()) {
+      Meteor.call('metaEditor__shadowcreep', {
+        scene: FlowRouter.getParam('hash'),
+        edit: function(){
+          if (template.shadowCreepOwner.get() !== 0) {return 'add';}
+          return 'remove'
+        }(),
+        owner: template.shadowCreepOwner.get(),
+        tile: Blaze.getData(e.currentTarget)
+      }, function(err, data) {
+        if (err) {
+          template.addingShadowCreep.set(false);
+          sAlert.error(err.reason);
+        }
+      })
+    }
+  },
+  'mouseup .can-edit-shadowcreep, mouseleave .can-edit-shadowcreep': function(e, template) {
+    template.addingShadowCreep.set(false);
   }
 })
 

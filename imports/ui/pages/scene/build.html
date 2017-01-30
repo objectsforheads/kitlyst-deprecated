@@ -1,6 +1,6 @@
 <template name="scenebuilderBuild">
   <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900|Open+Sans:300,400,600,700,800" rel="stylesheet">
-  <div class="scenebuilder {{#if editorOpen}}editor-open{{/if}}">
+  <div class="scenebuilder {{#if editorOpen}}editor-open{{/if}} {{#if canEditShadowCreep}}can-edit-shadowcreep{{/if}}">
     <div class="scenebuilder__set" data-battlemap="1">
       <div class="set__stage"></div>
       <div class="set__props">
@@ -319,5 +319,27 @@
       Setting board to: Turn {{settingTurn.turn}} for Player {{settingTurn.player}}
       {{/unless}}</h3>
     <div class="meta__turn" id="meta__turn"></div>
+
+    <div class="meta-editor__shadowcreep">
+      <input type="checkbox" class="meta-editor__can-edit-shadowcreep" id="meta-editor__can-edit-shadowcreep">
+      <label for="meta-editor__can-edit-shadowcreep" class="h3">
+        <i class="fa fa-circle"></i> Edit Shadow Creep
+      </label>
+
+      <div class="edit-shadowcreep__owner-selection">
+        <input type="radio" name="shadowcreep-owner" value="1" checked id="shadowcreep-owner--1">
+        <label for="shadowcreep-owner--1" class="h4">
+          <i class="fa fa-circle"></i> Player 1
+        </label>
+        <input type="radio" name="shadowcreep-owner" value="2" id="shadowcreep-owner--2">
+        <label for="shadowcreep-owner--2" class="h4">
+          <i class="fa fa-circle"></i> Player 2
+        </label>
+        <input type="radio" name="shadowcreep-owner" value="0" id="shadowcreep-owner--remove">
+        <label for="shadowcreep-owner--remove" class="h4">
+          <i class="fa fa-circle"></i> Remove
+        </label>
+      </div>
+    </div>
   </div>
 </template>

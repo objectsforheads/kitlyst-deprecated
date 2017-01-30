@@ -408,5 +408,27 @@ Meteor.methods({
     Scenes.update({id: arg.scene}, scene);
 
     return true;
+  },
+  'metaEditor__shadowcreep': function(arg) {
+    check(arg, {
+      scene: String,
+      edit: String,
+      owner: Number,
+      tile: Object
+    })
+
+    var scene = Scenes.findOne({id: arg.scene});
+    scene.player1.floors[arg.tile.row][arg.tile.column] = {};
+    scene.player2.floors[arg.tile.row][arg.tile.column] = {};
+
+    if (arg.owner !== 0) {
+      var tile = scene['player'+arg.owner].floors[arg.tile.row][arg.tile.column];
+      tile.owner = arg.owner;
+      tile.type = 'shadowcreep';
+    }
+
+    Scenes.update({id: arg.scene}, scene);
+
+    return true;
   }
 })
