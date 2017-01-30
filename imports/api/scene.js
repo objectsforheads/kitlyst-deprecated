@@ -221,12 +221,28 @@ Meteor.methods({
 
     var scene = Scenes.findOne({id: arg.scene});
 
+    var bbs = {
+      "1": 20174,
+      "23": 20175,
+      "101": 20176,
+      "123": 20177,
+      "201": 20178,
+      "223": 20179,
+      "301": 20180,
+      "323": 20181,
+      "401": 20182,
+      "418": 20183,
+      "501": 20184,
+      "527": 20185
+    }
+
     // store current factions to check against
     var oldFaction = allCards.findOne({id:scene['player'+arg.owner].general.id});
 
     scene['player'+arg.owner].units[arg.row][arg.column] = arg.unit;
     scene['player'+arg.owner].general.health = arg.unit.health;
     scene['player'+arg.owner].general.id = arg.unit.id;
+    scene['player'+arg.owner].bbs.id = bbs[arg.unit.id];
 
     // new factions to check against for the reset
     var newFactions = [
