@@ -9,6 +9,10 @@ $manaColor: #01E0FD;
      .bbs__cooldown[data-remaining="0"]::after {
        display: none;
      }
+
+     .manabar__summary {
+       display: none;
+     }
   }
 
   // display information based on player perspective
@@ -20,11 +24,13 @@ $manaColor: #01E0FD;
       .player__manabar {
         display: flex;
       }
+      .manabar__summary {
+        display: block;
+      }
     }
 
     .scenebuilder__player[data-player="2"] {
-      .player__actionbar,
-      .manabar__summary {
+      .player__actionbar {
         display: none;
       }
       .mana__label {
@@ -40,11 +46,13 @@ $manaColor: #01E0FD;
       .player__manabar {
         display: flex;
       }
+      .manabar__summary {
+        display: block;
+      }
     }
 
     .scenebuilder__player[data-player="1"] {
-      .player__actionbar,
-      .manabar__summary {
+      .player__actionbar {
         display: none;
       }
       .mana__label {
@@ -121,6 +129,15 @@ $manaColor: #01E0FD;
 
       &[data-type="Unit"] .sprite {
         bottom: 20px;
+      }
+
+      &[data-type="Unit"][data-player="2"] .sprite {
+        bottom: 20px;
+
+        transform: scale(-3,3) translateX(-50%);
+        @media (min-width: 1281px) {
+          transform: scale(-4.5,4.5) translateX(-50%);
+        }
       }
     }
   }

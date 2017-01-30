@@ -254,7 +254,7 @@ Template.scenebuilderView.onCreated(function() {
 
 Template.scenebuilderView.helpers({
   perspective() {
-    return FlowRouter.getQueryParam('player');
+    return FlowRouter.getQueryParam('player') || null;
   },
   field() {
     return Template.instance().field.get();
