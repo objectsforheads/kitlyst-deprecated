@@ -531,11 +531,15 @@ Meteor.methods({
 
     var scene = Scenes.findOne({id: arg.scene});
 
-    return [
-      allCards.findOne({id: scene.player1.general.id}).faction,
-      allCards.findOne({id: scene.player2.general.id}).faction,
-      'Neutral',
-      'All'
-    ];
+    var f1 = allCards.findOne({id: scene.player1.general.id}).faction;
+    var f2 = allCards.findOne({id: scene.player2.general.id}).faction
+
+    var faction = [];
+    faction.push(f1);
+    if (f1 !== f2) { faction.push(f2); }
+    faction.push('Neutral');
+    faction.push('All');
+
+    return faction;
   }
 })
