@@ -118,7 +118,7 @@
       {{#each playerActionbar}}
       <div class="actionbar__card draggable {{#if this.id}}has-card{{/if}}" data-manacost="{{#if currentCard}}{{currentCard.manaCost}}{{/if}}" data-type="{{#if currentCard}}{{currentCard.type}}{{/if}}" data-location="{{this.index}}" data-player="{{this.owner}}">
         {{#if this.id}}
-        <div class="sprite id_{{this.id}} idle breath breathe breathing passive"></div>
+        <div class="sprite id_{{this.id}} breath breathe breathing passive"></div>
         <div class="tile-drag-unit"></div>
         {{/if}}
       </div>
@@ -169,15 +169,15 @@
           {{#with this.unit}}
           <div class="unit" data-attack="{{currentUnit.attack}}" data-health="{{currentUnit.health}}" data-player="{{this.owner}}">
             {{#if draggingUnit}}
-            <div class="tile-object sprite id_{{draggingUnit.id}} dragged-unit-sprite idle" data-player="{{draggingUnit.owner}}"></div>
+            <div class="tile-object sprite id_{{draggingUnit.id}} dragged-unit-sprite breath breathe breathing passive" data-player="{{draggingUnit.owner}}"></div>
             {{/if}}
-            <div class="tile-object sprite id_{{currentUnit.id}} idle"></div>
+            <div class="tile-object sprite id_{{currentUnit.id}} breath breathe breathing passive"></div>
           </div>
           {{/with}}
           {{else}}
           <div class="unit">
             {{#if draggingUnit}}
-            <div class="tile-object sprite id_{{draggingUnit.id}} dragged-unit-sprite idle" data-player="{{draggingUnit.owner}}"></div>
+            <div class="tile-object sprite id_{{draggingUnit.id}} dragged-unit-sprite breath breathe breathing passive" data-player="{{draggingUnit.owner}}"></div>
             {{/if}}
           </div>
           {{/if}}
@@ -223,7 +223,7 @@
           {{#each actionBarTemp}}
           <div class="actionbar__card opens-card-gallery opens-single-card-view  editor__set-to-update-actionbar-card {{#if this.id}}has-card{{/if}}" data-manacost="{{#if currentUnit}}{{currentUnit.manaCost}}{{/if}}" data-type="{{#if currentUnit}}{{currentUnit.type}}{{/if}}" data-location="{{@index}}">
             {{#if this.id}}
-            <div class="sprite id_{{this.id}} idle breath breathe breathing passive"></div>
+            <div class="sprite id_{{this.id}} breath breathe breathing passive"></div>
             {{/if}}
           </div>
           {{/each}}

@@ -769,7 +769,6 @@ $cooldownHeight: 86px;
     .sprite {
       position: absolute;
       top: 0;
-      // animation-play-state: running !important; HACK ACTIVATE LATER
 
       transform: scale(2);
       @media (min-width: 1281px) {
@@ -1476,7 +1475,6 @@ $playerHandScale: 0.4;
     }
 
     pointer-events: none;
-    animation-play-state: running !important;
   }
 
   &[data-type="Unit"] .sprite {
@@ -2985,3 +2983,21 @@ $playerHandScale: 0.4;
         background-position: 0 0
     }
 }
+
+// TODO set up ability to animate or not
+// .scenebuilder:not(.editor-open) {
+//   .tile-object.sprite,
+//   .actionbar__card .sprite,
+//   .general-artifact .sprite {
+//     animation-play-state: running;
+//     animation-iteration-count: infinite;
+//   }
+// }
+//
+// .scenebuilder__editor-modal.editor-open {
+//   .scenebuilder__card-gallery .sprite,
+//   .editor__contents .sprite {
+//     animation-play-state: running;
+//     animation-iteration-count: infinite;
+//   }
+// }
