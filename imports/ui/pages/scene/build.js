@@ -113,6 +113,8 @@ Template.scenebuilderBuild.onCreated(function() {
   self.galleryContext = new ReactiveVar(null);
   self.locationContext = new ReactiveVar(null);
 
+  self.galleryFilterFaction = new ReactiveVar(null);
+
   // TODO look into if this collection is persistent across the session
   // scenebuilder specific units
   sceneCards = new Mongo.Collection(null);
@@ -345,7 +347,20 @@ Template.scenebuilderBuild.events({
     template.editorContext.set(null);
     FlowRouter.setQueryParams({editing: null})
     FlowRouter.setQueryParams({gallery: null})
+
+    // HACK forcibly resetting the gallery filter to 'all'
+    $('[name="gallery-filter__faction"]').last().prop('checked', true);
     return;
+  },
+  'click [name="gallery-filter__faction"]': function(e, template) {
+    var filters = template.galleryContext.get();
+    delete filters.faction;
+    var faction = document.querySelector('input[name="gallery-filter__faction"]:checked').value || null;
+    if (faction && faction !== 'All') {
+      filters.faction = faction;
+    }
+
+    template.galleryContext.set(filters);
   },
   'click .opens-card-gallery': function(e, template) {
     FlowRouter.setQueryParams({gallery: true})
@@ -614,6 +629,18 @@ Template.scenebuilderBuild__editor.onCreated(function() {
   self.locationContext = new ReactiveVar(null);
 
   self.actionBarTemp = new ReactiveVar(null);
+
+  self.galleryFilters = new ReactiveVar(null);
+
+  Meteor.call('currentFactions', {
+    scene: FlowRouter.getParam('hash')
+  }, function(err, data) {
+    if (err) {
+      sAlert.error(err.reason);
+    } else {
+      return self.galleryFilters.set(data);
+    }
+  })
 })
 
 Template.scenebuilderBuild__editor.events({
@@ -853,8 +880,14 @@ Template.scenebuilderBuild__editor.helpers({
   context() {
     return this.editorOpen.context;
   },
+  galleryFilters() {
+    // HACK this works, but it can only filter for factions
+    // refactor it to allow for multiple filter types
+    return Template.instance().galleryFilters.get();
+  },
   galleryContext() {
-    return allCards.find(this.galleryContext, {sort: {faction: 1, set:1, id: 1}}).fetch();
+    var filters = {sort: {faction: 1, set:1, id: 1}};
+    return allCards.find(this.galleryContext, filters).fetch();
   },
   isGeneral() {
     var id = Template.instance().editingTarget.get('id');
@@ -920,6 +953,9 @@ Template.cardGallery.events({
 })
 
 Template.cardGallery.helpers({
+  galleryFilters() {
+    return this.galleryFilters;
+  },
   minusOne(num) {
     return num--;
   },

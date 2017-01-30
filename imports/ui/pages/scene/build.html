@@ -277,7 +277,7 @@
       <button class="editor-closer closes-editor"></button>
     </div>
 
-    {{#cardGallery galleryContext=galleryContext perPage=12}}
+    {{#cardGallery galleryContext=galleryContext galleryFilters=galleryFilters perPage=12}}
       <div class="editor__change-card">{{> databaseCard info=this}}</div>
     {{/cardGallery}}
   </div>
@@ -286,6 +286,12 @@
 <template name="cardGallery">
   <div class="scenebuilder__card-gallery">
     <div class="card-gallery__contents">
+      <div class="card-gallery__filters">
+        {{#each galleryFilters}}
+        <input type="radio" name="gallery-filter__faction" value="{{this}}" id="gallery-filter__faction--{{@index}}" checked>
+        <label for="gallery-filter__faction--{{@index}}" class="h4">{{this}}</label>
+        {{/each}}
+      </div>
       {{#if galleryContext}}
       <div class="card-gallery__cards">
         {{#each galleryPage}}

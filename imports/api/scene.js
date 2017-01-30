@@ -500,5 +500,19 @@ Meteor.methods({
     Scenes.update({id: arg.scene}, scene);
 
     return true;
+  },
+  'currentFactions': function(arg) {
+    check(arg, {
+      scene: String
+    })
+
+    var scene = Scenes.findOne({id: arg.scene});
+
+    return [
+      allCards.findOne({id: scene.player1.general.id}).faction,
+      allCards.findOne({id: scene.player2.general.id}).faction,
+      'Neutral',
+      'All'
+    ];
   }
 })

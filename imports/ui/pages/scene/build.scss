@@ -1324,6 +1324,32 @@ $cooldownHeight: 86px;
   align-items: center;
 }
 
+.card-gallery__filters {
+  text-align: center;
+  margin-bottom: 1rem;
+
+  input {
+    display: none;
+  }
+
+  label {
+    display: inline-block;
+    margin: 0 0.5em;
+    padding: 0 0.25em;
+    border-radius: 4px;
+    border: 2px solid white;
+    cursor: pointer;
+    color: black;
+    background: rgba(255,255,255,0.75);
+
+    transition: background 150ms;
+  }
+
+  input:checked + label {
+    background: white;
+  }
+}
+
 .card-gallery__contents {
   top: 0;
   left: 0;
