@@ -855,13 +855,12 @@ $cooldownHeight: 86px;
 
   .player__actionbar {
 
-    position: absolute;
+    position: fixed;
     text-align: center;
 
-    top: 425px;
+    bottom: 0;
     width: 206px;
     @media (min-width: 1281px) {
-      top: 550px;
       width: 340px; // MAGIC NUMBER: eh roughly the width from edge to grid
     }
   }
@@ -1482,6 +1481,13 @@ $playerHandScale: 0.4;
 
   &[data-type="Unit"] .sprite {
     bottom: 0;
+  }
+
+  &[data-type="Unit"][data-player="2"] .sprite {
+    transform: scale(-2, 2) translateX(-50%);
+    @media (min-width: 1281px) {
+      transform: scale(-2.5, 2.5) translateX(-50%);
+    }
   }
 }
 
