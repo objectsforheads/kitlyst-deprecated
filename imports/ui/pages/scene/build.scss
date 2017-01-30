@@ -1615,8 +1615,19 @@ $playerHandScale: 0.4;
 }
 
 .share__links {
+  display: flex;
+  margin: 0 -0.25rem;
+
   .share-link {
     display: flex;
+    width: 100%;
+    padding: 0 0.25rem;
+
+    &:first-child:nth-last-child(2),
+    &:first-child:nth-last-child(2) + .share-link {
+      max-width: 50%;
+      flex: 1;
+    }
   }
 
   .share-link__url {
@@ -1629,6 +1640,8 @@ $playerHandScale: 0.4;
     border-radius: 4px;
     margin-right: 2px;
     background: rgba(255,255,255,0.75);
+    display: inline-block;
+    min-width: 0;
   }
 
   .share-link__actions {

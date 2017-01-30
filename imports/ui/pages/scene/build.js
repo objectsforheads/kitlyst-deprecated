@@ -1185,10 +1185,13 @@ Template.scenebuilderBuild__share.events({
     }
 
     if (type === 'imgur') {
-      sAlert.info('Beginning upload - hang tight!')
-      Meteor.call('exportScene', FlowRouter.getParam('hash'), function(err, data) {
+      sAlert.info('Beginning upload - hang tight!');
+      template.shareLinks.set(['Uploading...','Uploading...']);
+      var url = location.protocol + '//' + location.host + '/scene/' + FlowRouter.getParam('hash');
+      Meteor.call('exportScene', url, function(err, data) {
         if (err) {
           sAlert.error(err.reason);
+          template.shareLinks.set(null);
         } else {
           sAlert.success('Finished uploading!');
           return template.shareLinks.set(data);

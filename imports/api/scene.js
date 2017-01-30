@@ -182,7 +182,7 @@ Meteor.methods({
       var options = {
         format: 'jpg',
         quality: 80,
-        url: location.protocol + '//' + location.host + '/scene/' + arg + param,
+        url: arg + param,
         force: true,
         width: 1920,
         height: 1080,
