@@ -1453,28 +1453,63 @@ $playerHandScale: 0.4;
 
 .scenebuilder__meta-editor {
   position: fixed;
-  top: 50%;
+  bottom: 50px;
   left: 50%;
-  transform: translate(-50%, calc(-50% + 350px));
-  width: 500px;
+  transform: translateX(-50%);
+  width: 1000px;
+
+  display: flex;
+
+  & > * {
+    flex: 1;
+    text-align: center;
+    padding: 0 1rem;
+  }
+
+  .h3 {
+    margin: 0;
+    margin-bottom: 1rem;
+    display: block;
+  }
+}
+
+.meta-editor__turn {
+  .noUi-handle {
+    cursor: pointer;
+  }
+
+  .noUi-horizontal {
+    background: transparent;
+    border-radius: 0;
+  }
 }
 
 .meta-editor__shadowcreep {
   input {
     display: none;
   }
+
+  label {
+    cursor: pointer;
+  }
+
   .fa {
     color: #656565;
+    transition: color 150ms;
   }
   input:checked + label .fa {
     color: #95fe95;
   }
 
   .edit-shadowcreep__owner-selection {
-    display: none;
+    display: block;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 150ms;
   }
   .meta-editor__can-edit-shadowcreep:checked ~ .edit-shadowcreep__owner-selection {
-    display: initial;
+    opacity: 1;
+    pointer-events: initial;
   }
 }
 

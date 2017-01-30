@@ -310,13 +310,16 @@
 
 <template name="scenebuilderBuild__metaEditor">
   <div class="scenebuilder__meta-editor">
-    <h3>
-      {{#unless settingTurn}}
-      Board set to: Turn {{metaTurn.turn}} for Player {{metaTurn.player}}
-      {{else}}
-      Setting board to: Turn {{settingTurn.turn}} for Player {{settingTurn.player}}
-      {{/unless}}</h3>
-    <div class="meta__turn" id="meta__turn"></div>
+    <div class="meta-editor__turn">
+      <span class="h3">
+        {{#unless settingTurn}}
+        Board set to:<br>Turn {{metaTurn.turn}} for Player {{metaTurn.player}}
+        {{else}}
+        Setting board to:<br>Turn {{settingTurn.turn}} for Player {{settingTurn.player}}
+        {{/unless}}
+      </span>
+      <div class="meta__turn" id="meta__turn"></div>
+    </div>
 
     <div class="meta-editor__shadowcreep">
       <input type="checkbox" class="meta-editor__can-edit-shadowcreep" id="meta-editor__can-edit-shadowcreep">
