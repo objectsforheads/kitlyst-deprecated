@@ -222,12 +222,7 @@ Meteor.methods({
     var scene = Scenes.findOne({id: arg.scene});
 
     // store current factions to check against
-    var currentFactions = [
-      allCards.findOne({id: scene.player1.general.id}).faction,
-      allCards.findOne({id: scene.player2.general.id}).faction
-    ];
-
-    var newFaction = allCards.findOne({id: arg.unit.id}).faction;
+    var oldFaction = allCards.findOne({id:scene['player'+arg.owner].general.id});
 
     scene['player'+arg.owner].units[arg.row][arg.column] = arg.unit;
     scene['player'+arg.owner].general.health = arg.unit.health;
@@ -241,7 +236,7 @@ Meteor.methods({
 
     // If the factions on field changed,
     // purge non-faction cards from entire field
-    if (currentFactions.indexOf(newFaction) === -1) {
+    if (newFactions.indexOf(oldFaction) === -1) {
     [1,2].forEach(function(player) {
       scene['player'+player].actionbar.forEach(function(card) {
         if (card.id
