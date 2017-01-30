@@ -904,7 +904,7 @@ Template.scenebuilderBuild__editor.helpers({
     return Template.instance().galleryFilters.get();
   },
   galleryContext() {
-    var filters = {sort: {faction: 1, set:1, id: 1}};
+    var filters = {sort: {faction: 1, manaCost: 1, name: 1}};
     return allCards.find(this.galleryContext, filters).fetch();
   },
   isGeneral() {
