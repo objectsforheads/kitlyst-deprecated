@@ -91,7 +91,7 @@
       {{#each field}}
       <div class="board__row">
         {{#each this}}
-        <div class="board-square draggable {{#if this.unit}}opens-editor{{/if}}" data-row="{{this.row}}" data-column="{{this.column}}" data-editor="board-tile">
+        <div class="board-square draggable {{#if this.unit.owner}}opens-editor{{/if}}" data-row="{{this.row}}" data-column="{{this.column}}" data-editor="board-tile">
           {{#if this.unit.owner}}
           <div class="tile-drag-unit"></div>
           {{/if}}

@@ -309,7 +309,7 @@ Template.scenebuilderBuild.events({
       type: $(e.currentTarget).attr('data-editor'),
       context: this
     });
-    if (this.unit && allCards.findOne({id: this.unit.id}).race === 'General') {
+    if (this.unit && allCards.findOne({id: this.unit.id}) && allCards.findOne({id: this.unit.id}).race === 'General') {
       template.galleryContext.set({race: 'General'});
     } else {
       template.galleryContext.set({type: 'Unit', 'race': {$ne: 'General'}});
