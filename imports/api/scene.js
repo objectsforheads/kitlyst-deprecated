@@ -56,7 +56,8 @@ Meteor.methods({
         },
         manabar: {
           available: 2,
-          used: 0
+          used: 0,
+          total: 2
         },
         hand: 0,
         deck: {
@@ -102,8 +103,9 @@ Meteor.methods({
           remaining: 0
         },
         manabar: {
-          available: 2,
-          used: 0
+          available: 3,
+          used: 0,
+          total: 3,
         },
         hand: 0,
         deck: {
@@ -354,7 +356,7 @@ Meteor.methods({
 
     return true;
   },
-  'editor__metaTurn': function(arg) {
+  'metaEditor__turn': function(arg) {
     check(arg, {
       scene: String,
       turnState: {
@@ -365,6 +367,13 @@ Meteor.methods({
 
     var scene = Scenes.findOne({id: arg.scene});
     scene.meta.turnState = arg.turnState;
+    [1,2].forEach(function(player) {
+      scene['player'+player].manabar.total = function(turnState) {
+        if (turnState.turn === 1) { return 1 + player; }
+        if (turnState.player === 1) { return 1 + turnState.turn; }
+        return turnState.turn + player;
+      }(arg.turnState);
+    })
 
     Scenes.update({id: arg.scene}, scene);
 

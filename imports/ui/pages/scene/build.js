@@ -939,7 +939,7 @@ Template.scenebuilderBuild__metaEditor.onRendered(function() {
       scene: FlowRouter.getParam('hash'),
       turnState: calculateTurn(meta__turn.noUiSlider.get())
     }
-    Meteor.call('editor__metaTurn', turnState, function(err,data) {
+    Meteor.call('metaEditor__turn', turnState, function(err,data) {
       if (err) { sAlert.error(err.reason); }
     })
   })
