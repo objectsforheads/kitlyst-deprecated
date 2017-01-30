@@ -1484,6 +1484,25 @@ $playerHandScale: 0.4;
   }
 }
 
+.meta-editor__mana {
+  color: #eee;
+
+  label {
+    display: inline-block;
+  }
+
+  input {
+    display: inline-block;
+    width: 1rem;
+    background: transparent;
+    border: 0;
+    color: #fff;
+    margin: 0;
+    border-bottom: 1px solid white;
+    text-align: center;
+  }
+}
+
 .meta-editor__shadowcreep {
   input {
     display: none;

@@ -1048,6 +1048,45 @@ Template.scenebuilderBuild__metaEditor.onRendered(function() {
   }
 })
 
+Template.scenebuilderBuild__metaEditor.events({
+  'keyup #meta-editor__player-mana--1': function(e, template) {
+    var mana = Number(document.querySelector('#meta-editor__player-mana--1').value);
+    if (mana > 9) {
+      mana = 9;
+      document.querySelector('#meta-editor__player-mana--1').value = 9;
+      sAlert.error('Can only have 9 mana');
+    }
+
+    Meteor.call('editor__manaAvailable', {
+      scene: FlowRouter.getParam('hash'),
+      owner: 1,
+      mana: mana
+    }, function(err, data) {
+      if (err) {
+        sAlert.error(err.reason);
+      }
+    })
+  },
+  'keyup #meta-editor__player-mana--2': function(e, template) {
+    var mana = Number(document.querySelector('#meta-editor__player-mana--2').value);
+    if (mana > 9) {
+      mana = 9;
+      document.querySelector('#meta-editor__player-mana--2').value = 9;
+      sAlert.error('Can only have 9 mana');
+    }
+
+    Meteor.call('editor__manaAvailable', {
+      scene: FlowRouter.getParam('hash'),
+      owner: 2,
+      mana: mana
+    }, function(err, data) {
+      if (err) {
+        sAlert.error(err.reason);
+      }
+    })
+  }
+})
+
 Template.scenebuilderBuild__metaEditor.helpers({
   settingTurn() {
     if (Template.instance().settingTurn.get()) {

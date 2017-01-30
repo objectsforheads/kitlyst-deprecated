@@ -170,6 +170,23 @@ Meteor.methods({
 
     Scenes.update({id: arg.scene}, scene);
   },
+  'editor__manaAvailable': function(arg) {
+    check(arg, {
+      scene: String,
+      owner: Number,
+      mana: Number
+    })
+
+    var scene = Scenes.findOne({id: arg.scene});
+
+    if (scene['player'+arg.owner].manabar.available !== arg.mana) {
+      scene['player'+arg.owner].manabar.available = arg.mana;
+
+      Scenes.update({id: arg.scene}, scene);
+    }
+
+    return true;
+  },
   'editor__bbs-cooldown': function(arg) {
     check(arg, {
       scene: String,

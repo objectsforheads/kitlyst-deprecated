@@ -16,7 +16,7 @@
     {{/if}}
   </div>
   {{#if Template.subscriptionsReady}}
-  {{> scenebuilderBuild__metaEditor}}
+  {{> scenebuilderBuild__metaEditor player1=player1 player2=player2}}
   {{> scenebuilderBuild__editor editorOpen=editorContext galleryContext=galleryContext locationContext=locationContext}}
   {{/if}}
 </template>
@@ -319,6 +319,21 @@
         {{/unless}}
       </span>
       <div class="meta__turn" id="meta__turn"></div>
+    </div>
+
+    <div class="meta-editor__mana">
+      <div class="meta-editor__player-mana h3">
+        <label for="meta-editor__player-mana--1">
+          Player 1 Mana:
+        </label>
+        <input type="text" id="meta-editor__player-mana--1" value="{{this.player1.manabar.available}}">/{{this.player1.manabar.total}}
+      </div>
+      <div class="meta-editor__player-mana h3">
+        <label for="meta-editor__player-mana--2">
+          Player 2 Mana:
+        </label>
+        <input type="text" id="meta-editor__player-mana--2" value="{{this.player2.manabar.available}}">/{{this.player2.manabar.total}}
+      </div>
     </div>
 
     <div class="meta-editor__shadowcreep">
