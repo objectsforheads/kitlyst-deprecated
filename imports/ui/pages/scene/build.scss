@@ -665,6 +665,10 @@ $cooldownHeight: 86px;
     }
   }
 
+  .player__manabar {
+    display: none;
+  }
+
   .player__summary {
     position: absolute;
     top: 103px;
@@ -1173,11 +1177,6 @@ $cooldownHeight: 86px;
       right: 300px;
     }
   }
-}
-
-// HACK hide the manabar for developing the summary bar
-.player__manabar {
-  display: none !important;
 }
 
 

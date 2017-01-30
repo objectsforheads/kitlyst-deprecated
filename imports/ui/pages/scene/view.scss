@@ -1,0 +1,161 @@
+$manaColor: #01E0FD;
+
+.scenebuilder.viewing {
+  .scenebuilder__player {
+    .player__general-artifacts .general-artifact::before {
+       background: none;
+     }
+
+     .bbs__cooldown[data-remaining="0"]::after {
+       display: none;
+     }
+  }
+
+  // display information based on player perspective
+  &[data-viewing="1"] {
+    .scenebuilder__player[data-player="1"] {
+      .player__summary {
+        display: none !important;
+      }
+      .player__manabar {
+        display: flex;
+      }
+    }
+
+    .scenebuilder__player[data-player="2"] {
+      .player__actionbar,
+      .manabar__summary {
+        display: none;
+      }
+      .mana__label {
+        filter: grayscale(100);
+      }
+    }
+  }
+  &[data-viewing="2"] {
+    .scenebuilder__player[data-player="2"] {
+      .player__summary {
+        display: none !important;
+      }
+      .player__manabar {
+        display: flex;
+      }
+    }
+
+    .scenebuilder__player[data-player="1"] {
+      .player__actionbar,
+      .manabar__summary {
+        display: none;
+      }
+      .mana__label {
+        filter: grayscale(100);
+      }
+    }
+  }
+
+  &[data-viewing] .player__actionbar {
+    $actionbarCard: 280px;
+    $actionbarMargin: 3px;
+
+    position: fixed;
+    top: initial;
+
+    transform-origin: center bottom;
+    left: 50%;
+    width: #{ $actionbarCard*6 + $actionbarMargin*2*6 };
+    font-size: 0;
+
+    margin: 0 -15px;
+    bottom: 47px;
+    transform: translateX(-50%) scale(0.5);
+    @media (min-width: 1281px) {
+      margin: 0 -55px;
+      bottom: 20px;
+      transform: translateX(-50%) scale(0.625);
+    }
+
+    .actionbar__card {
+      $actionbarMargin: -5.5px;
+      margin: 0 $actionbarMargin;
+      @media (min-width: 1281px) {
+        $actionbarMargin: 3px;
+        margin: 0 $actionbarMargin;
+      }
+      width: $actionbarCard;
+      height: $actionbarCard;
+      display: inline-block;
+
+      &::after {
+        content: attr(data-manacost);
+        width: 71.25px; // scaled 0.625 of 2x
+        height: 78.75px; // scaled 0.625 of 2x
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translate(-50%, 0);
+        filter: grayscale(100);
+
+        font-size: 35px; //HACK GET REAL LATER
+        color: black;
+        text-align: center;
+        line-height: 78.75px;
+      }
+
+      &.has-card::after {
+        filter: grayscale(0);
+      }
+
+      .sprite {
+        position: absolute;
+        bottom: 45px;
+        left: 50%;
+        transform-origin: left bottom;
+
+        transform: scale(3) translateX(-50%);
+        @media (min-width: 1281px) {
+          transform: scale(4.5) translateX(-50%);
+        }
+
+        animation-play-state: running !important;
+      }
+
+      &[data-type="Unit"] .sprite {
+        bottom: 20px;
+      }
+    }
+  }
+}
+
+.manabar__summary {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 22px;
+  white-space: nowrap;
+  font-weight: 600;
+  line-height: 36px;
+  letter-spacing: 5px;
+  vertical-align: bottom;
+
+  position: absolute;
+  top: 91px;
+
+  &::before {
+    content: attr(data-remaining);
+    font-size: 28px;
+    color: $manaColor;
+  }
+  &::after {
+    content: attr(data-available);
+  }
+}
+
+[data-player="1"] {
+  .manabar__summary {
+    left: 628px;
+  }
+}
+
+[data-player="2"] {
+  .manabar__summary {
+    right: 623px; // letter-spacing difference
+  }
+}

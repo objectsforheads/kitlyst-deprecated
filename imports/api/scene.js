@@ -10,6 +10,18 @@ Meteor.publish('buildScene', function(id) {
   });
 })
 
+Meteor.publish('viewScene', function(id) {
+  check(id, String);
+
+  return Scenes.find({
+    'viewId': id
+  }, {
+    fields: {
+      'id': 0
+    }
+  });
+})
+
 Meteor.methods({
   'createScene': function(arg) {
     check(arg, {
