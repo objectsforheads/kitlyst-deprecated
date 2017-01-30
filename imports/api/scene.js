@@ -328,14 +328,14 @@ Meteor.methods({
     [1,2].forEach(function(player) {
       scene['player'+player].actionbar.forEach(function(card) {
         if (card.id
-        && newFactions.indexOf(allCards.findOne({id:card.id}).faction) === -1) {
+        && newFactions.indexOf(allCards.findOne({id:card.id}).faction) === -1 && allCards.findOne({id:card.id}).faction !== 'Neutral') {
           delete card.id;
         }
       })
 
       scene['player'+player].artifacts.forEach(function(artifact) {
         if (artifact.id
-        && newFactions.indexOf(allCards.findOne({id:artifact.id}).faction) === -1) {
+        && newFactions.indexOf(allCards.findOne({id:artifact.id}).faction) === -1 && allCards.findOne({id:card.id}).faction !== 'Neutral') {
           artifact.id = null;
           artifact.durability = 3;
         }
@@ -350,7 +350,7 @@ Meteor.methods({
       scene['player'+player].units.forEach(function(row, rowNum) {
         row.forEach(function(unit, colNum) {
           if (unit.id &&
-          newFactions.indexOf(allCards.findOne({id:unit.id}).faction) === -1) {
+          newFactions.indexOf(allCards.findOne({id:unit.id}).faction) === -1 && allCards.findOne({id:unit.id}).faction !== 'Neutral') {
             scene['player'+player].units[rowNum][colNum] = {};
           }
         })
