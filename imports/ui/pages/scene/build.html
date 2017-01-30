@@ -220,16 +220,19 @@
 
       {{#if editingBoardTile}}
       <div class="scenebuilder__editor--board-tile">
-        {{#if context.unit}}
-        {{#with context.unit}}
-
-        {{#if isGeneral}}
+        {{#unless isGeneral}}
         <div class="edit-options">
-          <button class="btn left-edge opens-card-gallery">
-            <span class="btn_text">Change General</span>
+          <button class="btn left-edge condensed editor__delete-unit">
+            <span class="btn_text"><i class="fa fa-trash"></i></span>
           </button>
         </div>
+        {{/unless}}
+        {{#if currentUnit}}
         {{> databaseCard info=currentUnit layout="dynamicCard"}}
+        {{else}}
+        <div>{{> databaseCard layout="blankCard" info="Unit"}}</div>
+        {{/if}}
+        {{#if isGeneral}}
         <div class="edit-form-group">
           <div class="form-group__row">
             <div class="form-group__input">
@@ -251,10 +254,26 @@
           </button>
         </div>
         {{else}}
-        {{> databaseCard info=currentUnit}}
-        {{/if}}
-
-        {{/with}}
+        <div class="edit-form-group">
+          <div class="form-group__row">
+            <div class="form-group__input">
+              <label for="edit-unit__health">Attack</label>
+              <input type="text" id="edit-unit__attack" name="edit-unit__attack" value="{{currentUnit_attack}}">
+            </div>
+            <div class="form-group__input">
+              <label for="edit-unit__health">Health</label>
+              <input type="text" id="edit-unit__health" name="edit-unit__health" value="{{currentUnit_health}}">
+            </div>
+          </div>
+        </div>
+        <div class="btn-bar">
+          <button class="btn left-edge closes-editor">
+            <span class="btn_text">Cancel</span>
+          </button>
+          <button class="btn right-edge editor__save-tile">
+            <span class="btn_text">Save</span>
+          </button>
+        </div>
         {{/if}}
       </div>
       {{/if}}

@@ -295,17 +295,6 @@ Template.scenebuilderBuild.events({
   'click .opens-editor': function(e, template) {
     FlowRouter.setQueryParams({editing: this.row + this.column})
     FlowRouter.setQueryParams({gallery: true})
-
-    // also set the card gallery context here
-    // we could set it somewhere more publically
-    // but that would also make it easier to modify client side
-    // and then weird things can happen
-    // which, while hilarious, is not what we really want
-
-    // HACK this seems a little fragle - look into a better way to organize this
-    if (this.unit && allCards.findOne({id: this.unit.id}).race === 'General') {
-      template.galleryContext.set({race: 'General'});
-    }
     return;
   },
   'click [data-editor="board-tile"]': function(e, template) {
@@ -313,6 +302,11 @@ Template.scenebuilderBuild.events({
       type: $(e.currentTarget).attr('data-editor'),
       context: this
     });
+    if (this.unit && allCards.findOne({id: this.unit.id}).race === 'General') {
+      template.galleryContext.set({race: 'General'});
+    } else {
+      template.galleryContext.set({type: 'Unit', 'race': {$ne: 'General'}});
+    }
   },
   'click [data-editor="artifact-slot"]': function(e, template) {
     template.galleryContext.set({type: 'Artifact'});
@@ -544,6 +538,25 @@ Template.scenebuilderBuild__editor.events({
       template.editingTarget.set('health', newHealth);
     }
   },
+  'keyup [name="edit-unit__attack"]': function(e, template) {
+    var newAttack = Number($(e.currentTarget).val());
+    var oldAttack = template.editingTarget.get('attack');
+
+    if (newAttack !== oldAttack) {
+      template.editingTarget.set('attack', newAttack);
+    }
+  },
+  'keyup [name="edit-unit__health"]': function(e, template) {
+    var newHealth = Number($(e.currentTarget).val());
+    var oldHealth = template.editingTarget.get('health');
+
+    if (newHealth !== oldHealth) {
+      template.editingTarget.set('health', newHealth);
+    }
+  },
+  'click .editor__delete-unit': function(e, template) {
+    template.editingTarget.clear();
+  },
   'click .editor__destroy-artifact': function(e, template) {
     template.editingTarget.set('id', null);
   },
@@ -624,6 +637,29 @@ Template.scenebuilderBuild__editor.events({
         // although arguably it is better to maintain
         // one function which we would pull right now,
         // were the parent context not necessary
+        $('.closes-editor').click();
+      }
+    })
+  },
+  'click .editor__save-tile': function(e, template) {
+    var tile = {
+      scene: FlowRouter.getParam('hash'),
+      owner: template.data.editorOpen.context.unit.owner,
+      row: template.data.editorOpen.context.row,
+      column: template.data.editorOpen.context.column,
+      unit: {
+        id: template.editingTarget.get('id'),
+        attack: template.editingTarget.get('attack'),
+        health: template.editingTarget.get('health')
+      }
+    }
+    Meteor.call('editor__tile', tile, function(err, data) {
+      if (err) {
+        sAlert.error(err.reason);
+      } else {
+        template.viewingSingle.set(false);
+        template.editingTarget.clear();
+        // HACK accessing parent event
         $('.closes-editor').click();
       }
     })
@@ -726,7 +762,8 @@ Template.scenebuilderBuild__editor.helpers({
     return allCards.find(this.galleryContext, {sort: {faction: 1, set:1, id: 1}}).fetch();
   },
   isGeneral() {
-    if (allCards.findOne({id: this.id}).race === 'General') {
+    var id = Template.instance().editingTarget.get('id');
+    if (allCards.findOne({id:id}) && allCards.findOne({id:id}).race === 'General') {
       return true;
     }
     return false;

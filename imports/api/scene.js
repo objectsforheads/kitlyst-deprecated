@@ -189,15 +189,39 @@ Meteor.methods({
         }
       })
 
-      scene['player'+player].units.forEach(function(row) {
-        row.forEach(function(unit) {
+      scene['player'+player].units.forEach(function(row, rowNum) {
+        row.forEach(function(unit, colNum) {
           if (unit.id &&
           newFactions.indexOf(allCards.findOne({id:unit.id}).faction) === -1) {
-            unit = {};
+            scene['player'+player].units[rowNum][colNum] = {};
           }
         })
       })
     })
+    }
+
+    Scenes.update({id: arg.scene}, scene);
+    return true;
+  },
+  'editor__tile': function(arg) {
+    check(arg, {
+      scene: String,
+      owner: Number,
+      row: String,
+      column: String,
+      unit: {
+        id: Number,
+        attack: Number,
+        health: Number
+      }
+    })
+
+    var scene = Scenes.findOne({id: arg.scene});
+
+    // editing only works on units that exist
+    var unit = scene['player'+arg.owner].units[arg.row][arg.column];
+    for (var key in arg.unit) {
+      unit[key] = arg.unit[key];
     }
 
     Scenes.update({id: arg.scene}, scene);
