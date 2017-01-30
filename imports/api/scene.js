@@ -5,8 +5,7 @@ Meteor.publish('buildScene', function(id) {
     'id': id
   }, {
     fields: {
-      'id': 0,
-      'viewId': 0
+      'id': 0
     }
   });
 })

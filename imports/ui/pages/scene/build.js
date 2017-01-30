@@ -1144,3 +1144,33 @@ Template.scenebuilderBuild__metaEditor.helpers({
     return Scenes.findOne().meta.turnState;
   }
 })
+
+Template.scenebuilderBuild__share.onCreated(function() {
+  let self = Template.instance();
+
+  self.shareLinkType = new ReactiveVar(null);
+})
+
+Template.scenebuilderBuild__share.events({
+  'click [name="scenebuilder-link-type"]': function(e, template) {
+    template.shareLinkType.set(document.querySelector('input[name="scenebuilder-link-type"]:checked').value);
+  }
+})
+
+Template.scenebuilderBuild__share.helpers({
+  shareLinks() {
+    var type = Template.instance().shareLinkType.get();
+    var links = [];
+    if (type === 'edit') {
+      var link = location.protocol + '//' + location.host + '/scene/build/' + FlowRouter.getParam('hash');
+      links.push(link);
+    }
+
+    if (type === '1' || type === '2') {
+      var link = location.protocol + '//' + location.host + '/scene/' + Scenes.findOne().viewId + '?player=' + type;
+      links.push(link);
+    }
+
+    return links;
+  }
+})

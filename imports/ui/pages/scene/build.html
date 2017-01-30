@@ -16,9 +16,47 @@
     {{/if}}
   </div>
   {{#if Template.subscriptionsReady}}
+  {{> scenebuilderBuild__share}}
   {{> scenebuilderBuild__metaEditor player1=player1 player2=player2}}
   {{> scenebuilderBuild__editor editorOpen=editorContext galleryContext=galleryContext locationContext=locationContext}}
   {{/if}}
+</template>
+
+<template name="scenebuilderBuild__share">
+  <div class="scenebuilder__share">
+    <div class="share__options">
+      <input type="radio" name="scenebuilder-link-type" value="edit" id="scenebuilder-link-type--edit">
+      <label for="scenebuilder-link-type--edit" class="h4">
+        Edit
+      </label>
+
+      <input type="radio" name="scenebuilder-link-type" value="1" id="scenebuilder-link-type--view1">
+      <label for="scenebuilder-link-type--view1" class="h4">
+        View [P1]
+      </label>
+
+      <input type="radio" name="scenebuilder-link-type" value="2" id="scenebuilder-link-type--view2">
+      <label for="scenebuilder-link-type--view2" class="h4">
+        View [P2]
+      </label>
+
+      <input type="radio" name="scenebuilder-link-type" value="imgur" id="scenebuilder-link-type--imgur">
+      <label for="scenebuilder-link-type--imgur" class="h4">
+        Imgur
+      </label>
+    </div>
+    <div class="share__links">
+      {{#each shareLinks}}
+      <div class="share-link">
+        <input type="text" value="{{this}}" class="share-link__url" id ="share-link__url--{{@index}}">
+        <div class="share-link__actions">
+          <button class="action__copy clipboardJS-trigger" data-clipboard-target="#share-link__url--{{@index}}"><i class="fa fa-clipboard"></i></button>
+          <a href="{{this}}" target="_blank" class="action__open"><i class="fa fa-external-link"></i></a>
+        </div>
+      </div>
+      {{/each}}
+    </div>
+  </div>
 </template>
 
 <template name="scenebuilderBuild__player">
