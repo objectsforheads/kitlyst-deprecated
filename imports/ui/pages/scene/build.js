@@ -62,11 +62,19 @@ Template.scenebuilderBuild.onCreated(function() {
             tile.floor = {};
             tile.floor.type = self.player1.get().floors[rowNum][colNum].type;
             tile.floor.owner = 1;
+            // if they own shadowcreep, remove the mana spring unit
+            if (tile.floor.type === 'shadowcreep') {
+              defaults.units[rowNum][colNum] = {};
+            }
           }
           if ( Object.keys(self.player2.get().floors[rowNum][colNum]).length > 0 ) {
             tile.floor = {};
             tile.floor.type = self.player2.get().floors[rowNum][colNum].type;
             tile.floor.owner = 2;
+            // if they own shadowcreep, ensure that the mana spring unit is removedremove the mana spring unit
+            if (tile.floor.type === 'shadowcreep') {
+              defaults.units[rowNum][colNum] = {};
+            }
           }
 
           // place the units (p2 > p1 > default)
