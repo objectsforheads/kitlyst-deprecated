@@ -1,3 +1,5 @@
+var Future = Npm.require("fibers/future");
+
 Meteor.publish('buildScene', function(id) {
   check(id, String);
 
@@ -167,6 +169,64 @@ Meteor.methods({
 
     Scenes.insert(scene);
     return scene.id;
+  },
+  'exportScene': function(arg) {
+    check(arg, String);
+
+    import Urlbox from 'urlbox';
+    var urlbox = Urlbox('dd9c90fb-3db4-4d92-8195-0b35954726f5', '7380ebc8-8c87-4bda-a1a0-4053bfd89781');
+
+    var links = [];
+
+    ['?player=1', '?player=2'].forEach(function(param) {
+      var options = {
+        format: 'jpg',
+        quality: 80,
+        url: location.protocol + '//' + location.host + '/scene/' + arg + param,
+        force: true,
+        width: 1920,
+        height: 1080,
+        delay: 3000
+      };
+
+      var futureGet = new Future();
+      var urlboxUrl = urlbox.buildUrl(options);
+
+      futureGet.return(HTTP.get(urlboxUrl, {}));
+      var resultGet = futureGet.wait();
+
+      var futureUpload = new Future();
+      var imgurUrl = "https://api.imgur.com/3/image";
+      var imgurAuth = 'Client-ID ' + '668d88a5ecd617c';
+      var imgurOptions = {
+        headers: {
+          Authorization: imgurAuth,
+          Accept: 'application/json'
+        },
+         data: {
+           image: urlboxUrl
+         }
+      }
+
+      HTTP.call('POST', imgurUrl, imgurOptions, function(err, res) {
+        if (err) {
+          futureUpload.throw(err);
+        }
+        else {
+          futureUpload.return(res);
+        }
+      })
+
+      var resultUpload = futureUpload.wait();
+      var res = resultUpload.data;
+      if (res.success === true && res.status === 200) {
+        links.push(res.data.link);
+      } else {
+        throw new Meteor.Error("image-upload-failed", "Something went wrong! Please try again.");
+      }
+    })
+
+    return links
   },
   'scene__setBoard': function(arg) {
     check(arg, {

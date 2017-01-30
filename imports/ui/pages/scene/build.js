@@ -1163,29 +1163,43 @@ Template.scenebuilderBuild__metaEditor.helpers({
 Template.scenebuilderBuild__share.onCreated(function() {
   let self = Template.instance();
 
-  self.shareLinkType = new ReactiveVar(null);
+  self.shareLinks = new ReactiveVar(null);
 })
 
 Template.scenebuilderBuild__share.events({
   'click [name="scenebuilder-link-type"]': function(e, template) {
-    template.shareLinkType.set(document.querySelector('input[name="scenebuilder-link-type"]:checked').value);
+    var type = document.querySelector('input[name="scenebuilder-link-type"]:checked').value;
+    if (type === 'edit') {
+      var link = location.protocol + '//' + location.host + '/scene/build/' + FlowRouter.getParam('hash');
+      return template.shareLinks.set([link])
+    }
+
+    if (type === 'overview') {
+      var link = location.protocol + '//' + location.host + '/scene/' + Scenes.findOne().viewId;
+      return template.shareLinks.set([link])
+    }
+
+    if (type === '1' || type === '2') {
+      var link = location.protocol + '//' + location.host + '/scene/' + Scenes.findOne().viewId + '?player=' + type;
+      return template.shareLinks.set([link])
+    }
+
+    if (type === 'imgur') {
+      sAlert.info('Beginning upload - hang tight!')
+      Meteor.call('exportScene', FlowRouter.getParam('hash'), function(err, data) {
+        if (err) {
+          sAlert.error(err.reason);
+        } else {
+          sAlert.success('Finished uploading!');
+          return template.shareLinks.set(data);
+        }
+      })
+    }
   }
 })
 
 Template.scenebuilderBuild__share.helpers({
   shareLinks() {
-    var type = Template.instance().shareLinkType.get();
-    var links = [];
-    if (type === 'edit') {
-      var link = location.protocol + '//' + location.host + '/scene/build/' + FlowRouter.getParam('hash');
-      links.push(link);
-    }
-
-    if (type === '1' || type === '2') {
-      var link = location.protocol + '//' + location.host + '/scene/' + Scenes.findOne().viewId + '?player=' + type;
-      links.push(link);
-    }
-
-    return links;
+    return Template.instance().shareLinks.get();
   }
 })
