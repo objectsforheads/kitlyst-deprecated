@@ -688,6 +688,9 @@ Template.scenebuilderBuild__editor.events({
       template.editingTarget.set('id', this.id);
     }
   },
+  'click .editor__destroy-actionbar-card': function(e, template) {
+    template.editingTarget.set('id', null);
+  },
   'click .editor__update-actionbar-card': function(e, template) {
     var actionBar = template.actionBarTemp.get();
     var toChange = template.locationContext.get();
