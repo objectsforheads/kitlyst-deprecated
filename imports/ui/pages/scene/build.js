@@ -35,22 +35,7 @@ Template.scenebuilderBuild.onCreated(function() {
         { race: 'General' }
       ] });
 
-      var defaults = {
-        floors: [
-          [{}, {}, {}, {}, {type: 'manaspring'}, {}, {}, {}, {}],
-          [{}, {}, {}, {}, {}, {}, {}, {}, {}],
-          [{}, {}, {}, {}, {}, {type: 'manaspring'}, {}, {}, {}],
-          [{}, {}, {}, {}, {}, {}, {}, {}, {}],
-          [{}, {}, {}, {}, {type: 'manaspring'}, {}, {}, {}, {}]
-        ],
-        units: [
-          [{}, {}, {}, {}, {id: 'scene_manaspring'}, {}, {}, {}, {}],
-          [{}, {}, {}, {}, {}, {}, {}, {}, {}],
-          [{}, {}, {}, {}, {}, {id: 'scene_manaspring'}, {}, {}, {}],
-          [{}, {}, {}, {}, {}, {}, {}, {}, {}],
-          [{}, {}, {}, {}, {id: 'scene_manaspring'}, {}, {}, {}, {}]
-        ]
-      }
+      var defaults = Scenes.findOne().meta.board;
 
       var field = [
         [{}, {}, {}, {}, {}, {}, {}, {}, {}],
@@ -97,6 +82,7 @@ Template.scenebuilderBuild.onCreated(function() {
             tile.unit.owner = 1;
             tile.unit.attack = self.player1.get().units[rowNum][colNum].attack || null;
             tile.unit.health = self.player1.get().units[rowNum][colNum].health || null;
+            defaults.units[rowNum][colNum] = {};
           }
           if ( Object.keys(self.player2.get().units[rowNum][colNum]).length > 0 ) {
             tile.unit = {};
@@ -104,11 +90,13 @@ Template.scenebuilderBuild.onCreated(function() {
             tile.unit.owner = 2;
             tile.unit.attack = self.player2.get().units[rowNum][colNum].attack || null;
             tile.unit.health = self.player2.get().units[rowNum][colNum].health || null;
+            defaults.units[rowNum][colNum] = {};
           }
 
         })
       })
 
+      Meteor.call('scene__setBoard', {scene: FlowRouter.getParam('hash'), board: defaults});
       self.field.set(field);
     }
   })
@@ -472,7 +460,7 @@ Template.scenebuilderBuild__stage.onRendered(function() {
     this.drake.cancel(true);
     // Make sure generals are immune to replacement
     var tile = Blaze.getData(target);
-    if (!tile.unit || allCards.findOne({id:tile.unit.id}).race !== 'General') {
+    if (!tile.unit || !tile.unit.owner || allCards.findOne({id:tile.unit.id}).race !== 'General') {
       // Dropping the unit on a different tile,
       // Send the unit origin data and airdop point to server
       var coordinates = {

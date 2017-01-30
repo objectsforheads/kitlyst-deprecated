@@ -23,6 +23,22 @@ Meteor.methods({
       turnState: {
         turn: 1,
         player: 1
+      },
+      board: {
+        floors: [
+          [{}, {}, {}, {}, {type: 'manaspring'}, {}, {}, {}, {}],
+          [{}, {}, {}, {}, {}, {}, {}, {}, {}],
+          [{}, {}, {}, {}, {}, {type: 'manaspring'}, {}, {}, {}],
+          [{}, {}, {}, {}, {}, {}, {}, {}, {}],
+          [{}, {}, {}, {}, {type: 'manaspring'}, {}, {}, {}, {}]
+        ],
+        units: [
+          [{}, {}, {}, {}, {id: 'scene_manaspring'}, {}, {}, {}, {}],
+          [{}, {}, {}, {}, {}, {}, {}, {}, {}],
+          [{}, {}, {}, {}, {}, {id: 'scene_manaspring'}, {}, {}, {}],
+          [{}, {}, {}, {}, {}, {}, {}, {}, {}],
+          [{}, {}, {}, {}, {id: 'scene_manaspring'}, {}, {}, {}, {}]
+        ]
       }
     }
 
@@ -139,6 +155,20 @@ Meteor.methods({
 
     Scenes.insert(scene);
     return scene.id;
+  },
+  'scene__setBoard': function(arg) {
+    check(arg, {
+      scene: String,
+      board: {
+        floors: Array,
+        units: Array
+      }
+    })
+
+    var scene = Scenes.findOne({id: arg.scene});
+    scene.meta.board = arg.board;
+
+    Scenes.update({id: arg.scene}, scene);
   },
   'editor__general': function(arg) {
     check(arg, {
