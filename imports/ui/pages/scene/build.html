@@ -178,7 +178,7 @@
         {{#unless viewingSingle}}
         <div class="editor__actionbar-preview">
           {{#each actionBarTemp}}
-          <div class="actionbar__card opens-card-gallery opens-single-card-view  editor__set-to-update-actionbar-card {{#if this.id}}has-card{{/if}}" data-manacost="{{#if currentCard}}{{currentCard.manaCost}}{{/if}}" data-type="{{#if currentCard}}{{currentCard.type}}{{/if}}" data-location="{{@index}}">
+          <div class="actionbar__card opens-card-gallery opens-single-card-view  editor__set-to-update-actionbar-card {{#if this.id}}has-card{{/if}}" data-manacost="{{#if currentUnit}}{{currentUnit.manaCost}}{{/if}}" data-type="{{#if currentUnit}}{{currentUnit.type}}{{/if}}" data-location="{{@index}}">
             {{#if this.id}}
             <div class="sprite id_{{this.id}} idle breath breathe breathing passive"></div>
             {{/if}}

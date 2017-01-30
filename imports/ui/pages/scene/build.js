@@ -901,7 +901,7 @@ Template.scenebuilderBuild__editor.helpers({
   },
   currentUnit() {
     // TODO this should actually be currentCard since we use it for all editor types
-    var id = Template.instance().editingTarget.get('id');
+    var id = Template.instance().editingTarget.get('id') || this.id;
     if (allCards.findOne({id: id})) {
       var card = allCards.findOne({id: id});
 
