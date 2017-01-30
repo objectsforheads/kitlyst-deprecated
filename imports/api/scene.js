@@ -5,7 +5,8 @@ Meteor.publish('buildScene', function(id) {
     'id': id
   }, {
     fields: {
-      'id': 0
+      'id': 0,
+      'viewId': 0
     }
   });
 })
@@ -17,7 +18,7 @@ Meteor.methods({
       player2: Number
     })
 
-    var scene = {id: Random.id()};
+    var scene = {id: Random.id(), viewId: Random.id()};
 
     scene.meta = {
       turnState: {

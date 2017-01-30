@@ -130,3 +130,9 @@ scene.route('/build/:hash', {
     BlazeLayout.render( 'mainLayout', {main: 'scenebuilderBuild'} )
   }
 })
+
+scene.route('/:hash', {
+  action: function(params) {
+    BlazeLayout.render( 'mainLayout', {main: 'scenebuilderView'} )
+  }
+})

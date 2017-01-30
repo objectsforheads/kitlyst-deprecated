@@ -23,6 +23,7 @@ import '../../ui/pages/database/allCards.js';
 
 import '../../ui/pages/scene/new.js';
 import '../../ui/pages/scene/build.js';
+import '../../ui/pages/scene/view.js';
 
 sAlert.config({
   effect: 'jelly',
