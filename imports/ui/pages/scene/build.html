@@ -56,9 +56,8 @@
       </div>
     </div>
     <div class="player__general-artifacts">
-      {{#let owner=player.id}}
-      {{#each player.artifacts}}
-      <div class="general-artifact opens-editor" data-editor="artifact-slot" data-durability="{{this.durability}}" data-player="{{owner}}" data-index="{{@index}}">
+      {{#each playerArtifacts}}
+      <div class="general-artifact opens-editor" data-editor="artifact-slot" data-durability="{{this.durability}}" data-player="{{this.owner}}" data-index="{{this.slot}}">
         {{#if this.id}}
         {{loadCurrentArtifact}}
         <div class="sprite id_{{this.id}} passive"></div>
@@ -70,7 +69,6 @@
         {{/if}}
       </div>
       {{/each}}
-      {{/let}}
     </div>
     {{#let owner=player.id}}
     <div class="player__actionbar opens-editor" data-editor="actionbar">

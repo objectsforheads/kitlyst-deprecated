@@ -289,6 +289,29 @@ Meteor.methods({
     Scenes.update({id: arg.scene}, scene);
     return true;
   },
+  'editor__artifact-durability': function(arg) {
+    check(arg, {
+      scene: String,
+      artifact: {
+        id: Number,
+        durability: Number,
+        owner: Number,
+        slot: Number
+      }
+    })
+
+    var scene = Scenes.findOne({id: arg.scene});
+    var artifact = arg.artifact;
+    if (artifact.durability === 3) {
+      artifact.durability = 1;
+    } else {
+      artifact.durability++;
+    }
+    scene['player'+artifact.owner].artifacts[artifact.slot].durability = artifact.durability;
+
+    Scenes.update({id: arg.scene}, scene);
+    return true;
+  },
   'editor__actionbar': function(arg) {
     check(arg, {
       scene: String,

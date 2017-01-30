@@ -781,6 +781,11 @@ $cooldownHeight: 86px;
         pointer-events: none;
       }
 
+      .general-artifact__durability {
+        pointer-events: initial;
+        cursor: pointer;
+      }
+
       // default artifact slot indicator
       &::before {
         content: '';

@@ -401,6 +401,19 @@ Template.scenebuilderBuild.events({
   }
 })
 
+Template.scenebuilderBuild__player.events({
+  'click .general-artifact__durability': function(e, template) {
+    e.stopPropagation();
+    // this = {id, durability, owner, slot}
+    Meteor.call('editor__artifact-durability', {
+      scene: FlowRouter.getParam('hash'),
+      artifact: this
+    }, function(err) {
+      if (err) { sAlert.error(err.reason); }
+    })
+  }
+})
+
 Template.scenebuilderBuild__player.helpers({
   playerManaslots() {
     var manaslots = [];
@@ -438,6 +451,17 @@ Template.scenebuilderBuild__player.helpers({
   generalBBS() {
     var id = this.player.bbs.id;
     return sceneCards.findOne({id: id});
+  },
+  playerArtifacts() {
+    var player = this.player.id;
+    var artifacts = this.player.artifacts;
+
+    artifacts.forEach(function(artifact, index) {
+      artifact.owner = player;
+      artifact.slot = index;
+    })
+
+    return artifacts;
   },
   loadCurrentArtifact() {
     // add sprite CSS if not yet added
