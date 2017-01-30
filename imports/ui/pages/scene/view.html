@@ -15,6 +15,9 @@
     {{> scenebuilderView__player player=player2}}
     {{/if}}
   </div>
+  {{#if isScreencap}}
+  <div class="scene-url h4">{{sceneURL}}</div>
+  {{/if}}
 </template>
 
 <template name="scenebuilderView__player">

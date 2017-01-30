@@ -264,6 +264,12 @@ Template.scenebuilderView.helpers({
   },
   player2() {
     return Template.instance().player2.get();
+  },
+  isScreencap() {
+    return FlowRouter.getQueryParam('screencap') || false;
+  },
+  sceneURL() {
+    return location.protocol + '//' + location.host + FlowRouter.current().path;
   }
 })
 
