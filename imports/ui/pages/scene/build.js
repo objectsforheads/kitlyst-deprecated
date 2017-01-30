@@ -657,7 +657,17 @@ Template.scenebuilderBuild__editor.events({
     var oldHealth = template.editingTarget.get('health');
 
     if (newHealth !== oldHealth) {
-      template.editingTarget.set('health', newHealth);
+      if (newHealth <= 0) {
+        sAlert.warning("Minimum general health is 1");
+        $(e.currentTarget).val(1)
+        return template.editingTarget.set('health', 1);
+      }
+      if (newHealth > 25) {
+        sAlert.warning("Maximum general health is 25");
+        $(e.currentTarget).val(25)
+        return template.editingTarget.set('health', 25);
+      }
+      return template.editingTarget.set('health', newHealth);
     }
   },
   'keyup [name="edit-unit__attack"]': function(e, template) {
@@ -673,7 +683,12 @@ Template.scenebuilderBuild__editor.events({
     var oldHealth = template.editingTarget.get('health');
 
     if (newHealth !== oldHealth) {
-      template.editingTarget.set('health', newHealth);
+      if (newHealth <= 0) {
+        sAlert.warning("Minimum unit health is 1");
+        $(e.currentTarget).val(1)
+        return template.editingTarget.set('health', 1);
+      }
+      return template.editingTarget.set('health', newHealth);
     }
   },
   'click .editor__delete-unit': function(e, template) {
