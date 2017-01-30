@@ -284,20 +284,19 @@ Meteor.methods({
       owner: Number,
       row: String,
       column: String,
-      unit: {
-        id: Number,
-        attack: Number,
-        health: Number
-      }
+      unit: Object
     })
 
     var scene = Scenes.findOne({id: arg.scene});
 
     // editing only works on units that exist
     var unit = scene['player'+arg.owner].units[arg.row][arg.column];
+    unit = {};
     for (var key in arg.unit) {
       unit[key] = arg.unit[key];
     }
+
+    scene['player'+arg.owner].units[arg.row][arg.column] = unit;
 
     Scenes.update({id: arg.scene}, scene);
     return true;
