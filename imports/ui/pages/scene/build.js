@@ -1187,7 +1187,7 @@ Template.scenebuilderBuild__share.events({
     if (type === 'imgur') {
       sAlert.info('Beginning upload - hang tight!');
       template.shareLinks.set(['Uploading...','Uploading...']);
-      var url = location.protocol + '//' + location.host + '/scene/' + FlowRouter.getParam('hash');
+      var url = location.protocol + '//' + location.host + '/scene/' + Scenes.findOne().viewId;
       Meteor.call('exportScene', url, function(err, data) {
         if (err) {
           sAlert.error(err.reason);

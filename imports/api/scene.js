@@ -182,7 +182,7 @@ Meteor.methods({
       var options = {
         format: 'jpg',
         quality: 80,
-        url: arg + param + '?screencap=true',
+        url: arg + param + '&screencap=true',
         force: true,
         width: 1920,
         height: 1080,
