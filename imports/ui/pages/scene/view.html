@@ -90,7 +90,7 @@
       {{#each field}}
       <div class="board__row">
         {{#each this}}
-        <div class="board-square" data-row="{{this.row}}" data-column="{{this.column}}">
+        <div class="board-square {{#if opponent}}opponent{{/if}}" data-row="{{this.row}}" data-column="{{this.column}}">
         </div>
         {{/each}}
       </div>

@@ -18,6 +18,8 @@ Template.scenebuilderView.onCreated(function() {
     }
   })
 
+  var currentPlayer = Number(FlowRouter.getQueryParam('player')) || null;
+
   self.autorun(()=> {
     if (Scenes.findOne()) {
       self.player1.set(Scenes.findOne().player1);
@@ -81,22 +83,21 @@ Template.scenebuilderView.onCreated(function() {
             tile.unit.attack = defaults.units[rowNum][colNum].attack || null;
             tile.unit.health = defaults.units[rowNum][colNum].health || null;
           }
-          if ( Object.keys(self.player1.get().units[rowNum][colNum]).length > 0 ) {
-            tile.unit = {};
-            tile.unit.id = self.player1.get().units[rowNum][colNum].id;
-            tile.unit.owner = 1;
-            tile.unit.attack = self.player1.get().units[rowNum][colNum].attack || null;
-            tile.unit.health = self.player1.get().units[rowNum][colNum].health || null;
-            defaults.units[rowNum][colNum] = {};
-          }
-          if ( Object.keys(self.player2.get().units[rowNum][colNum]).length > 0 ) {
-            tile.unit = {};
-            tile.unit.id = self.player2.get().units[rowNum][colNum].id;
-            tile.unit.owner = 2;
-            tile.unit.attack = self.player2.get().units[rowNum][colNum].attack || null;
-            tile.unit.health = self.player2.get().units[rowNum][colNum].health || null;
-            defaults.units[rowNum][colNum] = {};
-          }
+
+          [1, 2].forEach(function(player) {
+            if ( Object.keys(self['player'+player].get().units[rowNum][colNum]).length > 0 ) {
+              tile.unit = {};
+              tile.unit.id = self['player'+player].get().units[rowNum][colNum].id;
+              tile.unit.owner = player;
+              tile.unit.attack = self['player'+player].get().units[rowNum][colNum].attack || null;
+              tile.unit.health = self['player'+player].get().units[rowNum][colNum].health || null;
+              defaults.units[rowNum][colNum] = {};
+
+              if (player !== currentPlayer) {
+                field[rowNum][colNum].opponent = true;
+              }
+            }
+          })
 
         })
       })
